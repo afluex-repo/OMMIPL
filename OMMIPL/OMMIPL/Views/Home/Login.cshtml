@@ -1,0 +1,33 @@
+﻿@model OMMIPL.Models.Login
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <h3 class="w3l_head w3l_head1">Sign In</h3>
+        @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
+        <div class="w3_mail_grids">
+            <form action="https://sendmail.w3layouts.com/submitForm" method="post">
+                <div class="col-md-4 w3_agile_mail_grid"></div>
+                <div class="col-md-4 w3_agile_mail_grid">
+                    <span class="input input--ichiro">
+                        <input class="input__field" type="text" id="input-25" name="w3lName" placeholder="Enter Mobile No." required="">
+
+                    </span>
+                    <span class="input input--ichiro">
+                        <input class="input__field" type="email" id="input-26" name="w3lSender" placeholder="Enter Password"
+                               required="">
+                    </span>
+                    <input type="submit" value="Sign In">
+                </div>
+                <div class="col-md-4 w3_agile_mail_grid">
+                </div>
+                <div class="clearfix"> </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
