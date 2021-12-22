@@ -1,33 +1,54 @@
-﻿@model OMMIPL.Models.Login
+﻿@model OMMIPL.Models.Home
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
+<style>
+    .errorclass{
 
+    }
+</style>
 <div class="mail" id="mail">
     <div class="container">
         <h3 class="w3l_head w3l_head1">Sign In</h3>
         @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
         <div class="w3_mail_grids">
-            <form action="https://sendmail.w3layouts.com/submitForm" method="post">
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
                 <div class="col-md-4 w3_agile_mail_grid"></div>
                 <div class="col-md-4 w3_agile_mail_grid">
                     <span class="input input--ichiro">
-                        <input class="input__field" type="text" id="input-25" name="w3lName" placeholder="Enter Mobile No." required="">
-
+                        @Html.TextBoxFor(m=>m.LoginId, new { @class= "input__field", @placeholder = "Enter Mobile No." })
                     </span>
                     <span class="input input--ichiro">
-                        <input class="input__field" type="email" id="input-26" name="w3lSender" placeholder="Enter Password"
-                               required="">
+                        @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Enter Password" })
                     </span>
-                    <input type="submit" value="Sign In">
+                    <input type="submit" value="Sign In" onclick="return ValidateForm();"><br /><br />
+                    <a href="#">New User? Create Account</a>
                 </div>
                 <div class="col-md-4 w3_agile_mail_grid">
+                   
                 </div>
                 <div class="clearfix"> </div>
-            </form>
+            }
         </div>
     </div>
 </div>
-
-
+<script>
+    function ValidateForm()
+    {
+        debugger;
+        $(".errortext").removeClass("errortext");
+        if($("#LoginId").val()=="")
+        {
+            $("#LoginId").addClass('errortext');
+            $('#LoginId').focus();
+            return false;
+        }
+        if ($("#Password").val() == "") {
+            $("#Password").addClass('errortext');
+            $('#Password').focus();
+            return false;
+        }
+    }
+</script>
