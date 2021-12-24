@@ -1,0 +1,59 @@
+﻿@model OMMIPL.Models.Game
+@{
+    ViewBag.Title = "Game";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="projects" id="projects">
+    <div class="container">
+        <div class="port-head">
+            <h3 class="w3l_head w3l_head1">Play Game</h3>
+            <p class="w3ls_head_para w3ls_head_para1">View More Games</p>
+        </div>
+    </div>
+    <div class="projects-grids">
+        <div class="sreen-gallery-cursual">
+
+            <div id="owl-demo" class="owl-carousel owl-theme">
+                @if (Model != null)
+                {
+                    if (Model.lst != null)
+                    {
+                        foreach (var item in Model.lst)
+                        {
+                            <div class="item">
+                                <div class="projects-agile-grid-info">
+                                    <img src="~/images/s1.jpg" alt="" />
+                                    <div class="projects-grid-caption">
+
+                                        <h4><a href="/User/PlayGame?id=@item.FK_GameId">@item.GameName</a></h4>
+                                        <p><a href="@item.Document"></a> Rules</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                <div class="item">
+                    <div class="projects-agile-grid-info">
+                        <img src="~/images/s4.jpg" alt="" />
+                        <div class="projects-grid-caption">
+
+                            <h4><a href="#">Comming soon</a></h4>
+                            <p><a href="#"></a> Rules</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="projects-agile-grid-info">
+                        <img src="~/images/s5.jpg" alt="" />
+                        <div class="projects-grid-caption">
+
+                            <h4><a href="#">Comming soon</a></h4>
+                            <p><a href="#"></a> Rules</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

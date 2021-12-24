@@ -1,0 +1,52 @@
+﻿@model OMMIPL.Models.Game
+@{
+    ViewBag.Title = "PlayGame";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="services" id="services">
+    <h3 class="w3l_head w3l_head1">@Model.GameName</h3>
+    @*<p class="w3ls_head_para w3ls_head_para1">View Our Services</p>*@
+    <div class="services-agile-w3l">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 services-gd text-center" style="background-color:darkorange;opacity:0.8;position:relative">
+            @if (Model != null)
+            {
+                if (Model.lst != null)
+                {
+                    foreach (var item in Model.lst)
+                    {
+                        <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a col-md-4">
+                            <a href="@item.FK_ColorId" class="hi-icon" style="background-color:@item.ColorName"><span style="color:white"></span></a>
+                        </div>
+                    }
+                }
+            }
+            <h4 class="countdown"></h4>
+            <input type="hidden" value="@Model.Duration" id="hdfDuration"/>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<script src="~/js/jquery-2.2.3.min.js"></script>
+<script>
+    debugger;
+    var timer2 = $("#hdfDuration").val();
+    var interval = setInterval(function () {
+        var timer = timer2.split(':');
+        //by parsing integer, I avoid all extra string processing
+        var minutes = parseInt(timer[0], 10);
+        var seconds = parseInt(timer[1], 10);
+        --seconds;
+        minutes = (seconds < 0) ? --minutes : minutes;
+        if (minutes < 0) clearInterval(interval);
+        seconds = (seconds < 0) ? 59 : seconds;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+        //minutes = (minutes < 10) ?  minutes : minutes;
+        $('.countdown').html(minutes + ':' + seconds);
+        timer2 = minutes + ':' + seconds;
+    }, 1000);
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
