@@ -1,0 +1,133 @@
+﻿@model OMMIPL.Models.Home
+
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<style>
+    div#mail {
+        background-color: #ff5000;
+    }
+
+    .row.form-row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .col-md-10.form-col {
+        border: 1px solid white;
+        border-radius: 20px;
+        padding: 30px 10px;
+    }
+</style>
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="row form-row">
+            <div class="col-md-10 form-col">
+                <h3 class="w3l_head w3l_head1" style="color:white">Profile</h3>
+                @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
+                <div class="w3_mail_grids">
+                    <form action="/User/UpdateProfile" method="post">
+                        <div class="col-md-6 w3_agile_mail_grid">
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Sponsor Id", @onchange = "getsponsordetails(this);" })
+                                @Html.HiddenFor(m => m.FK_SponsorId)
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
+                            </span>
+                            <input type="submit" value="Update"><br /><br />
+                            <span style="color:red">@TempData["Msg"]</span>
+                        </div>
+                        <div class="col-md-6 w3_agile_mail_grid">
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.SponsorName, new { @class = "input__field", @placeholder = "Sponsor Name", @disabled = "true" })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "input__field", @placeholder = "Last Name" })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
+                            </span>
+                            <span class="input input--ichiro">
+                                @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
+                            </span>
+                            
+                                @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
+                            
+                        </div>
+                        <div class="clearfix"> </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getsponsordetails(obj) {
+        $(".errortext").removeClass("errortext");
+        $.ajax({
+            url: '/Home/GetSponsorDetails',
+            type: 'GET',
+            dataType: 'JSON',
+            data: { 'LoginId': $(obj).val() },
+            success: function (response) {
+                if (response.Result == "Yes") {
+                    $('#SponsorName').val(response.DisplayName);
+                    $('#FK_SponsorId').val(response.FK_SponsorId);
+                }
+                else {
+                    $("#SponsorLoginId").addClass('errortext');
+                    $('#SponsorName').val('');
+                    $('#FK_SponsorId').val('');
+                    $('#SponsorLoginId').focus();
+                    alert(response.Result);
+                }
+            }
+        })
+    }
+    function getstatecity() {
+        $(".errortext").removeClass("errortext");
+        $.ajax({
+            url: "/Home/GetStateCity",
+            Type: "Get",
+            DataType: "JSON",
+            data: { PinCode: $("#PinCode").val() },
+            success: function (data) {
+                if (data.Result == "yes") {
+                    $("#State").val(data.State);
+                    $("#City").val(data.City);
+                }
+                else {
+                    $("#State").val('');
+                    $("#City").val('');
+                    $("#PinCode").val('');
+                    $("#PinCode").addClass('errortext');
+                    $('#PinCode').focus();
+                }
+            }
+        });
+    }
+    function validateConfPassword() {
+        var password = $('#Password').val();
+        var ConfirmPassword = $('#ConfirmPassword').val();
+        if (password != ConfirmPassword) {
+            $("#Password").addClass('errortext');
+            $("#ConfirmPassword").addClass('errortext');
+            $('#Password').val('');
+            $('#ConfirmPassword').val('');
+            alert("Password and Confirm Password are different")
+            return false;
+        }
+    }
+</script>

@@ -3,59 +3,78 @@
     ViewBag.Title = "Registration";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
+<style>
+    div#mail {
+    background-color: #ff5000;
+}
 
+.row.form-row {
+    display: flex;
+    justify-content: center;
+}
+.col-md-10.form-col {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 30px 10px;
+}
+</style>
 <div class="mail" id="mail">
     <div class="container">
-        <h3 class="w3l_head w3l_head1">Sign Up</h3>
-        @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
-        <div class="w3_mail_grids">
-            <form action="/Home/RegistrationAction" method="post">
-                <div class="col-md-6 w3_agile_mail_grid">
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Sponsor Id", @onchange = "getsponsordetails(this);" })
-                        @Html.HiddenFor(m => m.FK_SponsorId)
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No" ,@maxlength="10", @onkeypress = "return isNumberKey(event);", })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Password", @type = "Password" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
-                    </span>
-                    <input type="submit" value="Submit">
-                </div>
-                <div class="col-md-6 w3_agile_mail_grid">
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.SponsorName, new { @class = "input__field", @placeholder = "Sponsor Name", @disabled = "true" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.LastName, new { @class = "input__field", @placeholder = "Last Name" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.ConfimPassword, new { @class = "input__field", @placeholder = "Confim Password", @type = "Password", @onblur = "return validateConfPassword();" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
-                    </span>
-                </div>
-                <div class="clearfix"> </div>
-            </form>
+        <div class="row form-row">
+            <div class="col-md-10 form-col">
+            <h3 class="w3l_head w3l_head1">Sign Up</h3>
+            @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
+            <div class="w3_mail_grids">
+                <form action="/Home/RegistrationAction" method="post">
+                    <div class="col-md-6 w3_agile_mail_grid">
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Sponsor Id", @onchange = "getsponsordetails(this);" })
+                            @Html.HiddenFor(m => m.FK_SponsorId)
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Password", @type = "Password" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
+                        </span>
+                        <input type="submit" value="Submit"><br /><br />
+                        <span style="color:red">@TempData["Msg"]</span>
+                    </div>
+                    <div class="col-md-6 w3_agile_mail_grid">
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.SponsorName, new { @class = "input__field", @placeholder = "Sponsor Name", @disabled = "true" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "input__field", @placeholder = "Last Name" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "input__field", @placeholder = "Confim Password", @type = "Password", @onblur = "return validateConfPassword();" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
+                        </span>
+                        <span class="input input--ichiro">
+                            @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
+                        </span>
+                    </div>
+                    <div class="clearfix"> </div>
+                </form>
+            </div>
         </div>
-    </div>
+            </div>
+        </div>
 </div>
 <script>
     function getsponsordetails(obj) {
