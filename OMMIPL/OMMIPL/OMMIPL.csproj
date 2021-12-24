@@ -199,6 +199,7 @@
     <Compile Include="Models\BLSMS.cs" />
     <Compile Include="Models\Crypto.cs" />
     <Compile Include="Models\DBHelper.cs" />
+    <Compile Include="Models\Game.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Home.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -227,6 +228,8 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\AdminDashboard.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\User\Game.cshtml" />
+    <Content Include="Views\User\PlayGame.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

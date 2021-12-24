@@ -56,7 +56,7 @@ namespace OMMIPL.Controllers
                 DataSet ds = obj.UpdateProfile();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                     {
                         TempData["Msg"] = "Profile Updated Successfully";
                     }
@@ -70,16 +70,76 @@ namespace OMMIPL.Controllers
             {
                 TempData["Msg"] = ex.Message;
             }
-            return RedirectToAction("UserProfile","User");
+            return RedirectToAction("UserProfile", "User");
         }
         public ActionResult Logout()
         {
             Session.Abandon();
             return RedirectToAction("Login", "Home");
         }
-        public ActionResult Geame()
+        public ActionResult Game()
         {
-            return View();
+            Game model = new Game();
+            List<Game> lst = new List<Game>();
+            try
+            {
+                DataSet ds = model.GetAllGames();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        Game obj = new Game();
+                        obj.FK_GameId = r["PK_GameId"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = Convert.ToDecimal(r["Amount"]);
+                        obj.Duration = r["GameTime"].ToString();
+                        obj.Image = r["Image"].ToString();
+                        obj.Document = r["Document"].ToString();
+                        lst.Add(obj);
+                    }
+                    model.lst = lst;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return View(model);
+        }
+        public ActionResult PlayGame(string Id)
+        {
+            Game model = new Game();
+            List<Game> lstColor = new List<Game>();
+            model.FK_GameId = Id;
+            try
+            {
+                DataSet ds = model.GetGameDetailsById();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
+                    model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
+                    model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
+                    model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
+                    model.Amount = Convert.ToDecimal(ds.Tables[0].Rows[0]["Amount"]);
+                    model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
+                }
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                {
+                    foreach(DataRow r in ds.Tables[1].Rows)
+                    {
+                        Game obj = new Game();
+                        obj.FK_ColorId = r["PK_ColorId"].ToString();
+                        obj.ColorName = r["Color"].ToString();
+                        lstColor.Add(obj);
+                    }
+                    model.lst = lstColor;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return View(model);
         }
     }
 }
