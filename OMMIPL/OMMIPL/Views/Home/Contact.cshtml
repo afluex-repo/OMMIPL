@@ -1,0 +1,105 @@
+﻿@model OMMIPL.Models.Home
+
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Msg"]
+                    </p><br /><br />
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Name</label>
+                        @Html.TextBoxFor(m =>m.Name, new { @class = "input__field", @placeholder = "Name", @onkeypress = "return onlyAlphabets();" })
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Email</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
+
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Mobile No</label>
+                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);" })
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Message</label>
+                        @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Message" })
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <input type="submit" id="btnsave" value="Sign In" onclick="return ValidateForm();">
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function ValidateForm() {
+        debugger;
+        $(".errortext").removeClass("errortext");
+        if ($("#Name").val() == "") {
+            $("#Name").addClass('errortext');
+            $('#Name').focus();
+            return false;
+        }
+        if ($("#Email").val() == "") {
+            $("#Email").addClass('errortext');
+            $('#Email').focus();
+            return false;
+        }
+        if ($("#Mobile").val() == "") {
+            $("#Mobile").addClass('errortext');
+            $('#Mobile').focus();
+            return false;
+        }
+    }
+
+    function isNumberKey(evt) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+
+    function isNumberOrDecimal(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+    function onlyAlphabets(e, t) {
+        try {
+            if (window.event) {
+                var charCode = window.event.keyCode;
+            }
+            else if (e) {
+                var charCode = e.which;
+            }
+            else { return true; }
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || (charCode == 32))
+                return true;
+            else
+                return false;
+        }
+        catch (err) {
+            alert(err.Description);
+        }
+    }
+</script>
+

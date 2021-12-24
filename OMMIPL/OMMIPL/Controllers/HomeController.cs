@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using OMMIPL.Models;
 using System.Data;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 
 namespace OMMIPL.Controllers
 {
@@ -16,6 +18,39 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
+
+
+        public ActionResult Contact()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ActionName("Contact")]
+        public ActionResult SaveContact(Home model)
+        {
+            try
+            {
+                DataSet ds = model.SaveContact();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Msg"] = "Contact save Successfully";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("Contact", "Home");
+        }
+        
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -73,6 +108,7 @@ namespace OMMIPL.Controllers
         {
             try
             {
+                model.Password = Crypto.Encrypt(model.Password);
                 DataSet ds = model.Registration();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -318,6 +354,72 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
+
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("ForgetPassword")]
+        public ActionResult ForgetPassword(Home model)
+        {
+            try
+            {
+                DataSet ds = model.GetUserPassword();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        model.Email = ds.Tables[0].Rows[0]["Email"].ToString();
+                        if (model.Email != null)
+                        {
+                            string mailbody = "";
+                            try
+                            {
+                                model.Name = ds.Tables[0].Rows[0]["Name"].ToString();
+                                model.Password = Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString());
+                                mailbody = "Dear  " + model.Name + ", <br/> Your Password Is : " +model.Password;
+                                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
+                                {
+                                    Host = "smtp.gmail.com",
+                                    Port = 587,
+                                    EnableSsl = true,
+                                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                                    UseDefaultCredentials = true,
+                                    Credentials = new NetworkCredential("developer2.afluex@gmail.com", "deve@486")
+                                };
+                                using (var message = new MailMessage("developer2.afluex@gmail.com", model.Email)
+                                {
+                                    IsBodyHtml = true,
+                                    Subject = "Forget Password",
+                                    Body = mailbody
+                                })
+                                    smtp.Send(message);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                        
+                        TempData["Msg"] = "Send Password your email-Id successfully";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("Login", "Home");
+        }
+        
+
 
     }
 }

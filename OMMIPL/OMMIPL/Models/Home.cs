@@ -13,8 +13,10 @@ namespace OMMIPL.Models
         public string PK_UserId { get; set; }
         public string Result { get; set; }
         public string DisplayName { get; set; }
+        public string Name { get; set; }
         public string MobileNo { get; set; }
         public string Email { get; set; }
+        public string Address { get; set; }
         public string ProfilePic { get; set; }
         public string LoginId { get; set; }
         public string Password { get; set; }
@@ -24,11 +26,10 @@ namespace OMMIPL.Models
         public string FK_SponsorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ConfimPassword { get; set; }
+        public string ConfirmPassword { get; set; }
         public string PinCode { get; set; }
         public string State { get; set; }
         public string City { get; set; }
-        public string Address { get; set; }
         public bool IsActive { get; set; }
         public string Image { get; set; }
         public string AddedBy { get; set; }
@@ -148,6 +149,55 @@ namespace OMMIPL.Models
 
 
 
+
+        public DataSet UserProfile()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@FK_UserId", PK_UserId),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UserProfile", para);
+            return ds;
+        }
+        public DataSet UpdateProfile()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@FK_UserId", PK_UserId),
+                                      new SqlParameter("@FirstName", FirstName),
+                                      new SqlParameter("@LastName", LastName),
+                                      new SqlParameter("@MobileNo", MobileNo),
+                                      new SqlParameter("@Email", Email),
+                                      new SqlParameter("@FK_SponosorId", FK_SponsorId),
+                                      new SqlParameter("@PinCode", PinCode),
+                                      new SqlParameter("@State", State),
+                                      new SqlParameter("@City", City),
+                                      new SqlParameter("@Address", Address),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UpdateProfile", para);
+            return ds;
+        }
+
+        public DataSet SaveContact()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@Name", Name),
+                                      new SqlParameter("@Email", Email),
+                                      new SqlParameter("@Mobile", MobileNo),
+                                      new SqlParameter("@Address", Address)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("SaveContact", para);
+            return ds;
+        }
+
+        public DataSet GetUserPassword()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@LoginId", LoginId)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("GetUserPassword", para);
+            return ds;
+        }
+
+        
 
     }
 }

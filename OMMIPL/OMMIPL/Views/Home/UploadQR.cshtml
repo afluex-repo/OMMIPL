@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 
-
 <div class="mail" id="mail">
     <div class="container">
         @*<h3 class="w3l_head w3l_head1">Upload QR</h3>*@
@@ -27,10 +26,7 @@
                         <label>Upload QR</label>
                         <input type="file" name="postedFile" id="postedFile" class="input__field" accept= "image/*"/>
                         @Html.HiddenFor(m=>m.Image)
-                      
                         <img src="@Model.Image" height="100" />
-
-                       
                     </div>
                     <div class="col-md-4 w3_agile_mail_grid" style="margin-top:40px;">
                         <input type="checkbox" id="checkbox"/> &nbsp;&nbsp;<label>IsActive</label>
