@@ -24,7 +24,7 @@ namespace OMMIPL.Models
         public string FK_SponsorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ConfimPassword { get; set; }
+        public string ConfirmPassword { get; set; }
         public string PinCode { get; set; }
         public string State { get; set; }
         public string City { get; set; }
@@ -68,6 +68,31 @@ namespace OMMIPL.Models
                                       new SqlParameter("@PinCode", PinCode),
                                   };
             DataSet ds = DBHelper.ExecuteQuery("GetStateCity", para);
+            return ds;
+        }
+        public DataSet UserProfile()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@FK_UserId", PK_UserId),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UserProfile", para);
+            return ds;
+        }
+        public DataSet UpdateProfile()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@FK_UserId", PK_UserId),
+                                      new SqlParameter("@FirstName", FirstName),
+                                      new SqlParameter("@LastName", LastName),
+                                      new SqlParameter("@MobileNo", MobileNo),
+                                      new SqlParameter("@Email", Email),
+                                      new SqlParameter("@FK_SponosorId", FK_SponsorId),
+                                      new SqlParameter("@PinCode", PinCode),
+                                      new SqlParameter("@State", State),
+                                      new SqlParameter("@City", City),
+                                      new SqlParameter("@Address", Address),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UpdateProfile", para);
             return ds;
         }
     }

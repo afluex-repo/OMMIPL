@@ -72,6 +72,7 @@ namespace OMMIPL.Controllers
         {
             try
             {
+                model.Password = Crypto.Encrypt(model.Password);
                 DataSet ds = model.Registration();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -126,7 +127,7 @@ namespace OMMIPL.Controllers
             }
             catch (Exception ex)
             {
-                model.Result =ex.Message;
+                model.Result = ex.Message;
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
