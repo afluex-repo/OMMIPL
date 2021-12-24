@@ -1,0 +1,86 @@
+﻿@model OMMIPL.Models.Home
+
+@{
+    ViewBag.Title = "UploadQR";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+
+<div class="mail" id="mail">
+    <div class="container">
+        @*<h3 class="w3l_head w3l_head1">Upload QR</h3>*@
+        @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("UploadQR", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["UploadQR"]
+                    </p>
+
+                    <input type="hidden" id="UploadQRId" name="UploadQRId" value="@Model.UploadQRId" />
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Mobile No</label>
+                            @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Enter Mobile No.",@maxlength="10", @onkeypress = "return isNumberKey(event);" })
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <label>Upload QR</label>
+                        <input type="file" name="postedFile" id="postedFile" class="input__field" accept= "image/*"/>
+                        @Html.HiddenFor(m=>m.Image)
+                      
+                        <img src="@Model.Image" height="100" />
+
+                       
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid" style="margin-top:40px;">
+                        <input type="checkbox" id="checkbox"/> &nbsp;&nbsp;<label>IsActive</label>
+                        @Html.HiddenFor(m=>m.IsActive)
+                    </div>
+                </div>
+                <div class="col-md-4 w3_agile_mail_grid">
+                    <input type="submit" id="btnsave" value="Sign In" onclick="return ValidateForm();"><br /><br />
+                    <a href="/Home/GetUploadQRDetails" class="btn btn-info">Back To List</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function ValidateForm()
+    {
+        debugger;
+        $(".errortext").removeClass("errortext");
+        if ($("#MobileNo").val() == "")
+        {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+      
+        debugger;
+        if ($("#checkbox").is(":checked") == true)
+        {
+            $("#IsActive").val(true);
+        }
+    }
+
+    var UploadQRId = $("#UploadQRId").val();
+    if (UploadQRId!=0)
+    {
+        $("#btnsave").val("Update");
+    }
+
+   
+    function isNumberKey(evt) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+
+</script>

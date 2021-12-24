@@ -222,6 +222,8 @@
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\User\UserDashboard.cshtml" />
     <Content Include="Views\Home\Registration.cshtml" />
+    <Content Include="Views\Home\UploadQR.cshtml" />
+    <Content Include="Views\Home\GetUploadQRDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -231,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadQR\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

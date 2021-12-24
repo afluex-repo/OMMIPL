@@ -29,6 +29,13 @@ namespace OMMIPL.Models
         public string State { get; set; }
         public string City { get; set; }
         public string Address { get; set; }
+        public bool IsActive { get; set; }
+        public string Image { get; set; }
+        public string AddedBy { get; set; }
+        public string UploadQRId { get; set; }
+        public List<Home> lstUploadQR { get; set; }
+
+
         public DataSet Login()
         {
             SqlParameter[] para = {new SqlParameter("@LoginId",LoginId),
@@ -70,5 +77,77 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetStateCity", para);
             return ds;
         }
+
+
+        public DataSet UploadQR()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@MobileNo",MobileNo),
+                                       new SqlParameter("@UploadFile", Image),
+                                        new SqlParameter("@IsActive", IsActive),
+                                         new SqlParameter("@AddedBy", AddedBy),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UploadQR", para);
+            return ds;
+        }
+
+        public DataSet GetUploadQRDetails()
+        {
+
+            SqlParameter[] para = {
+                 new SqlParameter("@UploadQRId", UploadQRId),
+                                      new SqlParameter("@MobileNo",MobileNo)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("GetUploadQRDetails", para);
+            return ds;
+        }
+        
+        public DataSet DeleteUploadQR()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@UploadQRId",UploadQRId),
+                                         new SqlParameter("@AddedBy", AddedBy)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("DeleteUploadQR", para);
+            return ds;
+        }
+
+
+        public DataSet UpdateUploadQR()
+        {
+            SqlParameter[] para = {
+                 new SqlParameter("@UploadQRId",UploadQRId),
+                                      new SqlParameter("@MobileNo",MobileNo),
+                                       new SqlParameter("@UploadFile", Image),
+                                        new SqlParameter("@IsActive", IsActive),
+                                         new SqlParameter("@AddedBy", AddedBy),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UpdateUploadQR", para);
+            return ds;
+        }
+
+        public DataSet ActiveUploadQR()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@UploadQRId",UploadQRId),
+                                         new SqlParameter("@AddedBy", AddedBy)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("ActiveUploadQR", para);
+            return ds;
+        }
+
+        public DataSet InActiveUploadQR()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@UploadQRId",UploadQRId),
+                                         new SqlParameter("@AddedBy", AddedBy)
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("InActiveUploadQR", para);
+            return ds;
+        }
+
+
+
+
     }
 }
