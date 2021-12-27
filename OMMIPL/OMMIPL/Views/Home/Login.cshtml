@@ -24,7 +24,12 @@
                         @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Enter Password" })
                     </span>
                     <input type="submit" value="Sign In" onclick="return ValidateForm();"><br /><br />
-                    <a href="@Url.Action("Registration","Home")">New User? Create Account</a>
+                    <a href="@Url.Action("Registration","Home")">New User? Create Account</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="@Url.Action("ForgetPassword","Home")">Forget Password</a>
+                    <p style="color:red;">
+                        @TempData["Msg"]
+                    </p>
+                  
                 </div>
                 <div class="col-md-4 w3_agile_mail_grid">
                    
