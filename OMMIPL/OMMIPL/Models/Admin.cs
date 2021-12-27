@@ -18,6 +18,8 @@ namespace OMMIPL.Models
         public string Time { get; set; }
         public string AddedBy { get; set; }
         public string Image { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
         public List<Admin> lstGame {get;set;}
         public List<Admin> lstContact { get; set; }
 
@@ -29,6 +31,8 @@ namespace OMMIPL.Models
                 new SqlParameter("@GameName",Name),
                 new SqlParameter("@Amount",Amount),
                 new SqlParameter("@GameTime",Time),
+                  new SqlParameter("@UploadImage",Image1),
+                new SqlParameter("@UploadRule",Image2),
                 new SqlParameter("@AddedBy",AddedBy)
             };
             DataSet ds = DBHelper.ExecuteQuery("SaveGame", para);
@@ -43,16 +47,14 @@ namespace OMMIPL.Models
                 new SqlParameter("@GameName",Name),
                 new SqlParameter("@Amount",Amount),
                 new SqlParameter("@GameTime",Time),
+                 new SqlParameter("@UploadImage",Image1),
+                new SqlParameter("@UploadRule",Image2),
                 new SqlParameter("@AddedBy",AddedBy)
             };
             DataSet ds = DBHelper.ExecuteQuery("UpdateGame", para);
             return ds;
         }
-
-
         
-
-
         public DataSet GetGameDetails()
         {
             SqlParameter[] para =
@@ -63,10 +65,7 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetGameDetails", para);
             return ds;
         }
-
-
-
-
+        
         public DataSet DeleteGame()
         {
             SqlParameter[] para =

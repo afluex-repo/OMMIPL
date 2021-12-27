@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -41,9 +42,8 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-
-
-
+        
+        
         public ActionResult GameMaster(string Id)
         {
             Admin model = new Admin();
@@ -56,18 +56,30 @@ namespace OMMIPL.Controllers
                     model.Name = ds11.Tables[0].Rows[0]["GameName"].ToString();
                     model.Amount = ds11.Tables[0].Rows[0]["Amount"].ToString();
                     model.Time = ds11.Tables[0].Rows[0]["GameTime"].ToString();
+                    model.Image1 = "/UploadImage/"+ds11.Tables[0].Rows[0]["Image"].ToString();
+                    model.Image2 = "/UploadRule/"+ds11.Tables[0].Rows[0]["Document"].ToString();
                 }
             }
             return View(model);
         }
         [HttpPost]
         [ActionName("GameMaster")]
-        public ActionResult SaveGameMaster(Admin model)
+        public ActionResult SaveGameMaster(Admin model, HttpPostedFileBase postedFile1, HttpPostedFileBase postedFile)
         {
             try
             {
                 if(model.GameId==null)
                 {
+                    if (postedFile1 != null)
+                    {
+                        model.Image1 = "../UploadImage/" + Guid.NewGuid() + Path.GetExtension(postedFile1.FileName);
+                        postedFile1.SaveAs(Path.Combine(Server.MapPath(model.Image1)));
+                    }
+                    if (postedFile != null)
+                    {
+                        model.Image2 = "../UploadRule/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
+                        postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image2)));
+                    }
                     model.AddedBy = Session["PK_UserId"].ToString();
                     DataSet ds = model.SaveGame();
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -84,6 +96,16 @@ namespace OMMIPL.Controllers
                 }
                 else
                 {
+                    if (postedFile1 != null)
+                    {
+                        model.Image1 = "../UploadImage/" + Guid.NewGuid() + Path.GetExtension(postedFile1.FileName);
+                        postedFile1.SaveAs(Path.Combine(Server.MapPath(model.Image1)));
+                    }
+                    if (postedFile != null)
+                    {
+                        model.Image2 = "../UploadRule/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
+                        postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image2)));
+                    }
                     model.AddedBy = Session["PK_UserId"].ToString();
                     DataSet ds = model.UpdateGame();
                     if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -125,6 +147,8 @@ namespace OMMIPL.Controllers
                     Obj.Name = r["GameName"].ToString();
                     Obj.Amount = r["Amount"].ToString();
                     Obj.Time = r["GameTime"].ToString();
+                    Obj.Image1 = r["Image"].ToString();
+                    Obj.Image2 = r["Document"].ToString();
                     lst.Add(Obj);
                 }
                 model.lstGame = lst;
