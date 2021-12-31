@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using OMMIPL.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace OMMIPL.Controllers
 {
@@ -125,7 +126,7 @@ namespace OMMIPL.Controllers
                 }
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
                 {
-                    foreach(DataRow r in ds.Tables[1].Rows)
+                    foreach (DataRow r in ds.Tables[1].Rows)
                     {
                         Game obj = new Game();
                         obj.FK_ColorId = r["PK_ColorId"].ToString();
@@ -141,5 +142,72 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
+
+
+        public ActionResult EwalletRequest()
+        {
+            #region ddlSites
+            User obj = new User();
+            int count = 0;
+            List<SelectListItem> ddlPaymentMode = new List<SelectListItem>();
+            DataSet ds1 = obj.GetPaymentModeDetails();
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds1.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlPaymentMode.Add(new SelectListItem { Text = "Select Payment Mode", Value = "" });
+                    }
+                    ddlPaymentMode.Add(new SelectListItem { Text = r["PaymentMode"].ToString(), Value = r["PK_paymentID"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlPaymentMode = ddlPaymentMode;
+
+            #endregion
+            
+
+            return View(obj);
+        }
+
+
+        [HttpPost]
+        [ActionName("EwalletRequest")]
+        public ActionResult SaveEwalletRequest(User model, HttpPostedFileBase postedFile)
+        {
+            try
+            {
+                if (postedFile != null)
+                {
+                    model.Image = "../UploadDocument/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
+                    postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image)));
+                }
+                model.AddedBy = Session["PK_UserId"].ToString();
+                DataSet ds = model.SaveEwalletRequest();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Ewallet"] = "Ewallet Request save successfully";
+                    }
+                    else
+                    {
+                        TempData["Ewallet"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Ewallet"] = ex.Message;
+            }
+            return RedirectToAction("EwalletRequest", "User");
+
+
+        }
+
+
+
     }
 }
