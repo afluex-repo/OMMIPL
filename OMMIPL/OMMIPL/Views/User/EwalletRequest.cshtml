@@ -1,0 +1,58 @@
+﻿@model OMMIPL.Models.User
+
+@{
+    ViewBag.Title = "EwalletRequest";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("EwalletRequest", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Ewallet"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Login Id</label>
+                            @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "Login Id" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Amount </label>
+                            @Html.TextBoxFor(m => m.Amount, new { @class = "input__field", @placeholder = "Amount" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Payment Mode</label>
+                            @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field" })
+
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Upload Document</label>
+                            <input type="file" name="PostedFile" id="PostedFile" class="input__field" placeholder="Upload Document" />
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>QR Code</label><br />
+                            <img src="/images/QRCode.png" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" id="btnsave" value="Sign In" onclick="return ValidateForm();">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
