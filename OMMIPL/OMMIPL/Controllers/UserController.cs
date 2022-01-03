@@ -107,6 +107,7 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
+
         public ActionResult PlayGame(string Id)
         {
             Game model = new Game();
@@ -146,7 +147,7 @@ namespace OMMIPL.Controllers
 
         public ActionResult EwalletRequest()
         {
-            #region ddlSites
+            #region ddlPaymentMode
             User obj = new User();
             int count = 0;
             List<SelectListItem> ddlPaymentMode = new List<SelectListItem>();
@@ -167,8 +168,6 @@ namespace OMMIPL.Controllers
             ViewBag.ddlPaymentMode = ddlPaymentMode;
 
             #endregion
-            
-
             return View(obj);
         }
 
@@ -184,6 +183,7 @@ namespace OMMIPL.Controllers
                     model.Image = "../UploadDocument/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
                     postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image)));
                 }
+                model.DDChequeDate = string.IsNullOrEmpty(model.DDChequeDate) ? null : Comman.ConvertToSystemDate(model.DDChequeDate, "dd/MM/yyyy");
                 model.AddedBy = Session["PK_UserId"].ToString();
                 DataSet ds = model.SaveEwalletRequest();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
@@ -203,10 +203,13 @@ namespace OMMIPL.Controllers
                 TempData["Ewallet"] = ex.Message;
             }
             return RedirectToAction("EwalletRequest", "User");
-
-
         }
+        
 
+        public ActionResult Withdraw()
+        {
+            return View();
+        }
 
 
     }
