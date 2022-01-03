@@ -22,8 +22,16 @@ namespace OMMIPL.Models
         public string Image2 { get; set; }
         public List<Admin> lstGame {get;set;}
         public List<Admin> lstContact { get; set; }
-
-
+        public List<Admin> lstReports { get; set; }
+        public string BankName { get; set; }
+        public string BankBranch { get; set; }
+        public string DDChequeNo { get; set; }
+        public string DDChequeDate { get; set; }
+        public string PaymentMode { get; set; }
+        public string Status { get; set; }
+        public string RequestID { get; set; }
+        
+        
         public DataSet SaveGame()
         {
             SqlParameter[] para=
@@ -86,7 +94,12 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetContactDetails", para);
             return ds;
         }
-        
+        public DataSet GetEwalletDetails()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetEwalletDetails");
+            return ds;
+        }
+
 
 
     }

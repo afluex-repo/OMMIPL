@@ -42,8 +42,8 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-        
-        
+
+
         public ActionResult GameMaster(string Id)
         {
             Admin model = new Admin();
@@ -56,8 +56,8 @@ namespace OMMIPL.Controllers
                     model.Name = ds11.Tables[0].Rows[0]["GameName"].ToString();
                     model.Amount = ds11.Tables[0].Rows[0]["Amount"].ToString();
                     model.Time = ds11.Tables[0].Rows[0]["GameTime"].ToString();
-                    model.Image1 = "/UploadImage/"+ds11.Tables[0].Rows[0]["Image"].ToString();
-                    model.Image2 = "/UploadRule/"+ds11.Tables[0].Rows[0]["Document"].ToString();
+                    model.Image1 = "/UploadImage/" + ds11.Tables[0].Rows[0]["Image"].ToString();
+                    model.Image2 = "/UploadRule/" + ds11.Tables[0].Rows[0]["Document"].ToString();
                 }
             }
             return View(model);
@@ -68,7 +68,7 @@ namespace OMMIPL.Controllers
         {
             try
             {
-                if(model.GameId==null)
+                if (model.GameId == null)
                 {
                     if (postedFile1 != null)
                     {
@@ -127,7 +127,7 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GameMaster", "Admin");
         }
-        
+
         public ActionResult GameList()
         {
             return View();
@@ -183,5 +183,33 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GameList", "Admin");
         }
+
+        public ActionResult Reports()
+        {
+            Admin model = new Admin();
+            List<Admin> lst = new List<Admin>();
+            DataSet ds11 = model.GetEwalletDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.RequestID = r["PK_RequestID"].ToString();
+                    Obj.Amount = r["Amount"].ToString();
+                    Obj.PaymentMode = r["PaymentMode"].ToString();
+                    Obj.Status = r["Status"].ToString();
+                    Obj.Image = r["ImageURL"].ToString();
+                    Obj.BankName = r["BankName"].ToString();
+                    Obj.BankBranch = r["BankBranch"].ToString();
+                    Obj.DDChequeNo = r["ChequeDDNo"].ToString();
+                    Obj.DDChequeDate = r["ChequeDDDate"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstReports = lst;
+            }
+            return View(model);
+        }
+
+
     }
 }
