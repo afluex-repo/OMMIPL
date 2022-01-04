@@ -47,6 +47,7 @@
                                     <th>Bank Branch</th>
                                     <th>Cheque DDNo</th>
                                     <th>Cheque DDDate</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,10 +69,13 @@
                                                 <td>@Item.BankBranch</td>
                                                 <td>@Item.DDChequeNo</td>
                                                 <td>@Item.DDChequeDate</td>
-                                                @*<td>
-                                                    <a href="/Admin/GameMaster?Id=@Item.GameId" class="btn btn-info btn-sm edit">Edit</a>
-                                                    <a href="/Admin/DeleteGameMaster?Id=@Item.GameId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
-                                                </td>*@
+                                                <td style="width:220px;">
+                                                    <a href="/Admin/Approve?Id=@Item.RequestId" class="btn btn-success btn-sm">Approve</a>
+                                                    <a href="/Admin/Decline?Id=@Item.RequestId" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?');">Decline</a>
+                                                    <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+
+                                                    
+                                                </td>
                                             </tr>
                                             i++;
                                         }

@@ -35,11 +35,8 @@
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Payment Mode <span style="color: red">*</span></label>
                             @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field default-select", @data_size = "7", @data_style = "select-with-transition", @onchange = "getpaymentdetails();" })
-
                         </div>
                     </div>
-
-
                     <div class="row">
                         <div class="col-md-4 w3_agile_mail_grid" id="bankname" style="display: none">
                             <div class="mb-3">
@@ -56,20 +53,17 @@
                         <div class="col-md-4 w3_agile_mail_grid" id="chequdate" style="display: none">
                             <div class="mb-3">
                                 <label class="mb-1 text-white fs-14">Transaction Date <span class="text-danger">*</span></label>
-                                @Html.TextBoxFor(m => m.DDChequeDate, new { @class = "input__field", @placeholder = "Transaction Date" ,@readonly=true})
+                                @Html.TextBoxFor(m => m.DDChequeDate, new { @class = "input__field", @placeholder = "Transaction Date", @readonly = true })
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
-                      
                         <div class="col-md-4 w3_agile_mail_grid" id="bankbranch" style="display: none">
                             <div class="mb-3">
                                 <label class="mb-1 text-white fs-14">Branch <span class="text-danger">*</span></label>
                                 @Html.TextBoxFor(m => m.BankBranch, new { @class = "input__field", @placeholder = "Bank Branch" })
                             </div>
                         </div>
-
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Upload Document <span style="color: red">*</span></label>
                             <input type="file" name="PostedFile" id="PostedFile" class="input__field" placeholder="Upload Document" />
@@ -79,7 +73,6 @@
                             <img src="/images/QRCode.png" />
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4 w3_agile_mail_grid">
                             <input type="submit" id="btnsave" value="Wallet Request" onclick="return validateform();">
@@ -139,8 +132,8 @@
             $('#PostedFile').focus();
             return false;
         }
-        }
- 
+    }
+
 
     function getpaymentdetails() {
         debugger;
