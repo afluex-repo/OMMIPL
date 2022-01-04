@@ -194,7 +194,7 @@ namespace OMMIPL.Controllers
                 foreach (DataRow r in ds11.Tables[0].Rows)
                 {
                     Admin Obj = new Admin();
-                    Obj.RequestID = r["PK_RequestID"].ToString();
+                    Obj.RequestId = r["PK_RequestID"].ToString();
                     Obj.Amount = r["Amount"].ToString();
                     Obj.PaymentMode = r["PaymentMode"].ToString();
                     Obj.Status = r["Status"].ToString();
@@ -209,6 +209,92 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
+
+
+
+        public ActionResult Approve(string Id)
+        {
+            try
+            {
+                Admin model = new Admin();
+                model.AddedBy = "1";
+                model.RequestId = Id;
+                DataSet ds = model.Approv();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Game"] = "Record Approved Successfully";
+                    }
+                    else
+                    {
+                        TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return RedirectToAction("reports", "Admin");
+        }
+
+        public ActionResult Decline(string Id)
+        {
+            try
+            {
+                Admin model = new Admin();
+                model.AddedBy = "1";
+                model.RequestId = Id;
+                DataSet ds = model.Decline();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Game"] = "Record Declined Successfully";
+                    }
+                    else
+                    {
+                        TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return RedirectToAction("reports", "Admin");
+        }
+
+
+        public ActionResult Delete(string Id)
+        {
+            try
+            {
+                Admin model = new Admin();
+                model.AddedBy = "1";
+                model.RequestId = Id;
+                DataSet ds = model.Delete();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Game"] = "Record Deleted Successfully";
+                    }
+                    else
+                    {
+                        TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return RedirectToAction("reports", "Admin");
+        }
+        
+
 
 
     }
