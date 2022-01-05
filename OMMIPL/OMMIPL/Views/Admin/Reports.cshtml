@@ -13,14 +13,14 @@
                 <div class="row">
                     <p style="color:red;">
                         @TempData["Game"]
-                    </p>
+                    </p><br />
                     <div class="row">
                         <div class="col-sm-2">
                         </div>
                         <div class="col-sm-8">
                         </div>
                         <div class="col-sm-2">
-                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                            <a href="/User/EwalletRequest" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>
                         </div>
                     </div>
                     @*<div class="row">
@@ -38,15 +38,14 @@
                             <thead>
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
-                                    <th>Name</th>
                                     <th>Amount</th>
                                     <th>Payment Mode</th>
-                                    <th>Status</th>
-                                    <th>Image URL</th>
                                     <th>Bank Name</th>
                                     <th>Bank Branch</th>
                                     <th>Cheque DDNo</th>
                                     <th>Cheque DDDate</th>
+                                    <th>Image URL</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -60,21 +59,29 @@
                                         {
                                             <tr>
                                                 <td>@i</td>
-                                                <td>@Item.Name</td>
                                                 <td>@Item.Amount</td>
                                                 <td>@Item.PaymentMode</td>
-                                                <td>@Item.Status</td>
-                                                <td><img src="@Item.Image" height="100" width="100"/></td>
                                                 <td>@Item.BankName</td>
                                                 <td>@Item.BankBranch</td>
                                                 <td>@Item.DDChequeNo</td>
                                                 <td>@Item.DDChequeDate</td>
-                                                <td style="width:220px;">
-                                                    <a href="/Admin/Approve?Id=@Item.RequestId" class="btn btn-success btn-sm">Approve</a>
-                                                    <a href="/Admin/Decline?Id=@Item.RequestId" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?');">Decline</a>
-                                                    <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                                                <td><img src="@Item.Image" height="100" width="100"/></td>
+                                                @if (Item.Status == "Approved")
+                                                {
+                                                   <td><a href="/Admin/Decline?Id=@Item.RequestId" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?');">Decline</a>
+                                                       
+                                                </td> 
 
-                                                    
+                                                }
+                                                else if(Item.Status == "Declined")
+                                                {
+                                                    <td><a href="/Admin/Approve?Id=@Item.RequestId" class="btn btn-success btn-sm">Approve</a>
+                                                      
+                                                </td>
+                                                }
+                                                
+                                                <td>
+                                                    <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
                                                 </td>
                                             </tr>
                                             i++;

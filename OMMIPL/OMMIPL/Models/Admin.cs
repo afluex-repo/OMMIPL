@@ -31,6 +31,9 @@ namespace OMMIPL.Models
         public string Status { get; set; }
         public string RequestId { get; set; }
 
+        public string AccountName { get; set; }
+        public string Number { get; set; }
+        
 
         public DataSet SaveGame()
         {
@@ -135,5 +138,17 @@ namespace OMMIPL.Models
             return ds;
         }
 
+        public DataSet SaveQRMaster()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@AccountName",AccountName),
+                 new SqlParameter("@Number",Number),
+                  new SqlParameter("@UpLoadQR",Image),
+                 new SqlParameter("@AddedBy",AddedBy)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("SaveQRMaster", para);
+            return ds;
+        }
     }
 }

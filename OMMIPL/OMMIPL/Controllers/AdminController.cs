@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace OMMIPL.Controllers
 {
-    public class AdminController : BaseController
+    public class AdminController : AdminBaseController
     {
         // GET: User
         public ActionResult AdminDashboard()
@@ -293,8 +293,43 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("reports", "Admin");
         }
-        
 
+
+        public ActionResult QRMaster()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ActionName("QRMaster")]
+        public ActionResult QRMaster(Admin model, HttpPostedFileBase postedFile)
+        {
+            try
+            {
+                if (postedFile != null)
+                {
+                    model.Image = "../UploadQRImage/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
+                    postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image)));
+                }
+                model.AddedBy = "1";
+                DataSet ds = model.SaveQRMaster();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["QRMaster"] = "Record Save Successfully";
+                    }
+                    else
+                    {
+                        TempData["QRMaster"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["QRMaster"] = ex.Message;
+            }
+            return RedirectToAction("QRMaster", "Admin");
+        }
 
 
     }
