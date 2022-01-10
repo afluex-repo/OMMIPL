@@ -33,7 +33,8 @@ namespace OMMIPL.Models
 
         public string AccountName { get; set; }
         public string Number { get; set; }
-        
+        public string PK_UserId { get; set; }
+        public string LoginID { get; set; }
 
         public DataSet SaveGame()
         {
@@ -99,7 +100,11 @@ namespace OMMIPL.Models
         }
         public DataSet GetEwalletDetails()
         {
-            DataSet ds = DBHelper.ExecuteQuery("GetEwalletDetails");
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_UserId",PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GetEwalletDetails", para);
             return ds;
         }
 
