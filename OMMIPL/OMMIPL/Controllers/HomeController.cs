@@ -72,8 +72,8 @@ namespace OMMIPL.Controllers
                     Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
                     Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
                     Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                    FormName = "UserDashboard";
-                    ControllerName = "User";
+                    FormName = "AdminDashboard";
+                    ControllerName = "Admin";
                 }
                 else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
                 {
