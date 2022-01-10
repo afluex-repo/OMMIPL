@@ -19,7 +19,7 @@ namespace OMMIPL.Models
         public string LoginId { get; set; }
         public string Password { get; set; }
         public string UserType { get; set; }
-
+        public List<Admin> lstReports { get; set; }
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }
@@ -27,7 +27,7 @@ namespace OMMIPL.Models
         public string Balance { get; set; }
         public string AddedBy { get; set; }
         public string Result { get; set; }
-
+        public string MainBalance { get; set; }
         public string BankName { get; set; }
         public string BankBranch { get; set; }
         public string DDChequeNo { get; set; }
@@ -42,7 +42,15 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
             return ds;
         }
-
+        public DataSet GetEwalletDetails()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_UserId",PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GetEwalletDetails", para);
+            return ds;
+        }
         public DataSet SaveEwalletRequest()
         {
             SqlParameter[] para =
@@ -60,6 +68,14 @@ namespace OMMIPL.Models
             return ds;
         }
         
-
+        public DataSet GetMainBalance()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_UserId",PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("UserMainBalance", para);
+            return ds;
+        }
     }
 }

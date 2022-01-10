@@ -1,14 +1,13 @@
-﻿@model OMMIPL.Models.Admin
+﻿@model OMMIPL.Models.User
 @{
     ViewBag.Title = "E_WalletReport";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
-
 
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
-            @using (Html.BeginForm("E_WalletReport", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            @using (Html.BeginForm("E_WalletReport", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
             {
                 <div class="row">
                     <p style="color:red;">
@@ -38,7 +37,7 @@
                             <thead>
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
-                                    <th>LoginID</th>
+                                 
                                     <th>Name</th>
                                     <th>Amount</th>
                                     <th>Payment Mode</th>
@@ -61,7 +60,7 @@
                                         {
                                             <tr>
                                                 <td>@i</td>
-                                                <td>@Item.LoginID</td>
+                                               
                                                 <td>@Item.Name</td>
                                                 <td>@Item.Amount</td>
                                                 <td>@Item.PaymentMode</td>
@@ -103,5 +102,4 @@
     </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 
