@@ -67,7 +67,7 @@ namespace OMMIPL.Controllers
                 model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
                 if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
                 {
-                    if (model.Password == Crypto.Encrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                    if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
                     {
                         Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
                         Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();

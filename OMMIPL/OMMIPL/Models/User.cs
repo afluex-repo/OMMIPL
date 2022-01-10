@@ -27,7 +27,7 @@ namespace OMMIPL.Models
         public string Balance { get; set; }
         public string AddedBy { get; set; }
         public string Result { get; set; }
-
+        public string MainBalance { get; set; }
         public string BankName { get; set; }
         public string BankBranch { get; set; }
         public string DDChequeNo { get; set; }
@@ -68,6 +68,14 @@ namespace OMMIPL.Models
             return ds;
         }
         
-
+        public DataSet GetMainBalance()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_UserId",PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("UserMainBalance", para);
+            return ds;
+        }
     }
 }

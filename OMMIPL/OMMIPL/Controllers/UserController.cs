@@ -15,7 +15,15 @@ namespace OMMIPL.Controllers
         // GET: User
         public ActionResult UserDashboard()
         {
-            return View();
+            User model = new User();
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = model.GetMainBalance();
+            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            {
+                ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
+            }
+           
+            return View(model);
         }
         public ActionResult UserProfile()
         {
