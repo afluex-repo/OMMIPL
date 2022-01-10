@@ -55,6 +55,7 @@ namespace OMMIPL.Controllers
         public ActionResult Login()
         {
             Home model = new Home();
+            Session.Abandon();
             return View();
         }
         [HttpPost]
@@ -62,26 +63,34 @@ namespace OMMIPL.Controllers
         {
             string FormName = "";
             string ControllerName = "";
-            model.Password = Crypto.Encrypt(model.Password);
             DataSet ds = model.Login();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
                 if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
                 {
-                    Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
-                    Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                    Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                    FormName = "AdminDashboard";
-                    ControllerName = "Admin";
+                    if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                    {
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                        Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                        FormName = "UserDashboard";
+                        ControllerName = "User";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = "Something went wrong";
+                        FormName = "Login";
+                        ControllerName = "Home";
+                    }
                 }
                 else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
                 {
-                    Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
-                    Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                    Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                    FormName = "AdminDashboard";
-                    ControllerName = "Admin";
+                        Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
+                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                        //Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                        FormName = "AdminDashboard";
+                        ControllerName = "Admin";
                 }
                 else
                 {
