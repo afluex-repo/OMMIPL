@@ -204,7 +204,34 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("EwalletRequest", "User");
         }
-        
+        public ActionResult E_WalletReport()
+        {
+            List<Admin> lst = new List<Admin>();
+            User model = new User();
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds11 = model.GetEwalletDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginId"].ToString();
+                    Obj.Name = r["name"].ToString();
+                    Obj.RequestId = r["PK_RequestID"].ToString();
+                    Obj.Amount = r["Amount"].ToString();
+                    Obj.PaymentMode = r["PaymentMode"].ToString();
+                    Obj.Status = r["Status"].ToString();
+                    Obj.Image = r["ImageURL"].ToString();
+                    Obj.BankName = r["BankName"].ToString();
+                    Obj.BankBranch = r["BankBranch"].ToString();
+                    Obj.DDChequeNo = r["ChequeDDNo"].ToString();
+                    Obj.DDChequeDate = r["ChequeDDDate"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstReports = lst;
+            }
+            return View(model);
+        }
 
         public ActionResult Withdraw()
         {

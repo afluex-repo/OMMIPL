@@ -19,7 +19,7 @@ namespace OMMIPL.Models
         public string LoginId { get; set; }
         public string Password { get; set; }
         public string UserType { get; set; }
-
+        public List<Admin> lstReports { get; set; }
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }
@@ -42,7 +42,15 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
             return ds;
         }
-
+        public DataSet GetEwalletDetails()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_UserId",PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GetEwalletDetails", para);
+            return ds;
+        }
         public DataSet SaveEwalletRequest()
         {
             SqlParameter[] para =
