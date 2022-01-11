@@ -1,8 +1,329 @@
-﻿
+﻿@model OMMIPL.Models.Admin
+
 @{
     ViewBag.Title = "AdminDashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .navbar-nav > li:nth-child(3) a {
+    margin-right: 1.8em !important;
+}
+    .navbar-nav > li:nth-child(4) a {
+    margin-right: 18em !important;
+}
+    .card.balance {
+    min-height: 250px!important;
+    background-image: linear-gradient(to right, #f2c300 , #ff5305);
+        color: black;
+        border-radius: 15px;
+        margin-bottom: 25px;
+}
+    .row.dashboard {
+    padding: 20px 3%!important;
+}
+    ul.nav.nav-tabs.nav-justified li.dash-nav {
+    font-size: 22px;
+    font-weight: 700;
+    background-color: #f2be0175;
+}
+    .nav-tabs > li.dash-nav.active > a, .nav-tabs > li.dash-nav.active > a:hover, .nav-tabs > li.dash-nav.active > a:focus{
+        background-color: #ebd175;
+    }
+    .nav > li.dash-nav > a:hover, .nav > li.dash-nav > a:focus{
+        background-color: #ebd175;
+    }
+    .btn-lg.jackpot-btn {
+    margin: 5px;
+}
+    .btn-block{
+    border-radius: 18px;
+}
+    .grid.jackpot10 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+    .d-flex{
+        display: flex;
+    }
+    .btn-more{
+        margin-left: auto;
+        background-color: #fd6204;
+        color: white;
+    }
+    .tableFixHead {
+        overflow: auto;
+        height: 480px;
+    }
+    .tableFixHead thead th{
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    .head-color thead th{
+        background-color: #f9e18a;
+    }
+</style>
+<!-- gallery -->
+<div class="team-bottom" id="work">
+    <div class="container-fluid">
+        @*<h3 class="w3l_head w3l_head1">Latest Gallery</h3>
+        <p class="w3ls_head_para w3ls_head_para1">Lorem Ipsum Dolor</p>*@
+        <div class="row dashboard">
+            <div class="col-md-4">
+                <div class="card balance">
+                    <div class="card-body">
+                        <div class="body-layout">
+                            <div class="body-contant">
+                                <h2 class="card-title main balance">Main Balance</h2>
+                                <span class="card-detail">₹ 0.00</span>
+                                <h2 class="card-title main period">Period</h2>
+                                <span class="card-detail" >2256</span>
+                            </div>
+                            <div class="body-color text-center">
+                                <div class="color-symbol">G</div>
+                                <div class="time-counter"><span class="digit">2</span> <span class="digit">2</span> : <span class="digit">2</span> <span class="digit">2</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+            <div class="w3layouts_gallery_grids">
+                <ul class="nav nav-tabs nav-justified ">
+                    <li class="active dash-nav"><a data-toggle="tab" href="#home">Colour-X3</a></li>
+                    <li class="dash-nav"><a data-toggle="tab" href="#menu1">Jackpot-X10</a></li>
+                    <li class="dash-nav"><a data-toggle="tab" href="#menu2">Jackpot-X100</a></li>
+                </ul>
 
-<h2>AdminDashboard</h2>
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-4"><button type="button" class="btn btn-green btn-block">Green</button></div>
+                                <div class="col-md-4"><button type="button" class="btn btn-red btn-block">Red</button></div>
+                                <div class="col-md-4"><button type="button" class="btn btn-blue btn-block">Blue</button></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h3 class="card-title">Your Predition Record Colour X3</h3>
+                                    <button type="button" class="btn btn-md btn-more">More</button>
+                                </div>
+                                <hr />
+                                <div class="table-responsive head-color">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Period</th>
+                                            <th>Colour</th>
+                                            <th class="text-center">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2021122298</td>
+                                            <td class="text-red">Red</td>
+                                            <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h3 class="card-title">Record Colour X3</h3>
+                                    <button type="button" class="btn btn-md btn-more">More</button>
+                                </div>
+                                <hr />
+                                <div class="table-responsive tableFixHead head-color">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Colour</th>
+                                                <th class="text-center">Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122299</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122296</td>
+                                                <td class="text-red">Red</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122295</td>
+                                                <td class="text-green">Green</td>
+                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">Green</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122299</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122296</td>
+                                                <td class="text-red">Red</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122295</td>
+                                                <td class="text-green">Green</td>
+                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">Green</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="card">
+                            <div class="grid jackpot10 text-center ">
+                                <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">0</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">1</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">2</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">3</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">4</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">5</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">6</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">7</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">8</button></div>
+                                <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">9</button></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h3 class="card-title">Your Predition Record Jackpot X10</h3>
+                                    <button type="button" class="btn btn-md btn-more">More</button>
+                                </div>
+                                <hr />
+                                <div class="table-responsive head-color">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Number</th>
+                                                <th class="text-center">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td>8</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">8</button></td>
+                                            </tr>
 
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <h3 class="card-title">Record Colour X10</h3>
+                                    <button type="button" class="btn btn-md btn-more">More</button>
+                                </div>
+                                <hr />
+                                <div class="table-responsive tableFixHead head-color">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Number</th>
+                                                <th class="text-center">Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122299</td>
+                                                <td class="text-green">3</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-green">2</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-green">8</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122296</td>
+                                                <td class="text-green">5</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-green">7</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122295</td>
+                                                <td class="text-green">0</td>
+                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: red; font-size: 32px; font-weight: 600; text-align: center; margin: 50px;">!! Coming Soon <i class="fa fa-bullhorn" aria-hidden="true" style="font-size: 100px;"></i></h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+            
+        </div>
+    </div>
+</div>
+<!-- //gallery -->
