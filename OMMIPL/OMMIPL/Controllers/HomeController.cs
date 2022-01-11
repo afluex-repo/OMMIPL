@@ -66,28 +66,31 @@ namespace OMMIPL.Controllers
             DataSet ds = model.Login();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
-                if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
+                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
                 {
-                    Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
-                    Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                    Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                    FormName = "UserDashboard";
-                    ControllerName = "User";
-                }
-                else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
-                {
-                    Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
-                    Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                    Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                    FormName = "AdminDashboard";
-                    ControllerName = "Admin";
-                }
-                else
-                {
-                    TempData["Msg"] = "Something went wrong";
-                    FormName = "Login";
-                    ControllerName = "Home";
+                    model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
+                    if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
+                    {
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                        Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                        FormName = "UserDashboard";
+                        ControllerName = "User";
+                    }
+                    else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
+                    {
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                        Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                        FormName = "AdminDashboard";
+                        ControllerName = "Admin";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = "Something went wrong";
+                        FormName = "Login";
+                        ControllerName = "Home";
+                    }
                 }
             }
             else

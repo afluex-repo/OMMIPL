@@ -125,7 +125,7 @@ namespace OMMIPL.Controllers
                 }
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
                 {
-                    foreach(DataRow r in ds.Tables[1].Rows)
+                    foreach (DataRow r in ds.Tables[1].Rows)
                     {
                         Game obj = new Game();
                         obj.FK_ColorId = r["PK_ColorId"].ToString();
@@ -140,6 +140,23 @@ namespace OMMIPL.Controllers
                 TempData["Msg"] = ex.Message;
             }
             return View(model);
+        }
+        public ActionResult GameStart(string ColorId,string GameId)
+        {
+            Game model = new Game();
+            model.FK_ColorId = ColorId;
+            model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.GameStartDateTime = DateTime.Now.ToString();
+            DataSet ds = model.GameStart();
+            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            {
+                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
+                {
+
+                }
+            }
+            return RedirectToAction("GameStart", "User");
         }
     }
 }
