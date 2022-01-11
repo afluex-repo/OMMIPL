@@ -125,9 +125,10 @@ namespace OMMIPL.Models
             SqlParameter[] para =
             {
                 new SqlParameter("@PK_RequestID",RequestId),
-                 new SqlParameter("@ApprovedBy",AddedBy)
+                 new SqlParameter("@Status",Status),
+                 new SqlParameter("@AddedBy",AddedBy)
             };
-            DataSet ds = DBHelper.ExecuteQuery("Declined", para);
+            DataSet ds = DBHelper.ExecuteQuery("ApproveDeclineEwalletRequest", para);
             return ds;
         }
 
