@@ -11,6 +11,7 @@ namespace OMMIPL.Models
     {
         public string FK_GameId { get; set; }
         public string FK_ColorId { get; set; }
+        public string FK_UserId { get; set; }
         public string FK_NumberId { get; set; }
         public decimal Amount { get; set; }
         public string Duration { get; set; }
@@ -19,6 +20,7 @@ namespace OMMIPL.Models
         public List<Game> lst { get; set; }
         public string Document { get; set; }
         public string Image { get; set; }
+        public string GameStartDateTime { get; set; }
         public DataSet GetAllGames()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetGameDetails");
@@ -30,5 +32,6 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetGameById",para);
             return ds;
         }
+       
     }
 }

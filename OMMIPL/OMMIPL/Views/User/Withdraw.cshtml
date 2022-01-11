@@ -1,0 +1,95 @@
+﻿@model OMMIPL.Models.User
+
+
+@{
+    ViewBag.Title = "Withdraw";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("Withdraw", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Ewallet"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Balance</label>
+                            @Html.TextBoxFor(m => m.Balance, new { @class = "input__field", @placeholder = "Balance", @onkeypress = "return isNumberOrDecimal(event);" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Mobile No <span style="color: red">*</span> </label>
+                            @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No",@maxlength="10", @onkeypress = "return isNumberKey(event);" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Amount <span style="color: red">*</span></label>
+                            @Html.TextBoxFor(m => m.Amount, new { @class = "input__field", @placeholder = "Amount", @onkeypress = "return isNumberOrDecimal(event);" })
+                        </div>
+                    </div><br /><br />
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" id="btnsave" value="Withdrawl Request" onclick="return validateform();">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script>
+    function validateform() {
+        $(".errortext").removeClass("errortext");
+        if ($('#Balance').val() == '0') {
+            $("#Balance").addClass('errortext');
+            $('#Balance').focus();
+            return false;
+        }
+        if ($('#MobileNo').val() == '') {
+            $("#MobileNo").addClass('errortext');
+            $('#MobileNo').focus();
+            return false;
+        }
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $('#Amount').focus();
+            return false;
+        }
+    }
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    function isNumberOrDecimal(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+</script>
+<style>
+    .errortext {
+        border: 1px solid red !important;
+        background-color: #fff0f0 !important;
+    }
+</style>

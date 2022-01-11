@@ -1,0 +1,79 @@
+﻿@model OMMIPL.Models.Home
+
+@{
+    ViewBag.Title = "GetUploadQRDetails";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("GetUploadQRDetails", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["UploadQR"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="/Home/UploadQR" class="btn btn-info" style="border-radius:100px;"> Add New</a>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>S No.</th>
+                                    <th>Mobile No</th>
+                                    <th>Uploaded QR</th>
+                                    <th>IsActive</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.lstUploadQR != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var Item in Model.lstUploadQR)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@Item.MobileNo</td>
+                                                <td><img src="@Item.Image" height="100" /></td>
+                                                <td>
+                                                    @if (Item.IsActive == true)
+                                                    {
+                                                        <a href="/Home/InActive?ID=@Item.UploadQRId" class="btn btn-warning btn-sm">InActive</a>
+                                                    }
+                                                    else if (Item.IsActive == false)
+                                                    {
+                                                        <a href="/Home/Active?ID=@Item.UploadQRId" class="btn btn-success btn-sm">Active</a>
+                                                    }
+                                                    else
+                                                    {
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a href="/Home/UploadQR?ID=@Item.UploadQRId" class="btn btn-info btn-sm edit">Edit</a>
+                                                    <a href="/Home/DeleteUploadQR?ID=@Item.UploadQRId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

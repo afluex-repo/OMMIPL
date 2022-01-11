@@ -1,0 +1,74 @@
+﻿@model OMMIPL.Models.Admin
+
+@{
+    ViewBag.Title = "ContactList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("ContactList", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Game"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;"> Add New</a>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Name</label>
+                            @Html.TextBoxFor(m => m.Name, new { @class = "input__field", @placeholder = "Name" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" value="Search" style="margin-top:25px;" class="btn btn-success" />
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>S No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.lstContact != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var Item in Model.lstContact)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@Item.Name</td>
+                                                <td>@Item.Email</td>
+                                                <td>@Item.MobileNo</td>
+                                                <td>@Item.Address</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

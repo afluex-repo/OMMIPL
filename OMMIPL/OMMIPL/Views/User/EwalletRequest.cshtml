@@ -1,0 +1,183 @@
+﻿@model OMMIPL.Models.User
+
+@{
+    ViewBag.Title = "EwalletRequest";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("EwalletRequest", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Ewallet"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Login Id </label>
+                            @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "Login Id" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Amount <span style="color: red">*</span></label>
+                            @Html.TextBoxFor(m => m.Amount, new { @class = "input__field", @placeholder = "Amount", @onkeypress = "return isNumberOrDecimal(event);" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Payment Mode <span style="color: red">*</span></label>
+                            @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field default-select", @data_size = "7", @data_style = "select-with-transition", @onchange = "getpaymentdetails();" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid" id="bankname" style="display: none">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Bank Name <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.BankName, new { @class = "input__field", @placeholder = "Bank Name" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid" id="chequeno" style="display: none">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Transaction No  <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.DDChequeNo, new { @class = "input__field", @placeholder = "Transaction No" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid" id="chequdate" style="display: none">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Transaction Date <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.DDChequeDate, new { @class = "input__field", @placeholder = "Transaction Date", @readonly = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid" id="bankbranch" style="display: none">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Branch <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.BankBranch, new { @class = "input__field", @placeholder = "Bank Branch" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Upload Document <span style="color: red">*</span></label>
+                            <input type="file" name="PostedFile" id="PostedFile" class="input__field" placeholder="Upload Document" />
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>QR Code</label><br />
+                            <img src="/images/QRCode.png" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" id="btnsave" value="Wallet Request" onclick="return validateform();">
+                         <p><a href="/user/E_WalletReport" class="btn btn-info" style="padding: 0.9em;background-color:#fa3d03;">Back To List</a></p>   
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script>
+    function validateform() {
+        $(".errortext").removeClass("errortext");
+        if ($('#LoginId').val() == '0') {
+            $("#LoginId").addClass('errortext');
+            $('#LoginId').focus();
+            return false;
+        }
+        if ($('#Amount').val() == '') {
+            $("#Amount").addClass('errortext');
+            $('#Amount').focus();
+            return false;
+        }
+        if ($('#PaymentMode').val() == '') {
+            $("#PaymentMode").addClass('errortext');
+            $('#PaymentMode').focus();
+            return false;
+        }
+
+        if (($("#PaymentMode option:selected").text()) != 'Cash') {
+            if ($('#BankName').val() == '') {
+                $("#BankName").addClass('errortext');
+                $('#BankName').focus();
+                return false;
+            }
+            if ($('#DDChequeNo').val() == '') {
+                $("#DDChequeNo").addClass('errortext');
+                $('#DDChequeNo').focus();
+                return false;
+            }
+            if ($('#DDChequeDate').val() == '') {
+                $("#DDChequeDate").addClass('errortext');
+                $('#DDChequeDate').focus();
+                return false;
+            }
+            if ($('#BankBranch').val() == '') {
+                $("#BankBranch").addClass('errortext');
+                $('#BankBranch').focus();
+                return false;
+            }
+        }
+
+        if ($('#PostedFile').val() == '') {
+            $("#PostedFile").addClass('errortext');
+            $('#PostedFile').focus();
+            return false;
+        }
+    }
+
+
+    function getpaymentdetails() {
+        debugger;
+        var paymentmode = ($("#PaymentMode option:selected").text());
+        if (paymentmode != "Cash") {
+            bankname.style.display = "block";
+            chequeno.style.display = "block";
+            chequdate.style.display = "block";
+            bankbranch.style.display = "block";
+        }
+        else {
+            bankname.style.display = "none";
+            chequeno.style.display = "none";
+            chequdate.style.display = "none";
+            bankbranch.style.display = "none";
+        }
+    }
+
+
+    function isNumberOrDecimal(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>
+<style>
+    .errortext {
+        border: 1px solid red !important;
+        background-color: #fff0f0 !important;
+    }
+</style>
+
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script>
+    $('#DDChequeDate').datepicker({
+        format: 'dd/mm/yyyy',
+        changeYear: true,
+        changeMonth: true,
+
+    });
+</script>

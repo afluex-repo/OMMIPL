@@ -4,16 +4,406 @@
     ViewBag.Title = "UserDashboard";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
+<style>
+    .card.balance {
+        min-height: 250px !important;
+        background-image: linear-gradient(to right, #f2c300, #ff5305);
+        color: black;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
 
+    .row.dashboard {
+        padding: 20px 3% !important;
+    }
 
-	<!-- gallery -->
+    ul.nav.nav-tabs.nav-justified li.dash-nav {
+        font-size: 22px;
+        font-weight: 700;
+        background-color: #f2be0175;
+    }
+
+    .nav-tabs > li.dash-nav.active > a, .nav-tabs > li.dash-nav.active > a:hover, .nav-tabs > li.dash-nav.active > a:focus {
+        background-color: #ebd175;
+    }
+
+    .nav > li.dash-nav > a:hover, .nav > li.dash-nav > a:focus {
+        background-color: #ebd175;
+    }
+
+    .btn-lg.jackpot-btn {
+        margin: 5px;
+    }
+
+    .btn-block {
+        border-radius: 18px;
+    }
+
+    .grid.jackpot10 {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .btn-more {
+        margin-left: auto;
+        background-color: #fd6204;
+        color: white;
+    }
+</style>
+<!-- gallery -->
 <div class="team-bottom" id="work">
-    <div class="container">
-        <h3 class="w3l_head w3l_head1">Welcome to Dashboard</h3>
-        @*<p class="w3ls_head_para w3ls_head_para1"></p>*@
-        <div class="w3layouts_gallery_grids">
-            
+    <div class="container-fluid">
+        @*<h3 class="w3l_head w3l_head1">Latest Gallery</h3>
+            <p class="w3ls_head_para w3ls_head_para1">Lorem Ipsum Dolor</p>*@
+        <div class="row dashboard">
+            <div class="col-md-4">
+                <div class="card balance">
+                    <div class="card-body">
+                        <div class="body-layout">
+                            <div class="body-contant">
+                                <h2 class="card-title main balance">Main Balance</h2>
+                                <span class="card-detail">₹ @ViewBag.MainBalance</span>
+                                <h2 class="card-title main period">Period</h2>
+                                <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
+                                <input type="hidden" id="hdfPeriodId" />
+                                <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
+                                <input type="hidden" value="@Model.Duration" id="hdfDuration" />
+                                <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
+                            </div>
+                            <div class="body-color text-center">
+                                <div class="color-symbol">G</div>
+                                <div class="time-counter"><span class="digit"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="w3layouts_gallery_grids">
+                    <ul class="nav nav-tabs nav-justified ">
+                        @if (Model != null)
+                        {
+                            if (Model.lst != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.lst)
+                                {
+                                    var href = "#menu" + i;
+                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById(@item.FK_GameId);">@item.GameName</a></li>
+                                    i++;
+                                }
+                            }
+                        }
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="menu1" class="tab-pane fade in active">
+                            <div class="card">
+                                <div class="row">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.lstColor != null)
+                                        {
+                                            foreach (var item in Model.lstColor)
+                                            {
+                                                <div class="col-md-4"><button type="button" class="btn btn-@item.ColorName.ToLower() btn-block" value="@item.FK_ColorId" onclick="return SetPredictionColor(@item.FK_ColorId);" data-toggle="modal" data-target="#myModal">@item.ColorName</button></div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Submit Prediction</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/User/SubmitPrediction" type="Post">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <span class="input input--ichiro">
+                                                            <label>Color</label>
+                                                            @Html.TextBoxFor(m => m.FK_ColorId, new { @class = "form-control" })
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-sm-12">
+                                                        <label>Amount</label>
+                                                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-sm-4">
+                                                        <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPredictionColor();">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Your Predition Record Colour X3</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Colour</th>
+                                                <th class="text-center">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-red">Red</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Record Colour X3</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Colour</th>
+                                                <th class="text-center">Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122299</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122296</td>
+                                                <td class="text-red">Red</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-blue">Blue</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122295</td>
+                                                <td class="text-green">Green</td>
+                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">Green</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="menu2" class="tab-pane fade">
+                            <div class="card">
+                                <div class="grid jackpot10 text-center ">
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">0</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">1</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">2</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">3</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">4</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">5</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">6</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">7</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">8</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">9</button></div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Your Predition Record Jackpot X10</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Number</th>
+                                                <th class="text-center">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td>8</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">8</button></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Record Colour X10</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Number</th>
+                                                <th class="text-center">Result</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2021122299</td>
+                                                <td class="text-green">3</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122298</td>
+                                                <td class="text-green">2</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-green">8</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122296</td>
+                                                <td class="text-green">5</td>
+                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122297</td>
+                                                <td class="text-green">7</td>
+                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2021122295</td>
+                                                <td class="text-green">0</td>
+                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="menu3" class="tab-pane fade">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="color: red; font-size: 32px; font-weight: 600; text-align: center; margin: 50px;">!! Coming Soon <i class="fa fa-bullhorn" aria-hidden="true" style="font-size: 100px;"></i></h5>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+<script src="~/js/jquery-2.2.3.min.js"></script>
+<script>
+    function GameDetailsById(GameId) {
+        debugger;
+        $("#hdfGameId").val(GameId);
+        $.ajax({
+            url: "/User/GameDetailsById",
+            type: "Get",
+            datatype: "Json",
+            data: { GameId: GameId },
+            success: function (response) {
+                debugger;
+                if (response != null) {
+                    $("#spPeriodNo").text(response.PeriodNo);
+                    $("#hdfEndTime").val(response.EndTime);
+                    //$(".digit").val(response.response);
+                    $("#hdfDuration").val(response.Duration);
+                    $("#hdfPeriodId").val(response.FK_PeriodId);
+                    var timer2 = $("#hdfDuration").val();
+                    timer2 = timer2 + ":00";
+                    var interval = setInterval(function () {
+                        var timer = timer2.split(':');
+                        var minutes = parseInt(timer[0], 10);
+                        var seconds = parseInt(timer[1], 10);
+                        --seconds;
+                        minutes = (seconds < 0) ? --minutes : minutes;
+                        if (minutes < 0) clearInterval(interval);
+                        seconds = (seconds < 0) ? 59 : seconds;
+                        seconds = (seconds < 10) ? '0' + seconds : seconds;
+                        $('.digit').html(minutes + ':' + seconds);
+                        timer2 = minutes + ':' + seconds;
+                    }, 1000);
+                }
+            }
+        });
+    }
+
+
+
+    function SetPredictionColor(ColorId) {
+        if (ColorId == 1) {
+            $("#FK_ColorId").attr("style", "background-color:red;color:transparent");
+            $("#FK_ColorId").val(ColorId);
+        }
+        else if (ColorId == 2) {
+            $("#FK_ColorId").attr("style", "background-color:green");
+        }
+        else if (ColorId == 3) {
+            $("#FK_ColorId").attr("style", "background-color:blue");
+        }
+        else {
+        }
+    }
+
+    function SubmitPredictionColor() {
+        $.ajax({
+            url: "/User/GameStart",
+            type: "Get",
+            datatype: "Json",
+            data: { GameId: $("#hdfGameId").val(), ColorId: $("#FK_ColorId").val(), Amount: $("#Amount").val(), PeriodId: $("#hdfPeriodId").text(), },
+            success: function (response) {
+                if (response != null) {
+                    if (response.Result == "Yes") {
+
+                    }
+                }
+            }
+        });
+    }
+</script>
 <!-- //gallery -->
