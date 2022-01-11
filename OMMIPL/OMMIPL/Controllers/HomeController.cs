@@ -18,9 +18,7 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
-
-
-        public ActionResult Contact()
+      public ActionResult Contact()
         {
             return View();
         }
@@ -88,8 +86,8 @@ namespace OMMIPL.Controllers
                 {
                         Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
                         Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                        //Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                        FormName = "AdminDashboard";
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
+                    FormName = "AdminDashboard";
                         ControllerName = "Admin";
                 }
                 else

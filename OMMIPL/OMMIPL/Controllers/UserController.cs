@@ -15,7 +15,15 @@ namespace OMMIPL.Controllers
         // GET: User
         public ActionResult UserDashboard()
         {
-            return View();
+            User model = new User();
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = model.GetMainBalance();
+            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            {
+                ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
+            }
+           
+            return View(model);
         }
         public ActionResult UserProfile()
         {
@@ -204,7 +212,51 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("EwalletRequest", "User");
         }
-        
+        public ActionResult E_WalletReport()
+        {
+            List<Admin> lst = new List<Admin>();
+            User model = new User();
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds11 = model.GetEwalletDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginId"].ToString();
+                    Obj.Name = r["name"].ToString();
+                    Obj.RequestId = r["PK_RequestID"].ToString();
+                    Obj.Amount = r["Amount"].ToString();
+                    Obj.PaymentMode = r["PaymentMode"].ToString();
+                    Obj.Status = r["Status"].ToString();
+                    Obj.Image = r["ImageURL"].ToString();
+                    Obj.BankName = r["BankName"].ToString();
+                    Obj.BankBranch = r["BankBranch"].ToString();
+                    Obj.DDChequeNo = r["ChequeDDNo"].ToString();
+                    Obj.DDChequeDate = r["ChequeDDDate"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstReports = lst;
+            }
+            return View(model);
+        }
+        public ActionResult GameStart(string ColorId,string GameId)
+        {
+            Game model = new Game();
+            model.FK_ColorId = ColorId;
+            model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.GameStartDateTime = DateTime.Now.ToString();
+            DataSet ds = model.GameStart();
+            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            {
+                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
+                {
+
+                }
+            }
+            return RedirectToAction("GameStart", "User");
+        }
 
         public ActionResult Withdraw()
         {

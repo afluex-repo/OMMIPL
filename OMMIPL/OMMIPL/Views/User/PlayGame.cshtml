@@ -17,7 +17,7 @@
                     foreach (var item in Model.lst)
                     {
                         <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a col-md-4">
-                            <a href="@item.FK_ColorId" class="hi-icon" style="background-color:@item.ColorName"><span style="color:white"></span></a>
+                            <a href="/User/GameStart?ColorId=@item.FK_ColorId&GameId=@item.FK_GameId" class="hi-icon" style="background-color:@item.ColorName"><span style="color:white"></span></a>
                         </div>
                     }
                 }
