@@ -240,6 +240,23 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
+        public ActionResult GameStart(string ColorId,string GameId)
+        {
+            Game model = new Game();
+            model.FK_ColorId = ColorId;
+            model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.GameStartDateTime = DateTime.Now.ToString();
+            DataSet ds = model.GameStart();
+            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            {
+                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
+                {
+
+                }
+            }
+            return RedirectToAction("GameStart", "User");
+        }
 
         public ActionResult Withdraw()
         {
