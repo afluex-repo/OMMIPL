@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace OMMIPL.Models
 {
-    public class User:Comman
+    public class User : Comman
     {
         public string PK_UserId { get; set; }
         public string DisplayName { get; set; }
@@ -32,11 +32,17 @@ namespace OMMIPL.Models
         public string BankBranch { get; set; }
         public string DDChequeNo { get; set; }
         public string DDChequeDate { get; set; }
-       
-
-
-        public List<SelectListItem> ddlPaymentMode { get; set;}
-        
+        public List<Game> lst { get; set; }
+        public List<Game> lstColor { get; set; }
+        public string PeriodNo { get; set; }
+        public string FK_GameId { get; set; }
+        public string Duration { get; set; }
+        public string FK_ColorId { get; set; }
+        public List<SelectListItem> ddlPaymentMode { get; set; }
+        public string FK_UserId { get; set; }
+        public string GameName { get; set; }
+        public string EndTime { get; set; }
+        public string FK_PeriodId { get; set; }
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
@@ -67,7 +73,7 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("SaveEwalletRequest", para);
             return ds;
         }
-        
+
         public DataSet GetMainBalance()
         {
             SqlParameter[] para =
@@ -75,6 +81,30 @@ namespace OMMIPL.Models
                 new SqlParameter("@PK_UserId",PK_UserId)
             };
             DataSet ds = DBHelper.ExecuteQuery("UserMainBalance", para);
+            return ds;
+        }
+        public DataSet GetAllGames()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetGameDetails");
+            return ds;
+        }
+        public DataSet GetGameDetailsById()
+        {
+            SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),
+                new SqlParameter("@FK_UserId", FK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod", para);
+            return ds;
+        }
+        public DataSet GameStart()
+        {
+            SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),
+                new SqlParameter("@FK_PeriodId", FK_PeriodId),
+                new SqlParameter("@FK_ColorId", FK_ColorId),
+                new SqlParameter("@FK_UserId", FK_UserId),
+                 new SqlParameter("@Amount", Amount),
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GameStart", para);
             return ds;
         }
     }
