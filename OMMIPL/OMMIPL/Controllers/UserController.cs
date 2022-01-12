@@ -310,7 +310,20 @@ namespace OMMIPL.Controllers
             {
                 if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
-                    model.Result = "Yes";
+                    model.Message = "1";
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
+                    if (ColorId == model.FK_ColorId)
+                    {
+                        model.Result = "Yes";
+                    }
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+
                 }
             }
             return Json(model, JsonRequestBehavior.AllowGet);

@@ -75,7 +75,7 @@
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
                             </div>
                             <div class="body-color text-center">
-                                <div class="color-symbol">G</div>
+                                <div class="color-symbol"><span id="spColor">G</span></div>
                                 <div class="time-counter"><span class="digit"></span></div>
                             </div>
                         </div>
@@ -338,6 +338,8 @@
 </div>
 <script src="~/js/jquery-2.2.3.min.js"></script>
 <script>
+    var minutes=0;
+    var seconds=0;
     function GameDetailsById(GameId) {
         debugger;
         $("#hdfGameId").val(GameId);
@@ -358,8 +360,8 @@
                     timer2 = timer2 + ":00";
                     var interval = setInterval(function () {
                         var timer = timer2.split(':');
-                        var minutes = parseInt(timer[0], 10);
-                        var seconds = parseInt(timer[1], 10);
+                        minutes = parseInt(timer[0], 10);
+                        seconds = parseInt(timer[1], 10);
                         --seconds;
                         minutes = (seconds < 0) ? --minutes : minutes;
                         if (minutes < 0) clearInterval(interval);
@@ -381,29 +383,81 @@
             $("#FK_ColorId").val(ColorId);
         }
         else if (ColorId == 2) {
-            $("#FK_ColorId").attr("style", "background-color:green");
+            $("#FK_ColorId").attr("style", "background-color:green;color:transparent");
+            $("#FK_ColorId").val(ColorId);
         }
         else if (ColorId == 3) {
-            $("#FK_ColorId").attr("style", "background-color:blue");
+            $("#FK_ColorId").attr("style", "background-color:blue;color:transparent");
+            $("#FK_ColorId").val(ColorId);
         }
         else {
         }
     }
 
     function SubmitPredictionColor() {
-        $.ajax({
-            url: "/User/GameStart",
-            type: "Get",
-            datatype: "Json",
-            data: { GameId: $("#hdfGameId").val(), ColorId: $("#FK_ColorId").val(), Amount: $("#Amount").val(), PeriodId: $("#hdfPeriodId").text(), },
-            success: function (response) {
-                if (response != null) {
-                    if (response.Result == "Yes") {
+        debugger;
+        if(minutes>0 && seconds>30)
+        {
+            $.ajax({
+                url: "/User/GameStart",
+                type: "Get",
+                datatype: "Json",
+                data: { GameId: $("#hdfGameId").val(), ColorId: $("#FK_ColorId").val(), Amount: $("#Amount").val(), PeriodId: $("#hdfPeriodId").val(), },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if(response.Message=="1")
+                        {
+                            if(response.FK_ColorId=="1")
+                            {
+                                $("#spColor").text("R");
+                                $(".body-color").attr("style","background-color: red;");
 
+                            }
+                            else if(response.FK_ColorId=="2")
+                            {
+                                $("#spColor").text("G");
+                                $(".body-color").attr("style","background-color: green;");
+                            }
+                            else if(response.FK_ColorId=="3")
+                            {
+                                $("#spColor").text("B");
+                                $(".body-color").attr("style","background-color: blue;");
+                            }
+                            else{
+
+                            }
+                            if (response.Result == "Yes") {
+                                alert("Congrats! You won.");
+                            }
+                            else {
+                                alert("Oops! You lose.");
+                            }
+                        }
+                        else{
+
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        else{
+            alert("Your game time is over.")
+        }
+    }
+
+    function changeColor() {
+        if (seconds <= 300 && seconds > 90) {
+            document.body.style.background = "green";
+        }
+
+        else if (seconds <= 90 && seconds > 30) {
+            document.body.style.background = "yellow";
+        }
+
+        else {
+            document.body.style.background = "red";
+        }
     }
 </script>
 <!-- //gallery -->
