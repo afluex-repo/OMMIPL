@@ -72,6 +72,7 @@ namespace OMMIPL.Controllers
                         Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
                         Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
                         Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                        Session["LoginId"] = ds.Tables[0].Rows[0]["LoginId"].ToString();
                         FormName = "UserDashboard";
                         ControllerName = "User";
                     }
@@ -407,7 +408,7 @@ namespace OMMIPL.Controllers
                             }
                             catch (Exception ex)
                             {
-
+                                TempData["Msg"] = ex.Message;
                             }
                         }
                         

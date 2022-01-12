@@ -20,7 +20,7 @@
                         <div class="col-sm-8">
                         </div>
                         <div class="col-sm-2">
-                            <a href="/User/EwalletRequest" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>
+                            <a href="/User/EwalletRequest" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;">Add New</a>
                         </div>
                     </div>
                     @*<div class="row">
@@ -47,8 +47,8 @@
                                     <th>Cheque DDNo</th>
                                     <th>Cheque DDDate</th>
                                     <th>Image URL</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th colspan="2" align="center">Status</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,25 +70,25 @@
                                                 <td>@Item.DDChequeNo</td>
                                                 <td>@Item.DDChequeDate</td>
                                                 <td><img src="@Item.Image" height="100" width="100" /></td>
-                                                @if (Item.Status == "Approved")
+                                                @if (Item.Status== "Approved" || Item.Status == "Declined")
                                                 {
-                                                    <td>
-                                                        <a href="/Admin/Decline?Id=@Item.RequestId" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?');">Decline</a>
-
-                                                    </td>
-
+                                                    <td> </td>
                                                 }
-                                                else if (Item.Status == "Declined")
+                                                else
                                                 {
-                                                    <td>
-                                                        <a href="/Admin/Approve?Id=@Item.RequestId" class="btn btn-success btn-sm">Approve</a>
-
-                                                    </td>
-                                                }
-
                                                 <td>
+                                                    <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Approved" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Approve this record?')">Approved</a>
+                                                    </td>
+                                                <td>
+                                                     <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Decline" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?')">Decline</a>
+                                                    </td>
+                                                }
+                                              
+                                                
+
+                                                @*<td>
                                                     <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
-                                                </td>
+                                                </td>*@
                                             </tr>
                                             i++;
                                         }

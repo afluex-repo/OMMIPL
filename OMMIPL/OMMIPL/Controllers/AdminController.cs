@@ -214,47 +214,54 @@ namespace OMMIPL.Controllers
         }
 
 
+        //public ActionResult Approve(string Id)
+        //{
+        //    try
+        //    {
+        //        Admin model = new Admin();
+        //        model.AddedBy = "1";
+        //        model.RequestId = Id;
+        //        DataSet ds = model.Approv();
+        //        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+        //            {
+        //                TempData["Game"] = "Record Approved Successfully";
+        //            }
+        //            else
+        //            {
+        //                TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["Game"] = ex.Message;
+        //    }
+        //    return RedirectToAction("reports", "Admin");
+        //}
 
-        public ActionResult Approve(string Id)
+        public ActionResult EWalletRequestDeclineApprove(string Id, string status)
         {
             try
             {
                 Admin model = new Admin();
-                model.AddedBy = "1";
-                model.RequestId = Id;
-                DataSet ds = model.Approv();
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
-                    {
-                        TempData["Game"] = "Record Approved Successfully";
-                    }
-                    else
-                    {
-                        TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["Game"] = ex.Message;
-            }
-            return RedirectToAction("reports", "Admin");
-        }
-
-        public ActionResult Decline(string Id)
-        {
-            try
-            {
-                Admin model = new Admin();
-                model.AddedBy = "1";
+                model.Status = status;
+                model.AddedBy = Session["PK_AdminId"].ToString();
                 model.RequestId = Id;
                 DataSet ds = model.Decline();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                     {
-                        TempData["Game"] = "Record Declined Successfully";
+                        if (status == "Approved")
+                        {
+                            TempData["Game"] = "Record Approve Successfully";
+                        }
+                        else
+                        {
+                            TempData["Game"] = "Record Declined Successfully";
+                        }
                     }
                     else
                     {
@@ -266,7 +273,7 @@ namespace OMMIPL.Controllers
             {
                 TempData["Game"] = ex.Message;
             }
-            return RedirectToAction("reports", "Admin");
+            return RedirectToAction("E_WalletReport", "Admin");
         }
 
 
@@ -294,7 +301,7 @@ namespace OMMIPL.Controllers
             {
                 TempData["Game"] = ex.Message;
             }
-            return RedirectToAction("reports", "Admin");
+            return RedirectToAction("E_WalletReport", "Admin");
         }
 
 
