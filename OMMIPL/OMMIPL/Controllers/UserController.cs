@@ -28,6 +28,7 @@ namespace OMMIPL.Controllers
             if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
             {
                 model.FK_GameId = ds1.Tables[0].Rows[0]["PK_GameId"].ToString();
+                model.ColorName = ds1.Tables[2].Rows[0]["ColorName"].ToString();
                 model.Duration = ds1.Tables[0].Rows[0]["GameTime"].ToString();
                 foreach (DataRow r in ds1.Tables[0].Rows)
                 {

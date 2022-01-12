@@ -60,6 +60,7 @@ namespace OMMIPL.Models
         public string EndTime { get; set; }
         public string FK_PeriodId { get; set; }
         public string Message { get; set; }
+        public string ColorName { get; set; }
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
