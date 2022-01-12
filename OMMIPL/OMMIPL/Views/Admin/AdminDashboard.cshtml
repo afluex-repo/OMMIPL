@@ -63,6 +63,7 @@
         background-color: #f9e18a;
     }
 </style>
+
 <!-- gallery -->
 <div class="team-bottom" id="work">
     <div class="container-fluid">
@@ -89,13 +90,19 @@
             </div>
             <div class="col-md-8">
             <div class="w3layouts_gallery_grids">
-                <ul class="nav nav-tabs nav-justified ">
-                    <li class="active dash-nav"><a data-toggle="tab" href="#home">Colour-X3</a></li>
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="active dash-nav" ><a data-toggle="tab" href="#home">Colour-X3</a></li>
                     <li class="dash-nav"><a data-toggle="tab" href="#menu1">Jackpot-X10</a></li>
                     <li class="dash-nav"><a data-toggle="tab" href="#menu2">Jackpot-X100</a></li>
                 </ul>
 
-                <div class="tab-content">
+                <div class="card first-view">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 60px; font-weight: 600; text-align: center; margin: 50px;">Welcome To <span style="color: #e8a201;">OMMIPL</span> <i class="fa fa-trophy" aria-hidden="true" style="font-size: 100px; color: #e8a201;"></i></h5>
+                    </div>
+                </div>
+
+                <div class="tab-content game-view" style="display: none;">
                     <div id="home" class="tab-pane fade in active">
                         <div class="card">
                             <div class="row">
@@ -326,4 +333,14 @@
         </div>
     </div>
 </div>
+
 <!-- //gallery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".dash-nav").click(function () {
+            $(".first-view").hide();
+            $(".game-view").show();
+        });
+    });
+</script>
