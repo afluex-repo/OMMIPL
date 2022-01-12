@@ -32,15 +32,6 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetGameById",para);
             return ds;
         }
-        public DataSet GameStart()
-        {
-            SqlParameter[] para = { new SqlParameter("@GameId", FK_GameId),
-                new SqlParameter("@FK_ColorId", FK_ColorId),
-                new SqlParameter("@GameStartDateTime", GameStartDateTime),
-                new SqlParameter("@FK_UserId", FK_UserId),
-            };
-            DataSet ds = DBHelper.ExecuteQuery("GameStart", para);
-            return ds;
-        }
+       
     }
 }

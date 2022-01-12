@@ -16,13 +16,51 @@ namespace OMMIPL.Controllers
         public ActionResult UserDashboard()
         {
             User model = new User();
+            List<Game> lst = new List<Game>();
+            List<Game> lstColor = new List<Game>();
             model.PK_UserId = Session["PK_UserId"].ToString();
             DataSet ds = model.GetMainBalance();
-            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            DataSet ds1 = model.GetAllGames();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
             }
-           
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+            {
+                model.FK_GameId = ds1.Tables[0].Rows[0]["PK_GameId"].ToString();
+                model.Duration = ds1.Tables[0].Rows[0]["GameTime"].ToString();
+                foreach (DataRow r in ds1.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.FK_GameId = r["PK_GameId"].ToString();
+                    obj.GameName = r["GameName"].ToString();
+                    obj.Amount = Convert.ToDecimal(r["Amount"]);
+                    obj.Duration = r["GameTime"].ToString();
+                    obj.Image = r["Image"].ToString();
+                    obj.Document = r["Document"].ToString();
+                    lst.Add(obj);
+                }
+                model.lst = lst;
+            }
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[1].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds1.Tables[1].Rows)
+                {
+                    Game obj = new Game();
+                    obj.FK_ColorId = r["PK_ColorId"].ToString();
+                    obj.ColorName = r["Color"].ToString();
+                    lstColor.Add(obj);
+                }
+                model.lstColor = lstColor;
+            }
+            //if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[2].Rows.Count > 0)
+            //{
+            //    model.PeriodNo = (Convert.ToInt32(ds1.Tables[2].Rows[0]["AttemptNo"]) + 1).ToString();
+            //}
+            //else
+            //{
+            //    model.PeriodNo = "1";
+            //}
             return View(model);
         }
         public ActionResult UserProfile()
@@ -116,11 +154,12 @@ namespace OMMIPL.Controllers
             return View(model);
         }
 
-        public ActionResult PlayGame(string Id)
+        public ActionResult GameDetailsById(string GameId)
         {
-            Game model = new Game();
+            User model = new User();
             List<Game> lstColor = new List<Game>();
-            model.FK_GameId = Id;
+            model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
             try
             {
                 DataSet ds = model.GetGameDetailsById();
@@ -129,30 +168,23 @@ namespace OMMIPL.Controllers
                     model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
                     model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
                     model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
-                    model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
-                    model.Amount = Convert.ToDecimal(ds.Tables[0].Rows[0]["Amount"]);
+                    //model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
+                    model.Amount = ds.Tables[0].Rows[0]["Amount"].ToString();
                     model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
                 }
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
                 {
-                    foreach (DataRow r in ds.Tables[1].Rows)
-                    {
-                        Game obj = new Game();
-                        obj.FK_ColorId = r["PK_ColorId"].ToString();
-                        obj.ColorName = r["Color"].ToString();
-                        lstColor.Add(obj);
-                    }
-                    model.lst = lstColor;
+                    model.PeriodNo = ds.Tables[1].Rows[0]["PeriodNo"].ToString();
+                    model.EndTime = ds.Tables[1].Rows[0]["EndTime"].ToString();
+                    model.FK_PeriodId = ds.Tables[1].Rows[0]["FK_PeriodId"].ToString();
                 }
             }
             catch (Exception ex)
             {
-                TempData["Msg"] = ex.Message;
+                model.Result = ex.Message;
             }
-            return View(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
-
-
         public ActionResult EwalletRequest()
         {
             #region ddlPaymentMode
@@ -265,22 +297,23 @@ namespace OMMIPL.Controllers
             return View(model);
         }
 
-        public ActionResult GameStart(string ColorId,string GameId)
+        public ActionResult GameStart(string ColorId,string GameId,string Amount, string PeriodId)
         {
-            Game model = new Game();
+            User model = new User();
             model.FK_ColorId = ColorId;
             model.FK_GameId = GameId;
             model.FK_UserId = Session["PK_UserId"].ToString();
-            model.GameStartDateTime = DateTime.Now.ToString();
+            model.Amount = Amount;
+            model.FK_PeriodId = PeriodId;
             DataSet ds = model.GameStart();
-            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
+                if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
-
+                    model.Result = "Yes";
                 }
             }
-            return RedirectToAction("GameStart", "User");
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Withdraw()
