@@ -245,6 +245,9 @@
     <Content Include="Views\Admin\QRMaster.cshtml" />
     <Content Include="Views\Admin\E_WalletReport.cshtml" />
     <Content Include="Views\User\E_WalletReport.cshtml" />
+    <Content Include="Views\User\UpdateAccountDetails.cshtml" />
+    <Content Include="Views\User\TXNLadget.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

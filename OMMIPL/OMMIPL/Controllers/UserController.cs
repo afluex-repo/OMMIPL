@@ -246,7 +246,7 @@ namespace OMMIPL.Controllers
         }
         public ActionResult E_WalletReport()
         {
-            List<Admin> lst = new List<Admin>();
+            List<User> lst = new List<User>();
             User model = new User();
             model.PK_UserId = Session["PK_UserId"].ToString();
             DataSet ds11 = model.GetEwalletDetails();
@@ -254,8 +254,8 @@ namespace OMMIPL.Controllers
             {
                 foreach (DataRow r in ds11.Tables[0].Rows)
                 {
-                    Admin Obj = new Admin();
-                    Obj.LoginID = r["LoginId"].ToString();
+                    User Obj = new User();
+                    Obj.LoginId = r["LoginId"].ToString();
                     Obj.Name = r["name"].ToString();
                     Obj.RequestId = r["PK_RequestID"].ToString();
                     Obj.Amount = r["Amount"].ToString();
@@ -272,7 +272,32 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-        public ActionResult GameStart(string ColorId, string GameId, string Amount, string PeriodId)
+        [HttpPost]
+        [ActionName("TXNLadget")]
+        public ActionResult TXNLadget(User model)
+        {
+            
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            List<User> Lst = new List<User>();
+            DataSet ds11 = model.GetEwalletLedger();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    User Obj = new User();
+                    Obj.CreditAmount = r["CreditAmount"].ToString();
+                    Obj.DebitAmount = r["DebitAmount"].ToString();
+                    Obj.Date = r["date"].ToString();
+                    Lst.Add(Obj);
+                }
+                model.lstLedget = Lst;
+            }
+            return View(model);
+        }
+
+        public ActionResult GameStart(string ColorId,string GameId,string Amount, string PeriodId)
         {
             User model = new User();
             model.FK_ColorId = ColorId;
@@ -295,7 +320,129 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [ActionName("Withdraw")]
+        public ActionResult Withdraw(User obj)
+        {
+            obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = obj.WithdrawlRequest();
+            try
+            {
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        @TempData["Ewallet"] = "Withdrawl Successfully";
+                    }
+                    else
+                    {
+                        @TempData["Ewallet"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
 
+                @TempData["Ewallet"] = ex.Message;
+            }
+            return RedirectToAction("Withdraw", "User");
+        }
 
+        public ActionResult UpdateAccountDetails()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ActionName("UpdateAccountDetails")]
+        public ActionResult UpdateAccountDetails(User Obj)
+        {
+            Obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = Obj.UpdateAccountDetails();
+            try
+            {
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        @TempData["Account"] = "AcountNo Added Successfully";
+                    }
+                    else
+                    {
+                        @TempData["Account"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                @TempData["Account"] = ex.Message;
+            }
+            return RedirectToAction("UpdateAccountDetails", "User");
+        }
+
+        public ActionResult TXNLadget()
+        {
+            List<User> Lst = new List<User>();
+            User model = new User();
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+            model.PK_UserId = Session["PK_UserId"].ToString();
+       
+            DataSet ds11 = model.GetEwalletLedger();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    User Obj = new User();
+                    Obj.CreditAmount = r["CreditAmount"].ToString();
+                    Obj.DebitAmount = r["DebitAmount"].ToString();
+                    Obj.Date = r["date"].ToString();
+                    Lst.Add(Obj);
+                }
+                model.lstLedget = Lst;
+            }
+            return View(model);
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ActionName("ChangePassword")]
+        public ActionResult ChangePassword( User model)
+        {
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            if (model.NewPassword == model.CfPassword)
+            {
+                model.oldPassword = Crypto.Encrypt(model.oldPassword);
+                model.NewPassword= Crypto.Encrypt(model.NewPassword);
+                DataSet ds = model.ChangePsssword();
+                 try
+                    {
+                        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                            {
+                            @TempData["Msg"] = "Password Change  Successfully";
+                            }
+                            else
+                            {
+                            @TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    @TempData["Msg"] = ex.Message;
+                    }
+               }
+            else
+            {
+                @TempData["Msg"] = "Your Password is Not Match";
+            }
+            return RedirectToAction("ChangePassword", "User");
+        }
     }
 }
