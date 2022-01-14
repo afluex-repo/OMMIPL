@@ -313,6 +313,7 @@ namespace OMMIPL.Controllers
                 {
                     model.Message = "1";
                     model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
+                    model.EndTime = DateTime.Parse(ds.Tables[0].Rows[0]["TimeValidity"].ToString()).ToString("h:mm tt");
                     if (ColorId == model.FK_ColorId)
                     {
                         model.Result = "Yes";
