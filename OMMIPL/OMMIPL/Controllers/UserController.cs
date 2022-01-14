@@ -28,6 +28,7 @@ namespace OMMIPL.Controllers
             if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
             {
                 model.FK_GameId = ds1.Tables[0].Rows[0]["PK_GameId"].ToString();
+                model.ColorName = ds1.Tables[2].Rows[0]["ColorName"].ToString();
                 model.Duration = ds1.Tables[0].Rows[0]["GameTime"].ToString();
                 foreach (DataRow r in ds1.Tables[0].Rows)
                 {
@@ -175,6 +176,7 @@ namespace OMMIPL.Controllers
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
                 {
                     model.PeriodNo = ds.Tables[1].Rows[0]["PeriodNo"].ToString();
+                    model.StartTime = ds.Tables[1].Rows[0]["StartTime"].ToString();
                     model.EndTime = ds.Tables[1].Rows[0]["EndTime"].ToString();
                     model.FK_PeriodId = ds.Tables[1].Rows[0]["FK_PeriodId"].ToString();
                 }
@@ -199,7 +201,22 @@ namespace OMMIPL.Controllers
             {
                 if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
-                    model.Result = "Yes";
+                    model.Message = "1";
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
+                    model.EndTime = ds.Tables[0].Rows[0]["TimeValidity"].ToString();
+                    if (ColorId == model.FK_ColorId)
+                    {
+                        model.Result = "Yes";
+                    }
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+                    model.Message = "0";
+                    model.Result = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
                 }
             }
             return Json(model, JsonRequestBehavior.AllowGet);
