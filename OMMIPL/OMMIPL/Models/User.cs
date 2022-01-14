@@ -21,6 +21,7 @@ namespace OMMIPL.Models
         public string UserType { get; set; }
         public List<User> lstReports { get; set; }
         public List<User> lstLedget { get; set; }
+     
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }

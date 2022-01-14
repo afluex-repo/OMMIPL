@@ -5,12 +5,10 @@
     ViewBag.Title = "Withdraw";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
-
-
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
-            @using (Html.BeginForm("Withdraw", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            @using (Html.BeginForm("Withdraw", "Wallet", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
             {
                 <div class="row">
                     <p style="color:red;">
