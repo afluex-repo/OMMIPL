@@ -340,7 +340,103 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("QRMaster", "Admin");
         }
+         public ActionResult UserRegistrationList()
+        {
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+           // model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginID"].ToString();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.FathersName = r["FathersName"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.AccountNO = r["AccountNO"].ToString();
+                    Obj.IFSCCode = r["IFSCCode"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                   
+                    lst.Add(Obj);
+                }
+                model.lstRegistration = lst;
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ActionName("UserRegistrationList")]
+        public ActionResult UserRegistrationList(Admin model)
+        {
 
+            List<Admin> lst = new List<Admin>();
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginID"].ToString();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.FathersName = r["FathersName"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.AccountNO = r["AccountNO"].ToString();
+                    Obj.IFSCCode = r["IFSCCode"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstRegistration = lst;
+            }
+            return View(model);
+        }
+       
+        public ActionResult EWalletUserLedger(String LoginID)
+        {
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+            model.LoginID = LoginID;
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                    model.LoginID = ds11.Tables[0].Rows[0]["LoginID"].ToString();
+                    model.Name = ds11.Tables[0].Rows[0]["Name"].ToString();
+                    model.FathersName = ds11.Tables[0].Rows[0]["FathersName"].ToString();
+                    model.MobileNo = ds11.Tables[0].Rows[0]["Mobile"].ToString();
+                    model.Email = ds11.Tables[0].Rows[0]["Email"].ToString();
+                    model.AccountNO = ds11.Tables[0].Rows[0]["AccountNO"].ToString();
+                    model.IFSCCode = ds11.Tables[0].Rows[0]["IFSCCode"].ToString();
+                    model.Address = ds11.Tables[0].Rows[0]["Address"].ToString();
+                    model.CreatedDate = ds11.Tables[0].Rows[0]["CreatedDate"].ToString();
+            }
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[1].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[1].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.CrAmount = r["CrAmount"].ToString();
+                    Obj.DrAmount = r["DrAmount"].ToString();
+                    Obj.Narration = r["Narration"].ToString();
+                    Obj.CurrentDate = r["CurrentDate"].ToString();
+                    Obj.paymodename = r["paymodename"].ToString();
+                    Obj.paymodeid = r["paymodeid"].ToString();
+                    Obj.PK_UserId = r["FK_UserId"].ToString();
+                 
 
+                    lst.Add(Obj);
+                }
+                model.lstUserledger = lst;
+            }
+            return View(model);
+        }
+
+        public ActionResult GameReport()
+        {
+            return View();
+        }
     }
 }

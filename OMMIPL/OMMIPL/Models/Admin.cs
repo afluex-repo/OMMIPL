@@ -23,6 +23,8 @@ namespace OMMIPL.Models
         public List<Admin> lstGame { get; set; }
         public List<Admin> lstContact { get; set; }
         public List<Admin> lstReports { get; set; }
+        public List<Admin> lstRegistration { get; set; }
+        public List<Admin> lstUserledger { get; set; }
         public string BankName { get; set; }
         public string BankBranch { get; set; }
         public string DDChequeNo { get; set; }
@@ -35,7 +37,33 @@ namespace OMMIPL.Models
         public string Number { get; set; }
         public string PK_UserId { get; set; }
         public string LoginID { get; set; }
+        public string FathersName { get; set; }
+        public string AccountNO { get; set; }
+        public string IFSCCode { get; set; }
+        public string CreatedDate { get; set; }
 
+        public string CrAmount { get; set; }
+        public string DrAmount { get; set; }
+        public string Narration { get; set; }
+        public string CurrentDate { get; set; }
+        public string paymodename { get; set; }
+        public string paymodeid { get; set; }
+       
+
+
+
+
+
+        public DataSet GetRegistrationDetails()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@LoginId",LoginID),
+               
+            };
+            DataSet ds = DBHelper.ExecuteQuery("RegistrationList", para);
+            return ds;
+        }
         public DataSet SaveGame()
         {
             SqlParameter[] para =
