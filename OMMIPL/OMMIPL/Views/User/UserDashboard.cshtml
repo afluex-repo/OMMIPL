@@ -53,6 +53,38 @@
         background-color: #fd6204;
         color: white;
     }
+
+    .modal-content.color-content {
+    padding: 0px 20px;
+}
+   .modal-header.color {
+    padding: 10px 30px 0px 30px;
+}
+   .modal-content.color-content h4 {
+    color: #333333;
+    font-size: 25px;
+    font-weight: 700;
+}
+   span.input.right {
+    display: flex;
+    justify-content: space-between;
+}
+   .modal-dialog.color {
+    width: 400PX;
+}
+   .col-sm-12.submit {
+    text-align: end;
+}
+   .modal-header .close {
+    position: absolute;
+    right: 15px;
+}
+   .close:hover, .close:focus {
+    color: #000;
+    background-color: #7a7777;
+    padding: 1px 4px;
+    border-radius: 50%;
+}
 </style>
 <!-- gallery -->
 <div class="team-bottom" id="work">
@@ -117,31 +149,34 @@
                                 </div>
                             </div>
                             <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
+                                <div class="modal-dialog color">
+                                    <div class="modal-content color-content">
+                                        <div class="modal-header color">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             <h4 class="modal-title">Submit Prediction</h4>
                                         </div>
                                         <div class="modal-body">
                                             <form action="/User/SubmitPrediction" type="Post">
-                                                <div class="row">
+                                                <div class="row form-group">
                                                     <div class="col-sm-12">
-                                                        <span class="input input--ichiro">
+                                                        <span class="input right">
                                                             <label>Color</label>
-                                                            @Html.TextBoxFor(m => m.FK_ColorId, new { @class = "form-control" })
+                                                            <button type="button" class="btn btn-red btn-md jackpot-btn">R</button>
+                                                            @*@Html.TextBoxFor(m => m.FK_ColorId, new { @class = "form-control" })*@
                                                         </span>
                                                     </div>
 
                                                 </div>
                                                 <div class="row form-group">
-                                                    <div class="col-sm-12">
-                                                        <label>Amount</label>
+                                                    <div class="col-sm-3">
+                                                        <label><span>Amount</span><span class="text-red">*</span></label>
+                                                        </div>
+                                                    <div class="col-sm-9">
                                                         @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-12 submit">
                                                         <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPredictionColor();">Submit</button>
                                                     </div>
                                                 </div>
