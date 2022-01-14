@@ -21,6 +21,7 @@ namespace OMMIPL.Models
         public string UserType { get; set; }
         public List<User> lstReports { get; set; }
         public List<User> lstLedget { get; set; }
+     
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }
@@ -57,6 +58,7 @@ namespace OMMIPL.Models
         public string FK_ColorId { get; set; }
         public string FK_UserId { get; set; }
         public string GameName { get; set; }
+        public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string FK_PeriodId { get; set; }
         public string Message { get; set; }

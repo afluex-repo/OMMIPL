@@ -127,6 +127,7 @@
                                 <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
                                 <input type="hidden" value="@Model.Duration" id="hdfDuration" />
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
+                                <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
                             <div class="body-color text-center" style="background-color:@Model.ColorName">
                                 @if (Model != null)
@@ -424,7 +425,6 @@
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
         $(document).ready(function () {
-
             $(".dash-nav").click(function () {
                 $(".digit").show();
                 $(".first-view").hide();
@@ -447,6 +447,7 @@
                     debugger;
                     if (response != null) {
                         $("#spPeriodNo").text(response.PeriodNo);
+                        $("#hdfStartTime").val(response.StartTime);
                         $("#hdfEndTime").val(response.EndTime);
                         //$(".digit").val(response.response);
                         $("#hdfDuration").val(response.Duration);
@@ -506,7 +507,6 @@
         }
         function SubmitPredictionColor() {
             debugger;
-
             $.ajax({
                 url: "/User/GameStart",
                 type: "Get",
@@ -516,6 +516,9 @@
                     debugger;
                     if (response != null) {
                         if (response.Message == "1") {
+                            var start = Date.parse($("#hdfStartTime").val());
+                            var end = Date.parse(response.EndTime); 
+                            var diff = end - start;
                             setTimeout(function () {
                                 if (response.Result == "Yes") {
                                     alert("Congrats! You won.");
@@ -536,11 +539,16 @@
                                     $(".body-color").attr("style", "background-color: blue;");
                                 }
                                 else { }
-                            }, response.EndTime);
+                            }, diff);
+                            $('#myModal').modal('hide');
                         }
-                        else { }
+                        else { 
+                            alert(response.Result);
+                            $('#myModal').modal('hide');
+                        }
                     }
                 }
+
             });
         }
         function changeColor() {
