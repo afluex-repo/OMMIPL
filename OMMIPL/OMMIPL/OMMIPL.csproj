@@ -239,15 +239,20 @@
     <Content Include="Views\Admin\GameMaster.cshtml" />
     <Content Include="Views\Admin\GameList.cshtml" />
     <Content Include="Views\Admin\ContactList.cshtml" />
-    <Content Include="Views\User\EwalletRequest.cshtml" />
-    <Content Include="Views\User\Withdraw.cshtml" />
+    <Content Include="Views\Wallet\EwalletRequest.cshtml" />
+    <Content Include="Views\Wallet\Withdraw.cshtml" />
     <Content Include="Views\Admin\Reports.cshtml" />
     <Content Include="Views\Admin\QRMaster.cshtml" />
     <Content Include="Views\Admin\E_WalletReport.cshtml" />
-    <Content Include="Views\User\E_WalletReport.cshtml" />
     <Content Include="Views\User\UpdateAccountDetails.cshtml" />
-    <Content Include="Views\User\TXNLadget.cshtml" />
+    <Content Include="Views\Wallet\TXNLadget.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\Wallet\E_WalletReport.cshtml" />
+    <Content Include="Views\Admin\UserRegistrationList.cshtml" />
+    <Content Include="Views\Admin\UserEwlalletList.cshtml" />
+    <Content Include="Views\Admin\EWalletUserLedger.cshtml" />
+    <Content Include="Views\Admin\GameReport.cshtml" />
+    <Content Include="Views\User\GameReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -277,7 +282,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63482</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63482/</IISUrl>
+          <IISUrl>http://localhost:63483/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

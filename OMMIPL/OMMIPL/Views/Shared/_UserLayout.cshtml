@@ -38,9 +38,15 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
             background-color: #fff0f0 !important;
         }
 
-.navbar-nav > li:nth-child(3) a.user {
-    margin-right: 28.6em !important;
-}    </style>
+        .navbar-nav > li:nth-child(3) a.user {
+            margin-right: 28.6em !important;
+        }  
+        @@media (max-width: 736px) {
+        .navbar-nav > li:nth-child(3) a.user {
+            margin-right: 0 !important;
+        } 
+        }  
+    </style>
 </head>
 <body>
     <script src="../../../../../../../m.servedby-buysellads.com/monetization.js" type="text/javascript"></script>
@@ -121,7 +127,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                         <span class="icon-bar"></span>
                     </button>
                     <div class="w3_navigation_pos">
-                        <h1><a href="@Url.Action("Index","Home")" title="Gaming Wonderland"><img src="/images/logo.jpg" alt="logo" width="200px"></a></h1>
+                        <h1><a href="@Url.Action("Index","Home")" title="OMM IPL"><img src="~/images/logo.jpg" alt="logo" width="200" /></a></h1>
                     </div>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -130,9 +136,9 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                         <ul class="nav navbar-nav">
                             <li><a href="@Url.Action("UserDashboard","User")"><span data-hover="Dashboard">Dashboard</span></a></li>
                             <li><a href="@Url.Action("Game","User")"><span data-hover="Games">Games</span></a></li>
-                            <li><a href="@Url.Action("E_WalletReport","user")" class="user"><span data-hover="E-Wallet">E-Wallet</span></a></li>
-                            <li><a href="/User/Withdraw"><span data-hover="Withdraw">Withdraw</span></a></li>
-                            <li><a href="/User/TXNLadget"><span data-hover="WalletLedger">WalletLedger</span></a></li>
+                            <li><a href="@Url.Action("E_WalletReport","Wallet")"  class="user"><span data-hover="E-Wallet">E-Wallet</span></a></li>
+                            <li><a href="/Wallet/Withdraw"><span data-hover="Withdraw">Withdraw</span></a></li>
+                            <li><a href="/Wallet/TXNLadget"><span data-hover="WalletLedger">WalletLedger</span></a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span data-hover="My Account">My Account</span>
@@ -142,7 +148,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                                         <li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>
                                         <li><a href="/User/ChangePassword"><span data-hover="Change Password">Change Password</span></a></li>
                                         <li><a href="@Url.Action("Login","Home")"><span data-hover="Logout">LogOut</span></a></li>
-                                        </ul>
+                                    </ul>
                                 </div>
                             </li>
                             @*<li><img src="@Session["ProfilePic"]" height="40" width="40" style="border-radius:50%" /></li>*@

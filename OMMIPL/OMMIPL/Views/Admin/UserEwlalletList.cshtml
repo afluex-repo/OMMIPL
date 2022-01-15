@@ -1,0 +1,93 @@
+﻿@model OMMIPL.Models.Admin
+@{
+    ViewBag.Title = "UserEwlalletList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("UserEwlalletList", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Game"]
+                    </p><br />
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        @*<div class="col-sm-2">
+                                <a href="/Home/Registration" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New Registration</a>
+                            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>LoginID</label>
+                            @Html.TextBoxFor(m => m.LoginID, new { @class = "input__field", @placeholder = "LoginID " })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" value="Search" style="margin-top:25px;" class="btn btn-success" />
+                        </div>
+                    </div>
+                    <br /><br />
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>S No.</th>
+                                    <th>LoginID</th>
+                                    <th>Name</th>
+                                    <th>FathersName</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Account No</th>
+                                    <th>IFSCCode</th>
+                                    <th>Address</th>
+                                    @*<th>Image URL</th>
+                                        <th>Status</th>*@
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.lstRegistration != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var Item in Model.lstRegistration)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@Item.LoginID</td>
+                                                <td>@Item.Name</td>
+                                                <td>@Item.FathersName</td>
+                                                <td>@Item.Email</td>
+                                                <td>@Item.MobileNo</td>
+                                                <td>@Item.AccountNO</td>
+                                                <td>@Item.IFSCCode</td>
+                                                <td>@Item.Address</td>
+                                                @*<td><img src="@Item.Image" height="100" width="100" /></td>
+                                                    <td>@Item.Status</td>*@
+                                                <td>
+                                                    <a href="/Admin/EWalletUserLedger?   LoginID=@Item.LoginID" class="btn btn-success btn-sm">Ledger</a>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
