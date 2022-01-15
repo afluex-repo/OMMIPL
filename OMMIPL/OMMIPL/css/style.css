@@ -148,7 +148,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 
 .w3_navigation_pos {
     position: absolute;
-    top: 24%;
+    top: 2%;
     left: 35%;
     z-index: 999;
 }
