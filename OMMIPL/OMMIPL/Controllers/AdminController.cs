@@ -436,7 +436,79 @@ namespace OMMIPL.Controllers
 
         public ActionResult GameReport()
         {
-            return View();
+            List<Admin> lstGameReport = new List<Admin>();
+            Admin model = new Admin();
+            model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        Admin obj = new Admin();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginID = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.Time = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GameReport(Admin model)
+        {
+            List<Admin> lstGameReport = new List<Admin>();
+          
+            model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        Admin obj = new Admin();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginID = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.Time = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
         }
     }
 }

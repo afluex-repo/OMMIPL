@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Timer";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div id="hms1" class="hms" hidden="hidden">@ViewBag.Time1</div>
+<div id="countTime1"></div>
+
+<script type="text/javascript">
+    var startTime = document.getElementById('hms1').innerHTML;
+    if (localStorage.getItem("counter")) {
+        debugger
+        if (getjudgetime(localStorage.getItem("counter"))) {
+            var value = startTime;
+        } else {
+            var value = localStorage.getItem("counter");
+        }
+    } else {
+        var value = startTime;
+    }
+    document.getElementById('countTime1').innerHTML = value;
+    var counter = function () {
+        if (getjudgetime(value)) {
+            localStorage.setItem("counter", startTime);
+            value = startTime;
+        } else {
+            value = getnewtimestring(value);
+            localStorage.setItem("counter", value);
+        }
+        document.getElementById('countTime1').innerHTML = value;
+    };
+    var interval = setInterval(counter, 1000);
+
+    function getnewtimestring(oTime) {
+        var timedif = new Date(getnewtime(oTime).valueOf() - 1000);
+        var newtime = timedif.toTimeString().split(" ")[0];
+        return newtime;
+    }
+    function getnewtime(oTime) {
+        var pieces = oTime.split(":");
+        var time = new Date();
+        time.setHours(pieces[0]);
+        time.setMinutes(pieces[1]);
+        time.setSeconds(pieces[2]);
+        return time;
+    }
+    function getjudgetime(jTime) {
+        return getnewtime(jTime) <= getnewtime("00:00:00")? true : false
+    }
+</script>
