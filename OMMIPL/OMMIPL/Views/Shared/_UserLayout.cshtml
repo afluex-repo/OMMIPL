@@ -37,6 +37,15 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
             border: 1px solid red !important;
             background-color: #fff0f0 !important;
         }
+
+        .navbar-nav > li:nth-child(3) a.user {
+            margin-right: 27.4em !important;
+        }  
+        @@media (max-width: 736px) {
+        .navbar-nav > li:nth-child(3) a.user {
+            margin-right: 0 !important;
+        } 
+        }  
     </style>
 </head>
 <body>
@@ -101,7 +110,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                 <input type="submit" value="">
                
             </form>*@
-            <p style="color:white"> WelCome:<span class="call">@Session["DisplayName"]</span></p>
+            <p style="color:white"><b> WelCome :</b> <span class="call">@Session["DisplayName"]</span></p>
         </div>
         <div class="clearfix"> </div>
     
@@ -118,7 +127,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                         <span class="icon-bar"></span>
                     </button>
                     <div class="w3_navigation_pos">
-                        <h1><a href="@Url.Action("Index","Home")" title="OMM IPL"><img src="~/images/logo.jpg" alt="logo" width="200" /></a></h1>
+                        <h1><a href="@Url.Action("Index","Home")" title="OMM IPL"><img src="~/images/logo.jpg" alt="logo" class="logo" /></a></h1>
                     </div>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -126,14 +135,22 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                     <nav class="cl-effect-5" id="cl-effect-5">
                         <ul class="nav navbar-nav">
                             <li><a href="@Url.Action("UserDashboard","User")"><span data-hover="Dashboard">Dashboard</span></a></li>
-                            <li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>
                             <li><a href="@Url.Action("Game","User")"><span data-hover="Games">Games</span></a></li>
-                            <li><a href="@Url.Action("E_WalletReport","Wallet")"><span data-hover="E-Wallet">E-Wallet</span></a></li>
-                            <li><a href="/User/ChangePassword"><span data-hover="Change Password">Change Password</span></a></li>
+                            <li><a href="@Url.Action("E_WalletReport","Wallet")"  class="user"><span data-hover="E-Wallet">E-Wallet</span></a></li>
                             <li><a href="/Wallet/Withdraw"><span data-hover="Withdraw">Withdraw</span></a></li>
                             <li><a href="/Wallet/TXNLadget"><span data-hover="WalletLedger">WalletLedger</span></a></li>
-                            <li><a href="@Url.Action("Login","Home")"><span data-hover="Logout">LogOut</span></a></li>
-
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span data-hover="My Account">My Account <i class="fa fa-chevron-down"></i></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <ul class="nav navbar-nav" style="margin-top: 0; white-space: nowrap; margin-right: 1em;">
+                                        <li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>
+                                        <li><a href="/User/ChangePassword"><span data-hover="Change Password">Change Password</span></a></li>
+                                        <li><a href="@Url.Action("Login","Home")"><span data-hover="Logout">LogOut</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
                             @*<li><img src="@Session["ProfilePic"]" height="40" width="40" style="border-radius:50%" /></li>*@
                         </ul>
                     </nav>

@@ -12,7 +12,6 @@ namespace OMMIPL.Controllers
 {
     public class UserController : BaseController
     {
-        // GET: User
         public ActionResult UserDashboard()
         {
             User model = new User();
@@ -351,5 +350,7 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
+
+    
     }
 }
