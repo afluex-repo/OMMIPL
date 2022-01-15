@@ -148,7 +148,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 
 .w3_navigation_pos {
     position: absolute;
-    top: 2%;
+    top: 10%;
     left: 35%;
     z-index: 999;
 }
@@ -1572,11 +1572,19 @@ ul#lightGallery {
     }
 }
 
+  img.logo {
+      width: 180px;
+  }
+
 @media (max-width: 768px) {
+
     .w3_navigation_pos h1 a {
         font-size: .75em;
+        padding: 10px;
     }
-
+    img.logo {
+        width: 100px;
+    }
     .w3_navigation_pos {
         left: 34%;
     }
@@ -1633,7 +1641,7 @@ ul#lightGallery {
     .navbar-toggle {
         margin: 1em 0;
     }
-
+    
     .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
         background-color: transparent;
     }
@@ -1693,10 +1701,11 @@ ul#lightGallery {
         float: right;
         position: relative;
         width: 37%;
+        text-align: center;
     }
 
     .about, .services, .team-bottom, .mail {
-        padding: 2em 0;
+        padding: 0 0; /*2em 0*/
     }
 
     .projects {

@@ -39,7 +39,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
         }
 
         .navbar-nav > li:nth-child(3) a.user {
-            margin-right: 28.6em !important;
+            margin-right: 27.4em !important;
         }  
         @@media (max-width: 736px) {
         .navbar-nav > li:nth-child(3) a.user {
@@ -110,7 +110,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                 <input type="submit" value="">
                
             </form>*@
-            <p style="color:white"> WelCome:<span class="call">@Session["DisplayName"]</span></p>
+            <p style="color:white"><b> WelCome :</b> <span class="call">@Session["DisplayName"]</span></p>
         </div>
         <div class="clearfix"> </div>
     
@@ -127,7 +127,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                         <span class="icon-bar"></span>
                     </button>
                     <div class="w3_navigation_pos">
-                        <h1><a href="@Url.Action("Index","Home")" title="OMM IPL"><img src="~/images/logo.jpg" alt="logo" width="200" /></a></h1>
+                        <h1><a href="@Url.Action("Index","Home")" title="OMM IPL"><img src="~/images/logo.jpg" alt="logo" class="logo" /></a></h1>
                     </div>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -141,7 +141,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                             <li><a href="/Wallet/TXNLadget"><span data-hover="WalletLedger">WalletLedger</span></a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span data-hover="My Account">My Account</span>
+                                    <span data-hover="My Account">My Account <i class="fa fa-chevron-down"></i></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <ul class="nav navbar-nav" style="margin-top: 0; white-space: nowrap; margin-right: 1em;">
