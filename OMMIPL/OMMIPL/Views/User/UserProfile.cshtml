@@ -6,13 +6,14 @@
 }
 
 <style>
-    div#mail {
-        background-color: #ff5000;
-    }
 
     .row.form-row {
-        display: flex;
-        justify-content: center;
+    background-image: linear-gradient(to right, #70b3e0, #b9dcef);
+    display: flex;
+    justify-content: center;
+    padding: 5em 0;
+    border-radius: 20px;
+}
     }
 
     .col-md-10.form-col {
@@ -25,7 +26,7 @@
     <div class="container">
         <div class="row form-row">
             <div class="col-md-10 form-col">
-                <h3 class="w3l_head w3l_head1" style="color:white">Profile</h3>
+                <h3 class="w3l_head w3l_head1" style="font-weight: 600">Profile</h3>
                 @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
                 <div class="w3_mail_grids">
                     <form action="/User/UpdateProfile" method="post">
@@ -46,7 +47,7 @@
                             <span class="input input--ichiro">
                                 @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
                             </span>
-                            <input type="submit" value="Update"><br /><br />
+                            <input type="submit" value="Update" style="margin-top: 50px;"><br /><br />
                             <span style="color:red">@TempData["Msg"]</span>
                         </div>
                         <div class="col-md-6 w3_agile_mail_grid">
