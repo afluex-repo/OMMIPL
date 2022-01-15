@@ -115,7 +115,7 @@
             <p class="w3ls_head_para w3ls_head_para1">Lorem Ipsum Dolor</p>*@
         <div class="row dashboard">
             <div class="col-md-4">
-                <div class="card balance">
+                <div class="card balance" id="divCounter">
                     <div class="card-body">
                         <div class="body-layout">
                             <div class="body-contant">
@@ -565,4 +565,30 @@
             }
         }
     </script>
+
+    @*<script type="text/javascript">
+        if (sessionStorage.getItem("hdfStartTime")) {
+            if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
+        var value = 0;
+      } else {
+                var value = sessionStorage.getItem("hdfStartTime");
+      }
+    } else {
+      var value = 0;
+    }
+        document.getElementById('hdfDuration').innerHTML = value;
+
+    var counter = function () {
+      if (value >= 10) {
+          sessionStorage.setItem("hdfStartTime", hdfEndTime);
+        value = 0;
+      } else {
+        value = parseInt(value) + 1;
+        sessionStorage.setItem("hdfStartTime", value);
+      }
+      document.getElementById('hdfDuration').innerHTML = value;
+    };
+
+    var interval = setInterval(hdfStartTimes, 1000);
+    </script>*@
     <!-- //gallery -->
