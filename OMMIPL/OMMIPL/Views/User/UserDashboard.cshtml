@@ -165,7 +165,7 @@
                                 foreach (var item in Model.lst)
                                 {
                                     var href = "#menu" + i;
-                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById(@item.FK_GameId);">@item.GameName</a></li>
+                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById();">@item.GameName</a></li>
                                     i++;
                                 }
                             }
@@ -177,6 +177,45 @@
                         </div>
                     </div>
                     <div class="tab-content game-view" style="display: none;">
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog color">
+                                <div class="modal-content color-content">
+                                    <div class="modal-header color">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Submit Prediction</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/User/SubmitPrediction" type="Post">
+                                            <div class="row form-group">
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                        <label>Color</label>
+                                                        <button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>
+                                                        @Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-3">
+                                                    <label><span>Amount</span><span class="text-red">*</span></label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-12 submit">
+                                                    <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPrediction();">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                         <div id="menu1" class="tab-pane fade in active">
                             <div class="card">
                                 <div class="row">
@@ -186,60 +225,21 @@
                                         {
                                             foreach (var item in Model.lstColor)
                                             {
-                                                <div class="col-md-4"><button type="button" class="btn btn-@item.ColorName.ToLower() btn-block" value="@item.FK_ColorId" onclick="return SetPredictionColor(@item.FK_ColorId);" data-toggle="modal">@item.ColorName</button></div>
+                                                <div class="col-md-4"><button type="button" class="btn btn-@item.ColorName.ToLower() btn-block" value="@item.FK_ColorId" onclick="return SetPrediction(@item.FK_ColorId);" data-toggle="modal">@item.ColorName</button></div>
                                             }
                                         }
                                     }
                                 </div>
                             </div>
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog color">
-                                    <div class="modal-content color-content">
-                                        <div class="modal-header color">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Submit Prediction</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="/User/SubmitPrediction" type="Post">
-                                                <div class="row form-group">
-                                                    <div class="col-sm-12">
-                                                        <span class="input right">
-                                                            <label>Color</label>
-                                                            <button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>
-                                                            @Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-sm-3">
-                                                        <label><span>Amount</span><span class="text-red">*</span></label>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-sm-12 submit">
-                                                        <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPredictionColor();">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <h3 class="card-title">Your Predition Record Colour X3</h3>
+                                        <h3 class="card-title">Your Predition Record Colour-X3</h3>
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive head-color">
-                                        <table class="table">
+                                    <div class="table-responsive tableFixHead head-color">
+                                        <table class="table table-responsive">
                                             <thead>
                                                 <tr>
                                                     <th>Period</th>
@@ -248,12 +248,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>2021122298</td>
-                                                    <td class="text-red">Red</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
-                                                </tr>
-
+                                                @if (Model != null)
+                                                {
+                                                    if (Model.lst != null)
+                                                    {
+                                                        foreach (var item in Model.lstPrediction)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.PeriodNo</td>
+                                                                <td class="text-@item.ColorName.ToLower()">@item.ColorName</td>
+                                                                <td class="text-center">@item.Amount</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -262,7 +270,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <h3 class="card-title">Record Colour X3</h3>
+                                        <h3 class="card-title">Record Colour-X3</h3>
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
@@ -276,36 +284,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>2021122299</td>
-                                                    <td class="text-blue">Blue</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2021122298</td>
-                                                    <td class="text-blue">Blue</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2021122297</td>
-                                                    <td class="text-blue">Blue</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2021122296</td>
-                                                    <td class="text-red">Red</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2021122297</td>
-                                                    <td class="text-blue">Blue</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2021122295</td>
-                                                    <td class="text-green">Green</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-green btn-lg">Green</button></td>
-                                                </tr>
+                                                @if (Model != null)
+                                                {
+                                                    if (Model.lst != null)
+                                                    {
+                                                        foreach (var item in Model.lstResult)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.PeriodNo</td>
+                                                                <td class="text-@item.ColorName.ToLower()">@item.ColorName</td>
+                                                                <td class="text-center"><button type="button" class="btn btn-@item.ResultantColor.ToLower() btn-lg">@item.ResultantColor</button></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -315,16 +307,16 @@
                         <div id="menu2" class="tab-pane fade">
                             <div class="card">
                                 <div class="grid jackpot10 text-center ">
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">0</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">1</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">2</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">3</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">4</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">5</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">6</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">7</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">8</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">9</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(0);">0</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(1);">1</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(2);">2</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(3);">3</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(4);">4</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(5);">5</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(6);">6</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(7);">7</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(8);">8</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(9);">9</button></div>
                                 </div>
                             </div>
                             <div class="card">
@@ -435,9 +427,10 @@
     <script>
         var minutes = 0;
         var seconds = 0;
-        function GameDetailsById(GameId) {
+        var ColorId = "";
+        function GameDetailsById() {
             debugger;
-            $("#hdfGameId").val(GameId);
+          //  $("#hdfGameId").val(GameId);
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",
@@ -478,7 +471,7 @@
 
 
 
-        function SetPredictionColor(ColorId) {
+        function SetPrediction(ColorId) {
             debugger;
             if (minutes == 0 && seconds < 30) {
                 $('#myModal').modal('hide');
@@ -486,26 +479,36 @@
             }
             else {
                 $('#myModal').modal('show');
-                if (ColorId == 1) {
-                    $("#btnColor").attr("style", "background-color:red");
-                    $("#btnColor").text("R");
-                    $("#FK_ColorId").val(ColorId);
+                if ($("#hdfGameId").val() == "7")
+                {
+                    if (ColorId == 1) {
+                        $("#btnColor").attr("style", "background-color:red");
+                        $("#btnColor").text("R");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else if (ColorId == 2) {
+                        $("#btnColor").attr("style", "background-color:green");
+                        $("#btnColor").text("G");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else if (ColorId == 3) {
+                        $("#btnColor").attr("style", "background-color:blue");
+                        $("#btnColor").text("B");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else {
+                    }
                 }
-                else if (ColorId == 2) {
-                    $("#btnColor").attr("style", "background-color:green");
-                    $("#btnColor").text("G");
-                    $("#FK_ColorId").val(ColorId);
-                }
-                else if (ColorId == 3) {
-                    $("#btnColor").attr("style", "background-color:blue");
-                    $("#btnColor").text("B");
+                else if ($("#hdfGameId").val() == "8") {
+                    $("#btnColor").text(ColorId);
                     $("#FK_ColorId").val(ColorId);
                 }
                 else {
                 }
             }
         }
-        function SubmitPredictionColor() {
+        
+        function SubmitPrediction() {
             debugger;
             $.ajax({
                 url: "/User/GameStart",

@@ -18,9 +18,13 @@ namespace OMMIPL.Controllers
             User model = new User();
             List<Game> lst = new List<Game>();
             List<Game> lstColor = new List<Game>();
+            List<Game> lstPrediction = new List<Game>();
+            List<Game> lstResult = new List<Game>();
             model.PK_UserId = Session["PK_UserId"].ToString();
             DataSet ds = model.GetMainBalance();
             DataSet ds1 = model.GetAllGames();
+            DataSet ds2 = model.GetUserGamePrediction();
+
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
@@ -42,6 +46,31 @@ namespace OMMIPL.Controllers
                     lst.Add(obj);
                 }
                 model.lst = lst;
+            }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds2.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.PeriodNo = r["PeriodNo"].ToString();
+                    obj.ColorName = r["ChosenColor"].ToString();
+                    obj.Amount = Convert.ToDecimal(r["Amount"]);
+                    lstPrediction.Add(obj);
+                }
+                model.lstPrediction = lstPrediction;
+            }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds2.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.PeriodNo = r["PeriodNo"].ToString();
+                    obj.ColorName = r["ChosenColor"].ToString();
+                    obj.ResultantColor = r["ResultantColor"].ToString();
+                    
+                    lstResult.Add(obj);
+                }
+                model.lstResult = lstResult;
             }
             if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[1].Rows.Count > 0)
             {
@@ -155,11 +184,10 @@ namespace OMMIPL.Controllers
             return View(model);
         }
 
-        public ActionResult GameDetailsById(string GameId)
+        public ActionResult GameDetailsById()
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
-            model.FK_GameId = GameId;
             model.FK_UserId = Session["PK_UserId"].ToString();
             try
             {
