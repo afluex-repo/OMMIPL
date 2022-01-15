@@ -471,6 +471,7 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public ActionResult GameReport(Admin model)
         {
