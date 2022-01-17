@@ -7,7 +7,7 @@
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
-            @using (Html.BeginForm("TXNLadget", " Wallet", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            @using (Html.BeginForm("TXNLadget", "Wallet", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
             {
                 <div class="row">
                     <div class="col-md-4 w3_agile_mail_grid">
@@ -44,7 +44,7 @@
                     </div>
                    
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                        <table class="table table-striped" data-page-length='25' id="tableExport" style="width:100%;">
                             <thead>
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
@@ -88,7 +88,13 @@
 
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">*@
+
 <script>
+    $(document).ready(function () {
+        $('#tableExport').DataTable();
+    });
     $('#FromDate').datepicker({
         format: 'dd/mm/yyyy',
         changeYear: true,

@@ -8,6 +8,7 @@ namespace OMMIPL.Models
     public class Comman
     {
 
+       
         public static string ConvertToSystemDate(string InputDate, string InputFormat)
         {
             string DateString = "";
@@ -42,6 +43,5 @@ namespace OMMIPL.Models
                 throw new Exception("Invalid Date");
             }
         }
-
     }
 }
