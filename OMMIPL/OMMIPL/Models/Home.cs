@@ -45,6 +45,17 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("Login", para);
             return ds;
         }
+        public DataSet GenerateGamePeriod()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod");
+            return ds;
+        }
+
+        public DataSet GenerateGameResponse()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGameResponse");
+            return ds;
+        }
         public DataSet GetSponsor()
         {
             SqlParameter[] para = {
