@@ -125,7 +125,7 @@
                                 <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
                                 <input type="hidden" id="hdfPeriodId" />
                                 <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
-                                <input type="hidden" value="@Model.Duration" id="hdfDuration" />
+                                <input type="hidden" value="@Model.duration" id="hdfDuration" />
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
                                 <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
@@ -417,17 +417,40 @@
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
         $(document).ready(function () {
-            function gfg_Run() {
-                setInterval(function () {
+            debugger;
+            var timer2 = $("#hdfDuration").val();
+            var interval = setInterval(function () {
+                var timer = timer2.split(':');
+                minutes = parseInt(timer[0], 10);
+                seconds = parseInt(timer[1], 10);
+                --seconds;
+                minutes = (seconds < 0) ? --minutes : minutes;
+                if (minutes < 0) {
+                    clearInterval(interval);
+                }
+                seconds = (seconds < 0) ? 59 : seconds;
+                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                if (minutes == 0 && seconds == 0) {
+                    clearInterval(interval);
+                }
+                if (minutes == 0 && seconds == 30)
+                {
                     getResponse();
-                }, 180000);
-            }
+                }
+                $('.digit').html(minutes + ':' + seconds);
+                timer2 = minutes + ':' + seconds;
+            }, 1000);
+            //function gfg_Run() {
+            //    setInterval(function () {
+                    
+            //    }, 180000);
+            //}
             function getResponse() {
                 $.ajax({
                     url: "/User/GetGameResponse",
                     type: "Get",
                     datatype: "Json",
-                    data: { PeriodId: $("#hdfPeriodId").val() },
+                    data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
                     success: function (response) {
                         debugger;
                         if (response != null) {
@@ -465,26 +488,6 @@
                 $(".first-view").hide();
                 $(".game-view").show();
             });
-            debugger;
-            var timer2 = $("#hdfDuration").val();
-            timer2 = timer2 + ":00";
-            var interval = setInterval(function () {
-                var timer = timer2.split(':');
-                minutes = parseInt(timer[0], 10);
-                seconds = parseInt(timer[1], 10);
-                --seconds;
-                minutes = (seconds < 0) ? --minutes : minutes;
-                if (minutes < 0) {
-                    clearInterval(interval);
-                }
-                seconds = (seconds < 0) ? 59 : seconds;
-                seconds = (seconds < 10) ? '0' + seconds : seconds;
-                if (minutes == 0 && seconds == 0) {
-                    clearInterval(interval);
-                }
-                $('.digit').html(minutes + ':' + seconds);
-                timer2 = minutes + ':' + seconds;
-            }, 1000);
         });
     </script>
     <script>
@@ -493,7 +496,7 @@
         var ColorId = "";
         function GameDetailsById(GameId) {
             debugger;
-            //  $("#hdfGameId").val(GameId);
+              $("#hdfGameId").val(GameId);
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",

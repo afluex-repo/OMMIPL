@@ -24,13 +24,13 @@ namespace OMMIPL.Controllers
             DataSet ds = model.GetMainBalance();
             DataSet ds1 = model.GetAllGames();
             DataSet ds2 = model.GetUserGamePrediction();
-            DataSet ds4 = model.GetGamePeriod();
-            if (ds4 != null && ds4.Tables.Count > 0 && ds4.Tables[0].Rows.Count > 0)
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[1].Rows.Count > 0)
             {
-                model.PeriodNo = ds4.Tables[0].Rows[0]["PeriodNo"].ToString();
-                model.StartTime = ds4.Tables[0].Rows[0]["StartTime"].ToString();
-                model.EndTime = ds4.Tables[0].Rows[0]["EndTime"].ToString();
-                model.duration = Convert.ToDateTime(ds4.Tables[0].Rows[0]["EndTime"]) - Convert.ToDateTime(ds4.Tables[0].Rows[0]["StartTime"]);
+                model.PeriodNo = ds2.Tables[1].Rows[0]["PeriodNo"].ToString();
+                model.StartTime = ds2.Tables[1].Rows[0]["StartTime"].ToString();
+                model.EndTime = ds2.Tables[1].Rows[0]["EndTime"].ToString();
+                model.time = TimeSpan.Parse(ds2.Tables[1].Rows[0]["Duration"].ToString());
+                model.duration = model.time.ToString("mm\\:ss");
             }
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
@@ -357,22 +357,37 @@ namespace OMMIPL.Controllers
             return View();
         }
 
-        public ActionResult GetGameResponse(string PeriodId)
+        public ActionResult GetGameResponse(string PeriodId,string ColorId)
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
            // model.FK_UserId = Session["PK_UserId"].ToString();
             //model.FK_GameId = GameId;
             model.FK_PeriodId = PeriodId;
+      
             try
             {
                 DataSet ds = model.GetGameResponse();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
-                    model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
-                    model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
-                    model.FK_PeriodId = ds.Tables[0].Rows[0]["PK_PeriodId"].ToString();
+                    //model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
+                    //model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
+                    //model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ResultId"].ToString();
+                    model.Message = "1";
+                    if (ColorId == model.FK_ColorId)
+                    {
+                        model.Result = "Yes";
+                    }
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+                    model.Message = "0";
+                    model.Result = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
                 }
             }
             catch (Exception ex)
