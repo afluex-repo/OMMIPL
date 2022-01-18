@@ -406,16 +406,28 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("Login", "Home");
         }
-        public ActionResult GenerateGamePeriod()
+        public ActionResult GenerateGamePeriodForColorX3()
         {
             Home obj = new Home();
-            DataSet ds = obj.GenerateGamePeriod();
+            DataSet ds = obj.GenerateGamePeriodForColorX3();
             return View();
         }
-        public ActionResult GenerateGameResponse()
+        public ActionResult GenerateGameResponseForColorX3()
         {
             Home obj = new Home();
-            DataSet ds = obj.GenerateGameResponse();
+            DataSet ds = obj.GenerateGameResponseForColorX3();
+            return View();
+        }
+        public ActionResult GenerateGamePeriodForJackpotX10()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGamePeriodForJackpotX10();
+            return View();
+        }
+        public ActionResult GenerateGameResponseForJackpotX10()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGameResponseForJackpotX10();
             return View();
         }
 

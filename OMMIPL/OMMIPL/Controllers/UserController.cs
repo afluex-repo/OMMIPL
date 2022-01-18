@@ -212,6 +212,8 @@ namespace OMMIPL.Controllers
                     model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
                     model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
                     model.FK_PeriodId = ds.Tables[0].Rows[0]["PK_PeriodId"].ToString();
+                    model.time = TimeSpan.Parse(ds.Tables[0].Rows[0]["Duration"].ToString());
+                    model.duration = model.time.ToString("mm\\:ss");
                 }
             }
             catch (Exception ex)
