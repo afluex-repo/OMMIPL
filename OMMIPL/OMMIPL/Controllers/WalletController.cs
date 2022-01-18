@@ -44,11 +44,9 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-
-        [HttpPost]
-        [ActionName("TXNLadget")]
-        public ActionResult TXNLadget(User model)
+        public ActionResult TXNLadget()
         {
+            User model = new User();
             model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
             model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
             model.PK_UserId = Session["PK_UserId"].ToString();
@@ -63,6 +61,35 @@ namespace OMMIPL.Controllers
                     Obj.DebitAmount = r["DebitAmount"].ToString();
                     Obj.Date = r["date"].ToString();
                     Lst.Add(Obj);
+                }
+                model.lstLedget = Lst;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("TXNLadget")]
+        public ActionResult TXNLadget(User model)
+       {
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            List<User> Lst = new List<User>();
+            int i = 0;
+            DataSet ds11 = model.GetEwalletLedger();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    if (i < 25)
+                    {
+                        User Obj = new User();
+                        Obj.CreditAmount = r["CreditAmount"].ToString();
+                        Obj.DebitAmount = r["DebitAmount"].ToString();
+                        Obj.Date = r["date"].ToString();
+                        Lst.Add(Obj);
+                    }
+                    i = i++;
                 }
                 model.lstLedget = Lst;
             }

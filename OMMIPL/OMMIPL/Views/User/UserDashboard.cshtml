@@ -238,7 +238,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table1">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -274,7 +274,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table2"> 
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -433,8 +433,7 @@
                 if (minutes == 0 && seconds == 0) {
                     clearInterval(interval);
                 }
-                if (minutes == 0 && seconds == 30)
-                {
+                if (minutes == 0 && seconds == 30) {
                     getResponse();
                 }
                 $('.digit').html(minutes + ':' + seconds);
@@ -442,61 +441,61 @@
             }, 1000);
             //function gfg_Run() {
             //    setInterval(function () {
-                    
+
             //    }, 180000);
             //}
-            function getResponse() {
-                $.ajax({
-                    url: "/User/GetGameResponse",
-                    type: "Get",
-                    datatype: "Json",
-                    data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
-                    success: function (response) {
-                        debugger;
-                        if (response != null) {
-                            if (response.Message == "1") {
-                                if (response.Result == "Yes") {
-                                    alert("Congrats! You won.");
-                                }
-                                else {
-                                    alert("Oops! You lose.");
-                                }
-                                if (response.FK_ColorId == "1") {
-                                    $("#spColor").text("R");
-                                    $(".body-color").attr("style", "background-color: red;");
-                                }
-                                else if (response.FK_ColorId == "2") {
-                                    $("#spColor").text("G");
-                                    $(".body-color").attr("style", "background-color: green;");
-                                }
-                                else if (response.FK_ColorId == "3") {
-                                    $("#spColor").text("B");
-                                    $(".body-color").attr("style", "background-color: blue;");
-                                }
-                                else {
-                                }
+        });
+        function getResponse() {
+            $.ajax({
+                url: "/User/GetGameResponse",
+                type: "Get",
+                datatype: "Json",
+                data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (response.Message == "1") {
+                            if (response.Result == "Yes") {
+                                alert("Congrats! You won.");
                             }
                             else {
-                                alert(response.Result);
+                                alert("Oops! You lose.");
+                            }
+                            if (response.FK_ColorId == "1") {
+                                $("#spColor").text("R");
+                                $(".body-color").attr("style", "background-color: red;");
+                            }
+                            else if (response.FK_ColorId == "2") {
+                                $("#spColor").text("G");
+                                $(".body-color").attr("style", "background-color: green;");
+                            }
+                            else if (response.FK_ColorId == "3") {
+                                $("#spColor").text("B");
+                                $(".body-color").attr("style", "background-color: blue;");
+                            }
+                            else {
                             }
                         }
+                        else {
+                            alert(response.Result);
+                        }
                     }
-                });
-            }
-            $(".dash-nav").click(function () {
-                $(".digit").show();
-                $(".first-view").hide();
-                $(".game-view").show();
+                }
             });
+        }
+        $(".dash-nav").click(function () {
+            $(".digit").show();
+            $(".first-view").hide();
+            $(".game-view").show();
         });
-    </script>
-    <script>
+
         var minutes = 0;
         var seconds = 0;
         var ColorId = "";
         function GameDetailsById(GameId) {
             debugger;
-              $("#hdfGameId").val(GameId);
+            $("#hdfGameId").val(GameId);
+
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",
@@ -511,6 +510,31 @@
                         //$(".digit").val(response.response);
                         //$("#hdfDuration").val(response.Duration);
                         $("#hdfPeriodId").val(response.FK_PeriodId);
+
+                        $("#hdfDuration").val(response.duration)
+                        $('.digit').html('');
+                        $('.time-counter').html('<span class="digit1"></span>');
+                        var timer2 = $("#hdfDuration").val();
+                        var interval1 = setInterval(function () {
+                            var timer = timer2.split(':');
+                            minutes1 = parseInt(timer[0], 10);
+                            seconds1 = parseInt(timer[1], 10);
+                            --seconds;
+                            minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
+                            if (minutes1 < 0) {
+                                clearInterval(interval1);
+                            }
+                            seconds1 = (seconds1 < 0) ? 59 : seconds1;
+                            seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
+                            if (minutes1 == 0 && seconds1 == 0) {
+                                clearInterval(interval1);
+                            }
+                            if (minutes1 == 0 && seconds1 == 30) {
+                                getResponse();
+                            }
+                            $('.digit1').html(minutes1 + ':' + seconds1);
+                            timer2 = minutes1 + ':' + seconds1;
+                        }, 1000);
                     }
                 }
             });

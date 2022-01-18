@@ -195,7 +195,7 @@ namespace OMMIPL.Models
         }
         public DataSet GetGameResponse()
         {
-            SqlParameter[] para = { new SqlParameter("@FK_PeriodId", FK_PeriodId)
+            SqlParameter[] para = { new SqlParameter("@FK_PeriodId", FK_PeriodId),
             };
             DataSet ds = DBHelper.ExecuteQuery("GetGameResponse", para);
             return ds;

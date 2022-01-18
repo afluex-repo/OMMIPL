@@ -255,6 +255,13 @@
     <Content Include="Views\User\GameReport.cshtml" />
     <Content Include="Views\User\Timer.cshtml" />
     <Content Include="Views\User\Timer2.cshtml" />
+    <Content Include="Views\Home\GenerateGamePeriod.cshtml" />
+    <Content Include="Views\Home\GenerateGameResponse.cshtml" />
+    <Content Include="Views\Home\GenerateGamePeriodForColorX3.cshtml" />
+    <Content Include="Views\Home\GenerateGameResponseForColorX3.cshtml" />
+    <Content Include="Views\Home\GenerateGamePeriodForJackpotX10.cshtml" />
+    <Content Include="Views\Home\GenerateGameResponseForJackpotX10.cshtml" />
+    <None Include="Properties\PublishProfiles\OMMIPL.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -284,7 +291,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63482</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63483/</IISUrl>
+          <IISUrl>http://localhost:63484/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
