@@ -21,7 +21,7 @@ namespace OMMIPL.Models
         public string UserType { get; set; }
         public List<User> lstReports { get; set; }
         public List<User> lstLedget { get; set; }
-     
+
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }
@@ -48,8 +48,8 @@ namespace OMMIPL.Models
         public string oldPassword { get; set; }
         public string NewPassword { get; set; }
         public string CfPassword { get; set; }
-        public List<SelectListItem> ddlPaymentMode { get; set;}
-        
+        public List<SelectListItem> ddlPaymentMode { get; set; }
+
         public List<Game> lst { get; set; }
         public List<Game> lstColor { get; set; }
         public List<Game> lstPrediction { get; set; }
@@ -65,6 +65,7 @@ namespace OMMIPL.Models
         public string FK_PeriodId { get; set; }
         public string Message { get; set; }
         public string ColorName { get; set; }
+        public TimeSpan duration { get; set; }
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
@@ -138,7 +139,7 @@ namespace OMMIPL.Models
                 new SqlParameter("@Fk_UserId",PK_UserId),
                 new SqlParameter("@todate",ToDate),
                  new SqlParameter("@fromdate",FromDate),
-              
+
             };
             DataSet ds = DBHelper.ExecuteQuery("EWalletLedger", para);
             return ds;
@@ -160,9 +161,23 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetGameDetails");
             return ds;
         }
-        public DataSet GetGameDetailsById()
+        public DataSet GenrateGamePeriod()
         {
             DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod");
+            return ds;
+        }
+        public DataSet GenerateGameResponse()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGameResponse");
+            return ds;
+        }
+        public DataSet GetGameDetailsById()
+        {
+            SqlParameter[] para =
+           {
+                new SqlParameter("@FK_GameId",FK_GameId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GameDetailsById", para);
             return ds;
         }
         public DataSet GetUserGamePrediction()
@@ -172,7 +187,18 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GameReportForUser", para);
             return ds;
         }
-
+        public DataSet GetGamePeriod()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetGamePeriod");
+            return ds;
+        }
+        public DataSet GetGameResponse()
+        {
+            SqlParameter[] para = { new SqlParameter("@FK_PeriodId", FK_PeriodId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GetGameResponse", para);
+            return ds;
+        }
         public DataSet GameStart()
         {
             SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),

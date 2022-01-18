@@ -148,7 +148,7 @@
                                     <div class="color-symbol"><span id="spColor">@text</span></div>
                                 }
 
-                                <div class="time-counter"><span class="digit" style="display:none"></span></div>
+                                <div class="time-counter"><span class="digit"></span></div>
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                                 foreach (var item in Model.lst)
                                 {
                                     var href = "#menu" + i;
-                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById();">@item.GameName</a></li>
+                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById(@item.FK_GameId);">@item.GameName</a></li>
                                     i++;
                                 }
                             }
@@ -250,7 +250,7 @@
                                             <tbody>
                                                 @if (Model != null)
                                                 {
-                                                    if (Model.lst != null)
+                                                    if (Model.lstPrediction != null)
                                                     {
                                                         foreach (var item in Model.lstPrediction)
                                                         {
@@ -286,7 +286,7 @@
                                             <tbody>
                                                 @if (Model != null)
                                                 {
-                                                    if (Model.lst != null)
+                                                    if (Model.lstResult != null)
                                                     {
                                                         foreach (var item in Model.lstResult)
                                                         {
@@ -417,20 +417,83 @@
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
         $(document).ready(function () {
+            function gfg_Run() {
+                setInterval(function () {
+                    getResponse();
+                }, 180000);
+            }
+            function getResponse() {
+                $.ajax({
+                    url: "/User/GetGameResponse",
+                    type: "Get",
+                    datatype: "Json",
+                    data: { PeriodId: $("#hdfPeriodId").val() },
+                    success: function (response) {
+                        debugger;
+                        if (response != null) {
+                            if (response.Message == "1") {
+                                if (response.Result == "Yes") {
+                                    alert("Congrats! You won.");
+                                }
+                                else {
+                                    alert("Oops! You lose.");
+                                }
+                                if (response.FK_ColorId == "1") {
+                                    $("#spColor").text("R");
+                                    $(".body-color").attr("style", "background-color: red;");
+                                }
+                                else if (response.FK_ColorId == "2") {
+                                    $("#spColor").text("G");
+                                    $(".body-color").attr("style", "background-color: green;");
+                                }
+                                else if (response.FK_ColorId == "3") {
+                                    $("#spColor").text("B");
+                                    $(".body-color").attr("style", "background-color: blue;");
+                                }
+                                else {
+                                }
+                            }
+                            else {
+                                alert(response.Result);
+                            }
+                        }
+                    }
+                });
+            }
             $(".dash-nav").click(function () {
                 $(".digit").show();
                 $(".first-view").hide();
                 $(".game-view").show();
             });
+            debugger;
+            var timer2 = $("#hdfDuration").val();
+            timer2 = timer2 + ":00";
+            var interval = setInterval(function () {
+                var timer = timer2.split(':');
+                minutes = parseInt(timer[0], 10);
+                seconds = parseInt(timer[1], 10);
+                --seconds;
+                minutes = (seconds < 0) ? --minutes : minutes;
+                if (minutes < 0) {
+                    clearInterval(interval);
+                }
+                seconds = (seconds < 0) ? 59 : seconds;
+                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                if (minutes == 0 && seconds == 0) {
+                    clearInterval(interval);
+                }
+                $('.digit').html(minutes + ':' + seconds);
+                timer2 = minutes + ':' + seconds;
+            }, 1000);
         });
     </script>
     <script>
         var minutes = 0;
         var seconds = 0;
         var ColorId = "";
-        function GameDetailsById() {
+        function GameDetailsById(GameId) {
             debugger;
-          //  $("#hdfGameId").val(GameId);
+            //  $("#hdfGameId").val(GameId);
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",
@@ -443,27 +506,8 @@
                         $("#hdfStartTime").val(response.StartTime);
                         $("#hdfEndTime").val(response.EndTime);
                         //$(".digit").val(response.response);
-                        $("#hdfDuration").val(response.Duration);
+                        //$("#hdfDuration").val(response.Duration);
                         $("#hdfPeriodId").val(response.FK_PeriodId);
-                        var timer2 = $("#hdfDuration").val();
-                        timer2 = timer2 + ":00";
-                        var interval = setInterval(function () {
-                            var timer = timer2.split(':');
-                            minutes = parseInt(timer[0], 10);
-                            seconds = parseInt(timer[1], 10);
-                            --seconds;
-                            minutes = (seconds < 0) ? --minutes : minutes;
-                            if (minutes < 0) {
-                                clearInterval(interval);
-                            }
-                            seconds = (seconds < 0) ? 59 : seconds;
-                            seconds = (seconds < 10) ? '0' + seconds : seconds;
-                            if (minutes == 0 && seconds == 0) {
-                                clearInterval(interval);
-                            }
-                            $('.digit').html(minutes + ':' + seconds);
-                            timer2 = minutes + ':' + seconds;
-                        }, 1000);
                     }
                 }
             });
@@ -479,8 +523,7 @@
             }
             else {
                 $('#myModal').modal('show');
-                if ($("#hdfGameId").val() == "7")
-                {
+                if ($("#hdfGameId").val() == "7") {
                     if (ColorId == 1) {
                         $("#btnColor").attr("style", "background-color:red");
                         $("#btnColor").text("R");
@@ -507,7 +550,7 @@
                 }
             }
         }
-        
+
         function SubmitPrediction() {
             debugger;
             $.ajax({
@@ -519,34 +562,9 @@
                     debugger;
                     if (response != null) {
                         if (response.Message == "1") {
-                            var start = Date.parse($("#hdfStartTime").val());
-                            var end = Date.parse(response.EndTime); 
-                            var diff = end - start;
-                            setTimeout(function () {
-                                if (response.Result == "Yes") {
-                                    alert("Congrats! You won.");
-                                }
-                                else {
-                                    alert("Oops! You lose.");
-                                }
-                                if (response.FK_ColorId == "1") {
-                                    $("#spColor").text("R");
-                                    $(".body-color").attr("style", "background-color: red;");
-                                }
-                                else if (response.FK_ColorId == "2") {
-                                    $("#spColor").text("G");
-                                    $(".body-color").attr("style", "background-color: green;");
-                                }
-                                else if (response.FK_ColorId == "3") {
-                                    $("#spColor").text("B");
-                                    $(".body-color").attr("style", "background-color: blue;");
-                                }
-                                else { }
-                            }, diff);
                             $('#myModal').modal('hide');
                         }
-                        else { 
-                            alert(response.Result);
+                        else {
                             $('#myModal').modal('hide');
                         }
                     }
@@ -570,28 +588,28 @@
     </script>
 
     @*<script type="text/javascript">
-        if (sessionStorage.getItem("hdfStartTime")) {
-            if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
-        var value = 0;
-      } else {
-                var value = sessionStorage.getItem("hdfStartTime");
-      }
-    } else {
-      var value = 0;
-    }
-        document.getElementById('hdfDuration').innerHTML = value;
+            if (sessionStorage.getItem("hdfStartTime")) {
+                if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
+            var value = 0;
+          } else {
+                    var value = sessionStorage.getItem("hdfStartTime");
+          }
+        } else {
+          var value = 0;
+        }
+            document.getElementById('hdfDuration').innerHTML = value;
 
-    var counter = function () {
-      if (value >= 10) {
-          sessionStorage.setItem("hdfStartTime", hdfEndTime);
-        value = 0;
-      } else {
-        value = parseInt(value) + 1;
-        sessionStorage.setItem("hdfStartTime", value);
-      }
-      document.getElementById('hdfDuration').innerHTML = value;
-    };
+        var counter = function () {
+          if (value >= 10) {
+              sessionStorage.setItem("hdfStartTime", hdfEndTime);
+            value = 0;
+          } else {
+            value = parseInt(value) + 1;
+            sessionStorage.setItem("hdfStartTime", value);
+          }
+          document.getElementById('hdfDuration').innerHTML = value;
+        };
 
-    var interval = setInterval(hdfStartTimes, 1000);
-    </script>*@
+        var interval = setInterval(hdfStartTimes, 1000);
+        </script>*@
     <!-- //gallery -->
