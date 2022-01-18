@@ -18,7 +18,7 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
-      public ActionResult Contact()
+        public ActionResult Contact()
         {
             return View();
         }
@@ -47,9 +47,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("Contact", "Home");
         }
-        
-
-        [HttpGet]
         public ActionResult Login()
         {
             Home model = new Home();
@@ -175,9 +172,6 @@ namespace OMMIPL.Controllers
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
-
-
         public ActionResult UploadQR( string ID)
         {
             Home model = new Home();
@@ -253,9 +247,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("UploadQR", "Home");
         }
-
-        
-
         public ActionResult GetUploadQRDetails()
         {
             Home model = new Home();
@@ -276,8 +267,6 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-
-
         public ActionResult DeleteUploadQR(string ID)
         {
             try
@@ -304,10 +293,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
-        
-
         public ActionResult Active(string ID)
         {
             try
@@ -334,8 +319,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
         public ActionResult InActive(string ID)
         {
             try
@@ -362,13 +345,10 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
         public ActionResult ForgetPassword()
         {
             return View();
         }
-
         [HttpPost]
         [ActionName("ForgetPassword")]
         public ActionResult ForgetPassword(Home model)
@@ -426,8 +406,18 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("Login", "Home");
         }
-        
-
+        public ActionResult GenerateGamePeriod()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGamePeriod();
+            return View();
+        }
+        public ActionResult GenerateGameResponse()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGameResponse();
+            return View();
+        }
 
     }
 }

@@ -55,6 +55,7 @@
                     <br /><br />
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+
                             <thead>
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
@@ -63,7 +64,7 @@
                                     <th>Payment Mode</th>
                                     <th>Narration</th>
                                     <th>Txn Date</th>
-                                  
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,8 +82,8 @@
                                                 <td>@Item.paymodename</td>
                                                 <td>@Item.Narration</td>
                                                 <td>@Item.CurrentDate</td>
-                                                
-                                               
+
+
                                             </tr>
                                             i++;
                                         }
@@ -90,12 +91,37 @@
                                 }
                             </tbody>
                         </table>
-                    </div>
+
+</div>
                 </div>
             }
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+    $(document).ready(function () {
+        $('#tableExport').after('<div id="nav"></div>');
+        var rowsShown = 10;
+        var rowsTotal = $('#tableExport tbody tr').length;
+        var numPages = rowsTotal / rowsShown;
+        for (i = 0; i < numPages; i++) {
+            var pageNum = i + 1;
+            $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+        }
+        $('#tableExport tbody tr').hide();
+        $('#tableExport tbody tr').slice(0, rowsShown).show();
+        $('#nav a:first').addClass('active');
+        $('#nav a').bind('click', function () {
 
-
+            $('#nav a').removeClass('active');
+            $(this).addClass('active');
+            var currPage = $(this).attr('rel');
+            var startItem = currPage * rowsShown;
+            var endItem = startItem + rowsShown;
+            $('#tableExport tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+            css('display', 'table-row').animate({ opacity: 1 }, 300);
+        });
+    });
+</script>
