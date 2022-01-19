@@ -49,7 +49,7 @@ namespace OMMIPL.Models
         public string NewPassword { get; set; }
         public string CfPassword { get; set; }
         public List<SelectListItem> ddlPaymentMode { get; set; }
-
+        public string Narration { get; set; }
         public List<Game> lst { get; set; }
         public List<Game> lstColor { get; set; }
         public List<Game> lstPrediction { get; set; }

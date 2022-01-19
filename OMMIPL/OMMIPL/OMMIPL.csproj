@@ -255,6 +255,7 @@
     <Content Include="Views\User\GameReport.cshtml" />
     <Content Include="Views\User\Timer.cshtml" />
     <Content Include="Views\User\Timer2.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

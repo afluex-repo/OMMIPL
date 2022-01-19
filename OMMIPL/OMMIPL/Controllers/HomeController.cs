@@ -418,6 +418,68 @@ namespace OMMIPL.Controllers
             DataSet ds = obj.GenerateGameResponse();
             return View();
         }
+        public ActionResult ContactUs()
+        {
+            return View();
 
+        }
+        [HttpPost]
+        public ActionResult ContactUs(Home model)
+        {
+            try
+            {
+                DataSet ds = model.SaveContactUs();
+                if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        model.Email = ds.Tables[0].Rows[0]["Email"].ToString();
+                        if (model.Email != null)
+                        {
+                            string mailbody = "";
+                            try
+                            {
+                                model.Name = ds.Tables[0].Rows[0]["Name"].ToString();
+                                model.MobileNo = (ds.Tables[0].Rows[0]["Mobile"].ToString());
+                                mailbody = "Dear  " + model.Name + ", <br/> We will contact on your mobile number as soon as possible. : " + model.MobileNo;
+                                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
+                                {
+                                    Host = "smtp.gmail.com",
+                                    Port = 587,
+                                    EnableSsl = true,
+                                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                                    UseDefaultCredentials = true,
+                                    Credentials = new NetworkCredential("developer2.afluex@gmail.com", "deve@486")
+                                };
+                                using (var message = new MailMessage("developer2.afluex@gmail.com", model.Email)
+                                {
+                                    IsBodyHtml = true,
+                                    Subject = "Contact us",
+                                    Body = mailbody
+                                })
+                                    smtp.Send(message);
+                            }
+                            catch (Exception ex)
+                            {
+                                TempData["Msg"] = ex.Message;
+                            }
+                        }
+
+                        TempData["Msg"] = "Send message on your email-Id successfully";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("ContactUs", "Home");
+
+        }
     }
 }
