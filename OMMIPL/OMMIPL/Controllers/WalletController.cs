@@ -67,11 +67,9 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-
         [HttpPost]
-        [ActionName("TXNLadget")]
         public ActionResult TXNLadget(User model)
-       {
+        {
             model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
             model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
             model.PK_UserId = Session["PK_UserId"].ToString();
@@ -94,9 +92,8 @@ namespace OMMIPL.Controllers
                 }
                 model.lstLedget = Lst;
             }
-            return View(model);
+            return RedirectToAction("TXNLadget", "Wallet");
         }
-
         public ActionResult EwalletRequest()
         {
             #region ddlPaymentMode
@@ -122,8 +119,6 @@ namespace OMMIPL.Controllers
             #endregion
             return View(obj);
         }
-
-
         [HttpPost]
         [ActionName("EwalletRequest")]
         public ActionResult SaveEwalletRequest(User model, HttpPostedFileBase postedFile)

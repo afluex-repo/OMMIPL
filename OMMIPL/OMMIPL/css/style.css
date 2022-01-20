@@ -139,7 +139,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 }
 
 .navbar-nav > li:nth-child(3) a {
-    margin-right: 34em !important;
+    margin-right: 26em !important;
 }
 
 .navbar-nav > li:nth-child(6) a {
@@ -2126,6 +2126,12 @@ span.digit {
 }
 
 span.digit1 {
+    background-color: #ffffffa3;
+    padding: 8px;
+    font-size: 22px;
+    font-weight: 600;
+}
+span.digit2 {
     background-color: #ffffffa3;
     padding: 8px;
     font-size: 22px;
