@@ -52,6 +52,8 @@ namespace OMMIPL.Models
         
         public List<Game> lst { get; set; }
         public List<Game> lstColor { get; set; }
+        public List<Game> lstPrediction { get; set; }
+        public List<Game> lstResult { get; set; }
         public string PeriodNo { get; set; }
         public string FK_GameId { get; set; }
         public string Duration { get; set; }
@@ -160,12 +162,17 @@ namespace OMMIPL.Models
         }
         public DataSet GetGameDetailsById()
         {
-            SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),
-                new SqlParameter("@FK_UserId", FK_UserId)
-            };
-            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod", para);
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod");
             return ds;
         }
+        public DataSet GetUserGamePrediction()
+        {
+            SqlParameter[] para = { new SqlParameter("@FK_UserId", PK_UserId)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GameReportForUser", para);
+            return ds;
+        }
+
         public DataSet GameStart()
         {
             SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),

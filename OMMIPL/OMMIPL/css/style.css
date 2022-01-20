@@ -2150,3 +2150,13 @@ span.card-detail {
         font-size: 20px;
     }
 }
+/*============Pagination=================*/
+div#nav {
+    float: right;
+}
+div#nav a {
+    background-color: #111111;
+    color: #fff;
+    font-weight: 600;
+    padding: 1px 10px;
+}
