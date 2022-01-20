@@ -135,17 +135,19 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                     <nav class="cl-effect-5" id="cl-effect-5">
                         <ul class="nav navbar-nav">
                             <li><a href="@Url.Action("UserDashboard","User")"><span data-hover="Dashboard">Dashboard</span></a></li>
-                            <li><a href="@Url.Action("Game","User")"><span data-hover="Games">Games</span></a></li>
+                            @*<li><a href="@Url.Action("Game","User")"><span data-hover="Games">Games</span></a></li>*@
                             <li><a href="@Url.Action("E_WalletReport","Wallet")"  class="user"><span data-hover="E-Wallet">E-Wallet</span></a></li>
+                            @*<li><a href="/Wallet/Withdraw"><span data-hover="Withdraw">Withdraw</span></a></li>*@
                             <li><a href="/Wallet/Withdraw"><span data-hover="Withdraw">Withdraw</span></a></li>
-                            <li><a href="/Wallet/TXNLadget"><span data-hover="WalletLedger">WalletLedger</span></a></li>
+                            <li><a href="/Wallet/TXNLadget"><span data-hover="Wallet Ledger">Wallet Ledger</span></a></li>
+                            <li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span data-hover="My Account">My Account <i class="fa fa-chevron-down"></i></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <ul class="nav navbar-nav" style="margin-top: 0; white-space: nowrap; margin-right: 1em;">
-                                        <li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>
+                                        @*<li><a href="/User/UserProfile"><span data-hover="Profile">Profile</span></a></li>*@
                                         <li><a href="/User/ChangePassword"><span data-hover="Change Password">Change Password</span></a></li>
                                         <li><a href="@Url.Action("Login","Home")"><span data-hover="Logout">LogOut</span></a></li>
                                     </ul>
