@@ -262,6 +262,7 @@
     <Content Include="Views\Home\GenerateGamePeriodForJackpotX10.cshtml" />
     <Content Include="Views\Home\GenerateGameResponseForJackpotX10.cshtml" />
     <None Include="Properties\PublishProfiles\OMMIPL.pubxml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
