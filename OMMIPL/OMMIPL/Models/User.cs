@@ -56,7 +56,6 @@ namespace OMMIPL.Models
         public List<Game> lstResult { get; set; }
         public string PeriodNo { get; set; }
         public string FK_GameId { get; set; }
-        public string Duration { get; set; }
         public string FK_ColorId { get; set; }
         public string FK_UserId { get; set; }
         public string GameName { get; set; }
