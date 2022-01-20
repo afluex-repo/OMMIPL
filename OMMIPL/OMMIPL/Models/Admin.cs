@@ -33,7 +33,7 @@ namespace OMMIPL.Models
         public string PaymentMode { get; set; }
         public string Status { get; set; }
         public string RequestId { get; set; }
-
+        public string Message { get; set; }
         public string AccountName { get; set; }
         public string Number { get; set; }
         public string PK_UserId { get; set; }

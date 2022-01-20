@@ -46,15 +46,24 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("Login", para);
             return ds;
         }
-        public DataSet GenerateGamePeriod()
+        public DataSet GenerateGamePeriodForColorX3()
         {
-            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriod");
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriodForColorX3");
             return ds;
         }
-
-        public DataSet GenerateGameResponse()
+        public DataSet GenerateGamePeriodForJackpotX10()
         {
-            DataSet ds = DBHelper.ExecuteQuery("GenerateGameResponse");
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGamePeriodForJackpotX10");
+            return ds;
+        }
+        public DataSet GenerateGameResponseForColorX3()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGameResponseForColorX3");
+            return ds;
+        }
+        public DataSet GenerateGameResponseForJackpotX10()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GenerateGameResponseForJackpotX10");
             return ds;
         }
         public DataSet GetSponsor()
@@ -216,6 +225,7 @@ namespace OMMIPL.Models
                                        new SqlParameter("@mobile", MobileNo),
                                        new SqlParameter("@email", Email),
                                        new SqlParameter("@Massage", Massage),
+                                        new SqlParameter("@Address", Address),
                                   };
             DataSet ds = DBHelper.ExecuteQuery("SaveContactUs", para);
             return ds;

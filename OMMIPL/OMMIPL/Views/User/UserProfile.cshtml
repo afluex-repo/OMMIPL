@@ -42,10 +42,10 @@
                                 @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
                             </span>
                             <span class="input input--ichiro">
-                                @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
+                                @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();", @onkeypress = "return isNumberKey(event);",@maxlength="6" })
                             </span>
                             <span class="input input--ichiro">
-                                @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
+                                @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" ,@readonly="true"})
                             </span>
                             <input type="submit" value="Update" style="margin-top: 50px;"><br /><br />
                             <span style="color:red">@TempData["Msg"]</span>

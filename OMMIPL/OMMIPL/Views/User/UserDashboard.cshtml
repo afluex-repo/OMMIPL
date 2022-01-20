@@ -123,7 +123,7 @@
                                 <span class="card-detail">₹ @ViewBag.MainBalance</span>
                                 <h2 class="card-title main period">Period</h2>
                                 <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
-                                <input type="hidden" id="hdfPeriodId" />
+                                <input type="hidden" id="hdfPeriodId" value="@Model.FK_PeriodId"/>
                                 <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
                                 <input type="hidden" value="@Model.duration" id="hdfDuration" />
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
@@ -171,12 +171,12 @@
                             }
                         }
                     </ul>
-                    <div class="card first-view">
+                    <div class="card first-view" style="display: none;">
                         <div class="card-body">
                             <h5 class="card-title" style="font-size: 40px; font-weight: 600; text-align: center; margin: 50px;">Welcome To <span style="color: #e8a201;">OMMIPL</span> <i class="fa fa-trophy" aria-hidden="true" style="font-size: 100px; color: #e8a201;"></i></h5>
                         </div>
                     </div>
-                    <div class="tab-content game-view" style="display: none;">
+                    <div class="tab-content game-view">
                         <div class="modal fade" id="myModal" role="dialog">
                             <div class="modal-dialog color">
                                 <div class="modal-content color-content">
@@ -201,7 +201,7 @@
                                                     <label><span>Amount</span><span class="text-red">*</span></label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -238,7 +238,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table1">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -274,7 +274,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table2">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -416,6 +416,12 @@
     </div>
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
+        var minutes = 0;
+        var seconds = 0;
+        var minutes1 = 0;
+        var seconds1 = 0;
+        var minutes2 = 0;
+        var seconds2 = 0;
         $(document).ready(function () {
             debugger;
             var timer2 = $("#hdfDuration").val();
@@ -432,9 +438,9 @@
                 seconds = (seconds < 10) ? '0' + seconds : seconds;
                 if (minutes == 0 && seconds == 0) {
                     clearInterval(interval);
+                    window.location.href = "/User/UserDashboard";
                 }
-                if (minutes == 0 && seconds == 30)
-                {
+                if (minutes == 0 && seconds == 30) {
                     getResponse();
                 }
                 $('.digit').html(minutes + ':' + seconds);
@@ -442,61 +448,58 @@
             }, 1000);
             //function gfg_Run() {
             //    setInterval(function () {
-                    
+
             //    }, 180000);
             //}
-            function getResponse() {
-                $.ajax({
-                    url: "/User/GetGameResponse",
-                    type: "Get",
-                    datatype: "Json",
-                    data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
-                    success: function (response) {
-                        debugger;
-                        if (response != null) {
-                            if (response.Message == "1") {
-                                if (response.Result == "Yes") {
-                                    alert("Congrats! You won.");
-                                }
-                                else {
-                                    alert("Oops! You lose.");
-                                }
-                                if (response.FK_ColorId == "1") {
-                                    $("#spColor").text("R");
-                                    $(".body-color").attr("style", "background-color: red;");
-                                }
-                                else if (response.FK_ColorId == "2") {
-                                    $("#spColor").text("G");
-                                    $(".body-color").attr("style", "background-color: green;");
-                                }
-                                else if (response.FK_ColorId == "3") {
-                                    $("#spColor").text("B");
-                                    $(".body-color").attr("style", "background-color: blue;");
-                                }
-                                else {
-                                }
+        });
+        function getResponse() {
+            $.ajax({
+                url: "/User/GetGameResponse",
+                type: "Get",
+                datatype: "Json",
+                data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (response.Message == "1") {
+                            if (response.Result == "Yes") {
+                                //alert("Congrats! You won.");
                             }
                             else {
-                                alert(response.Result);
+                                //alert("Oops! You lose.");
+                            }
+                            if (response.FK_ColorId == "1") {
+                                $("#spColor").text("R");
+                                $(".body-color").attr("style", "background-color: red;");
+                            }
+                            else if (response.FK_ColorId == "2") {
+                                $("#spColor").text("G");
+                                $(".body-color").attr("style", "background-color: green;");
+                            }
+                            else if (response.FK_ColorId == "3") {
+                                $("#spColor").text("B");
+                                $(".body-color").attr("style", "background-color: blue;");
+                            }
+                            else {
                             }
                         }
+                        else {
+                            //alert(response.Result);
+                        }
                     }
-                });
-            }
-            $(".dash-nav").click(function () {
-                $(".digit").show();
-                $(".first-view").hide();
-                $(".game-view").show();
+                }
             });
+        }
+        $(".dash-nav").click(function () {
+            $(".digit").show();
+            $(".first-view").hide();
+            $(".game-view").show();
         });
-    </script>
-    <script>
-        var minutes = 0;
-        var seconds = 0;
+
         var ColorId = "";
         function GameDetailsById(GameId) {
             debugger;
-              $("#hdfGameId").val(GameId);
+            $("#hdfGameId").val(GameId);
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",
@@ -508,9 +511,81 @@
                         $("#spPeriodNo").text(response.PeriodNo);
                         $("#hdfStartTime").val(response.StartTime);
                         $("#hdfEndTime").val(response.EndTime);
-                        //$(".digit").val(response.response);
-                        //$("#hdfDuration").val(response.Duration);
                         $("#hdfPeriodId").val(response.FK_PeriodId);
+                        $("#hdfDuration").val(response.duration);
+                        //if (response.lstPrediction != null) {
+                        //    var obj = jQuery.parseJSON(response);
+                        //    $("#table1").html('');
+                        //    $("#table2").html('');
+                        //    for (var i = 0; i < obj.length; i++) {
+                        //        $("#table1").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Amount</th></tr></thead><tbody><tr><td>' + obj[i].PeriodNo + '</td><td class="text-' + obj[i].ColorName.ToLower() + '">' + obj[i].ColorName + '</td><td class="text-center">' + obj[i].Amount + '</td></tr></tbody></table>');
+                        //        $("#table2").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Result</th></tr></thead><tbody><tr><td>' + obj[i].PeriodNo + '</td><td class="text-' + obj[i].ColorName.ToLower() + '">' + obj[i].ColorName + '</td><td class="text-center"><button type="button" class="btn btn-' + obj[i].ResultantColor.ToLower() + ' btn-lg">' + obj[i].ResultantColor + '</button></td></tr></tbody></table>');
+                        //    }
+                        //}
+                        if (GameId == "8")
+                        {
+                             minutes1 = 0;
+                             seconds1 = 0;
+                             minutes2 = 0;
+                             seconds2 = 0;
+                            $('.digit').html('');
+                            $('.time-counter').html('<span class="digit1"></span>');
+                            var timer3 = $("#hdfDuration").val();
+                            var interval1 = setInterval(function () {
+                                var timer1 = timer3.split(':');
+                                minutes1 = parseInt(timer1[0], 10);
+                                seconds1 = parseInt(timer1[1], 10);
+                                --seconds1;
+                                minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
+                                if (minutes1 < 0) {
+                                    clearInterval(interval1);
+                                }
+                                seconds1 = (seconds1 < 0) ? 59 : seconds1;
+                                seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
+                                if (minutes1 == 0 && seconds1 == 0) {
+                                    clearInterval(interval1);
+                                    window.location.href = "/User/UserDashboard";
+                                }
+                                if (minutes1 == 0 && seconds1 == 30) {
+                                    getResponse();
+                                }
+                                $('.digit1').html(minutes1 + ':' + seconds1);
+                                timer3 = minutes1 + ':' + seconds1;
+                            }, 1000);
+                        }
+                        else if (GameId == "7") {
+                             minutes1 = 0;
+                             seconds1 = 0;
+                             minutes2 = 0;
+                             seconds2 = 0;
+                            $('.digit1').html('');
+                            $('.time-counter').html('<span class="digit"></span>');
+                            var timer4 = $("#hdfDuration").val();
+                            var interval2 = setInterval(function () {
+                                var timer3 = timer4.split(':');
+                                minutes2 = parseInt(timer3[0], 10);
+                                seconds2 = parseInt(timer3[1], 10);
+                                --seconds2;
+                                minutes2 = (seconds2 < 0) ? --minutes2 : minutes2;
+                                if (minutes2 < 0) {
+                                    clearInterval(interval2);
+                                }
+                                seconds2 = (seconds2 < 0) ? 59 : seconds2;
+                                seconds2 = (seconds2 < 10) ? '0' + seconds2 : seconds2;
+                                if (minutes2 == 0 && seconds2 == 0) {
+                                    clearInterval(interval2);
+                                    window.location.href = "/User/UserDashboard";
+                                }
+                                if (minutes2 == 0 && second2 == 30) {
+                                    getResponse();
+                                }
+                                $('.digit1').html(minutes2 + ':' + seconds2);
+                                timer4 = minutes2 + ':' + seconds2;
+                            }, 1000);
+                        }
+                        else {
+
+                        }
                     }
                 }
             });

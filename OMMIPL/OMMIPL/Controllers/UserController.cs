@@ -20,12 +20,13 @@ namespace OMMIPL.Controllers
             List<Game> lstPrediction = new List<Game>();
             List<Game> lstResult = new List<Game>();
             model.PK_UserId = Session["PK_UserId"].ToString();
-
+            model.FK_GameId = "7";
             DataSet ds = model.GetMainBalance();
             DataSet ds1 = model.GetAllGames();
             DataSet ds2 = model.GetUserGamePrediction();
             if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[1].Rows.Count > 0)
             {
+                model.FK_PeriodId = ds2.Tables[1].Rows[0]["PK_PeriodId"].ToString(); 
                 model.PeriodNo = ds2.Tables[1].Rows[0]["PeriodNo"].ToString();
                 model.StartTime = ds2.Tables[1].Rows[0]["StartTime"].ToString();
                 model.EndTime = ds2.Tables[1].Rows[0]["EndTime"].ToString();
@@ -192,6 +193,7 @@ namespace OMMIPL.Controllers
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
+            List<Game> lstPrediction = new List<Game>();
             model.FK_UserId = Session["PK_UserId"].ToString();
             model.FK_GameId = GameId;
             try
@@ -212,7 +214,46 @@ namespace OMMIPL.Controllers
                     model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
                     model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
                     model.FK_PeriodId = ds.Tables[0].Rows[0]["PK_PeriodId"].ToString();
+                    model.time = TimeSpan.Parse(ds.Tables[0].Rows[0]["Duration"].ToString());
+                    model.duration = model.time.ToString("mm\\:ss");
                 }
+                if(GameId=="7")
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["ChosenColor"].ToString();
+                            obj.ResultantColor = r["ResultantColor"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
+                }
+                else if(GameId == "8")
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["Fk_ChosenColorId"].ToString();
+                            obj.ResultantColor = r["FK_ResultId"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
+                }
+                else
+                {
+
+                }
+                
             }
             catch (Exception ex)
             {

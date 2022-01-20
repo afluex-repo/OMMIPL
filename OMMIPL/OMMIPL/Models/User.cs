@@ -176,14 +176,15 @@ namespace OMMIPL.Models
         {
             SqlParameter[] para =
            {
-                new SqlParameter("@FK_GameId",FK_GameId)
+                new SqlParameter("@FK_GameId",FK_GameId),
+                new SqlParameter("@FK_UserId",FK_UserId)
             };
             DataSet ds = DBHelper.ExecuteQuery("GameDetailsById", para);
             return ds;
         }
         public DataSet GetUserGamePrediction()
         {
-            SqlParameter[] para = { new SqlParameter("@FK_UserId", PK_UserId)
+            SqlParameter[] para = { new SqlParameter("@FK_UserId", PK_UserId),
             };
             DataSet ds = DBHelper.ExecuteQuery("GameReportForUser", para);
             return ds;
@@ -195,7 +196,7 @@ namespace OMMIPL.Models
         }
         public DataSet GetGameResponse()
         {
-            SqlParameter[] para = { new SqlParameter("@FK_PeriodId", FK_PeriodId)
+            SqlParameter[] para = { new SqlParameter("@FK_PeriodId", FK_PeriodId),
             };
             DataSet ds = DBHelper.ExecuteQuery("GetGameResponse", para);
             return ds;

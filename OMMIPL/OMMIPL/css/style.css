@@ -2124,6 +2124,13 @@ span.digit {
     font-size: 22px;
     font-weight: 600;
 }
+
+span.digit1 {
+    background-color: #ffffffa3;
+    padding: 8px;
+    font-size: 22px;
+    font-weight: 600;
+}
 .body-layout {
     display: flex;
     justify-content: space-between;
