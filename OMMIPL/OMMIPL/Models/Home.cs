@@ -33,6 +33,7 @@ namespace OMMIPL.Models
         public bool IsActive { get; set; }
         public string Image { get; set; }
         public string AddedBy { get; set; }
+        public string Massage { get; set; }
         public string UploadQRId { get; set; }
         public List<Home> lstUploadQR { get; set; }
 
@@ -217,7 +218,18 @@ namespace OMMIPL.Models
             return ds;
         }
 
-        
+        public DataSet SaveContactUs()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@name", Name),
+                                       new SqlParameter("@mobile", MobileNo),
+                                       new SqlParameter("@email", Email),
+                                       new SqlParameter("@Massage", Massage),
+                                        new SqlParameter("@Address", Address),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("SaveContactUs", para);
+            return ds;
+        }
 
     }
 }

@@ -201,7 +201,7 @@
                                                     <label><span>Amount</span><span class="text-red">*</span></label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
                                                 </div>
                                             </div>
                                             <div class="row form-group">

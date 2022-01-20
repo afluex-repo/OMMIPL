@@ -19,7 +19,24 @@ namespace OMMIPL.Controllers
 
         public ActionResult ContactList()
         {
-            return View();
+            Admin model = new Admin();
+            List<Admin> lst = new List<Admin>();
+            DataSet ds11 = model.GetContactDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.Message = r["Massage"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstContact = lst;
+            }
+            return View(model);
         }
         [HttpPost]
         [ActionName("ContactList")]
@@ -36,6 +53,7 @@ namespace OMMIPL.Controllers
                     Obj.Email = r["Email"].ToString();
                     Obj.MobileNo = r["Mobile"].ToString();
                     Obj.Address = r["Address"].ToString();
+                    Obj.Message = r["Massage"].ToString();
                     lst.Add(Obj);
                 }
                 model.lstContact = lst;
