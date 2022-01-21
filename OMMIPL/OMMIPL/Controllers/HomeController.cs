@@ -61,17 +61,34 @@ namespace OMMIPL.Controllers
             DataSet ds = model.Login();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
-                if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
+                if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
-                    if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                    model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
+                    if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
                     {
-                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                        if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                        {
+                            Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                            Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                            Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                            Session["LoginId"] = ds.Tables[0].Rows[0]["LoginId"].ToString();
+                            FormName = "UserDashboard";
+                            ControllerName = "User";
+                        }
+                        else
+                        {
+                            TempData["Msg"] = "Something went wrong";
+                            FormName = "Login";
+                            ControllerName = "Home";
+                        }
+                    }
+                    else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
+                    {
+                        Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
                         Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                        Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                        Session["LoginId"] = ds.Tables[0].Rows[0]["LoginId"].ToString();
-                        FormName = "UserDashboard";
-                        ControllerName = "User";
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
+                        FormName = "AdminDashboard";
+                        ControllerName = "Admin";
                     }
                     else
                     {
@@ -80,17 +97,9 @@ namespace OMMIPL.Controllers
                         ControllerName = "Home";
                     }
                 }
-                else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
-                {
-                        Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
-                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
-                    FormName = "AdminDashboard";
-                        ControllerName = "Admin";
-                }
                 else
                 {
-                    TempData["Msg"] = "Something went wrong";
+                    TempData["Msg"] = "Invalid Login Id or Password";
                     FormName = "Login";
                     ControllerName = "Home";
                 }
@@ -172,10 +181,10 @@ namespace OMMIPL.Controllers
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult UploadQR( string ID)
+        public ActionResult UploadQR(string ID)
         {
             Home model = new Home();
-            if(ID!=null)
+            if (ID != null)
             {
                 model.UploadQRId = ID;
                 DataSet ds11 = model.GetUploadQRDetails();
@@ -187,16 +196,16 @@ namespace OMMIPL.Controllers
 
                 }
             }
-          
+
             return View(model);
         }
         [HttpPost]
-        public ActionResult UploadQR(Home model,HttpPostedFileBase postedFile)
+        public ActionResult UploadQR(Home model, HttpPostedFileBase postedFile)
         {
             try
             {
 
-                if(model.UploadQRId==null)
+                if (model.UploadQRId == null)
                 {
                     if (postedFile != null)
                     {
@@ -368,7 +377,7 @@ namespace OMMIPL.Controllers
                             {
                                 model.Name = ds.Tables[0].Rows[0]["Name"].ToString();
                                 model.Password = Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString());
-                                mailbody = "Dear  " + model.Name + ", <br/> Your Password Is : " +model.Password;
+                                mailbody = "Dear  " + model.Name + ", <br/> Your Password Is : " + model.Password;
                                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
                                 {
                                     Host = "smtp.gmail.com",
@@ -391,7 +400,7 @@ namespace OMMIPL.Controllers
                                 TempData["Msg"] = ex.Message;
                             }
                         }
-                        
+
                         TempData["Msg"] = "Send Password your email-Id successfully";
                     }
                     else
@@ -441,7 +450,7 @@ namespace OMMIPL.Controllers
             try
             {
                 DataSet ds = model.SaveContactUs();
-                if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                     {

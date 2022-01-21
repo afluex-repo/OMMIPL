@@ -403,8 +403,8 @@ namespace OMMIPL.Controllers
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
-           // model.FK_UserId = Session["PK_UserId"].ToString();
-            //model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.FK_ColorId = ColorId;
             model.FK_PeriodId = PeriodId;
       
             try
