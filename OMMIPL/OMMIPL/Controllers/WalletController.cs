@@ -70,8 +70,8 @@ namespace OMMIPL.Controllers
         [HttpPost]
         public ActionResult TXNLadget(User model)
         {
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+           // model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+          //  model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
             model.PK_UserId = Session["PK_UserId"].ToString();
             List<User> Lst = new List<User>();
             int i = 0;
@@ -92,7 +92,7 @@ namespace OMMIPL.Controllers
                 }
                 model.lstLedget = Lst;
             }
-            return RedirectToAction("TXNLadget", "Wallet");
+            return View(model);//\\RedirectToAction("TXNLadget", "Wallet");
         }
         public ActionResult EwalletRequest()
         {

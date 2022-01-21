@@ -108,34 +108,29 @@
             return false;
         }
 
-        if (($("#PaymentMode option:selected").text()) == 'QUICK PAYMENT') {
-            if ($('#BankName').val() == '') {
-                $("#BankName").addClass('errortext');
-                $('#BankName').focus();
-                return false;
-            }
-            if ($('#DDChequeNo').val() == '') {
-                $("#DDChequeNo").addClass('errortext');
-                $('#DDChequeNo').focus();
-                return false;
-            }
-            if ($('#DDChequeDate').val() == '') {
-                $("#DDChequeDate").addClass('errortext');
-                $('#DDChequeDate').focus();
-                return false;
-            }
-            if ($('#BankBranch').val() == '') {
-                $("#BankBranch").addClass('errortext');
-                $('#BankBranch').focus();
-                return false;
-            }
-        }
-
-        //if ($('#PostedFile').val() == '') {
-        //    $("#PostedFile").addClass('errortext');
-        //    $('#PostedFile').focus();
-        //    return false;
+        //if (($("#PaymentMode option:selected").text()) == 'QUICK PAYMENT') {
+        //    if ($('#BankName').val() == '') {
+        //        $("#BankName").addClass('errortext');
+        //        $('#BankName').focus();
+        //        return false;
+        //    }
+        //    if ($('#DDChequeNo').val() == '') {
+        //        $("#DDChequeNo").addClass('errortext');
+        //        $('#DDChequeNo').focus();
+        //        return false;
+        //    }
+        //    if ($('#DDChequeDate').val() == '') {
+        //        $("#DDChequeDate").addClass('errortext');
+        //        $('#DDChequeDate').focus();
+        //        return false;
+        //    }
+        //    if ($('#BankBranch').val() == '') {
+        //        $("#BankBranch").addClass('errortext');
+        //        $('#BankBranch').focus();
+        //        return false;
+        //    }
         //}
+
     }
 
 
@@ -143,15 +138,15 @@
         debugger;
         //var paymentmode = ($("#PaymentMode option:selected").text());
         if ($("#PaymentMode").val() == '7') {
-            $("#bankname").show();
-            $("#chequeno").show();
-            $("#chequdate").show();
-            $("#chequdate").show();
+            $("#bankname").hide();
+            $("#chequeno").hide();
+            $("#chequdate").hide();
+            $("#chequdate").hide();
             $("#qr").hide();
         }
         else  if ($("#PaymentMode").val() == '8') {
             $("#bankname").hide();
-            $("#chequeno").hide();
+            $("#chequeno").show();
             $("#chequdate").hide();
             $("#chequdate").hide();
             $("#qr").show();
