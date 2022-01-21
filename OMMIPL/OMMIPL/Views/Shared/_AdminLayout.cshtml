@@ -136,7 +136,18 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                     <nav class="cl-effect-5" id="cl-effect-5">
                         <ul class="nav navbar-nav">
                             <li><a href="@Url.Action("AdminDashboard","Admin")"><span data-hover="Dashboard">Dashboard</span></a></li>
-                            <li><a href="@Url.Action("QRMaster","Admin")"><span data-hover="QRMaster">QRMaster</span></a></li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span data-hover="Master">Master <i class="fa fa-chevron-down"></i></span>
+                                </a>
+                                <div class="dropdown-menu report" aria-labelledby="navbarDropdown">
+                                    <ul class="nav navbar-nav" style="margin-top: 0; white-space: nowrap; margin-right: 1em;">
+                                        <li><a href="@Url.Action("QRMaster","Admin")"><span data-hover="QRMaster">QR Master</span></a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
                             <li><a href="@Url.Action("ContactList","Admin")"><span data-hover="ContactList">Contact List </span></a></li>
                          
                             <li class="nav-item dropdown">
@@ -146,8 +157,8 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                                 <div class="dropdown-menu report" aria-labelledby="navbarDropdown">
                                     <ul class="nav navbar-nav" style="margin-top: 0; white-space: nowrap; margin-right: 1em;">
                                         <li><a href="@Url.Action("E_WalletReport","Admin")"><span data-hover="E_WalletReport">E-Wallet Request</span></a></li>
-                                        <li><a href="/Admin/GameReport/">GameReport</a></li>
-                                        <li><a href="/Admin/UserRegistrationList/">RegistrationList</a></li>
+                                        <li><a href="/Admin/GameReport/">Game Report</a></li>
+                                        <li><a href="/Admin/UserRegistrationList/">Registration List</a></li>
                                     </ul>
                                 </div>
                             </li>

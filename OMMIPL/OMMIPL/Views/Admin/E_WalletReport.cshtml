@@ -68,26 +68,35 @@
                                                 <td>@Item.BankBranch</td>
                                                 <td>@Item.DDChequeNo</td>
                                                 <td>@Item.DDChequeDate</td>
-                                                <td><img src="@Item.Image" height="100" width="100" /></td>
-                                                @if (Item.Status== "Approved" || Item.Status == "Declined")
+                                                @if (Item.Image != "" && Item.Image != null)
+                                                {
+                                                    <td>
+                                                        <img src="@Item.Image" height="100" width="100" />
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                                @if (Item.Status == "Approved" || Item.Status == "Declined")
                                                 {
                                                     <td> </td>
                                                 }
                                                 else
                                                 {
-                                                <td>
-                                                    <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Approved" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Approve this record?')">Approved</a>
+                                                    <td>
+                                                        <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Approved" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to Approve this record?')">Approve</a>
                                                     </td>
-                                                <td>
-                                                     <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Decline" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?')">Decline</a>
+                                                    <td>
+                                                        <a href="/Admin/EWalletRequestDeclineApprove?Id=@Item.RequestId&status=Decline" class="btn btn-warning btn-sm" onclick="return confirm('Are you sure you want to decline this record?')">Decline</a>
                                                     </td>
                                                 }
-                                              
-                                                
+
+
 
                                                 @*<td>
-                                                    <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
-                                                </td>*@
+                                                        <a href="/Admin/Delete?Id=@Item.RequestId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                                                    </td>*@
                                             </tr>
                                             i++;
                                         }

@@ -135,6 +135,7 @@ namespace OMMIPL.Controllers
         {
             try
             {
+                obj.PK_UserId = Session["PK_UserId"].ToString();
                 DataSet ds = obj.UpdateProfile();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -298,10 +299,20 @@ namespace OMMIPL.Controllers
 
         public ActionResult UpdateAccountDetails()
         {
-            return View();
+            User Obj = new User();
+            Obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = Obj.UserProfile();
+            if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+            {
+                Obj.AccountNo = ds.Tables[0].Rows[0]["MemberAccNo"].ToString();
+                Obj.IFSC = ds.Tables[0].Rows[0]["IFSCCode"].ToString();
+                Obj.BankName = ds.Tables[0].Rows[0]["MemberBankName"].ToString();
+                Obj.BankBranch = ds.Tables[0].Rows[0]["MemberBranch"].ToString();
+                Obj.HolderName = ds.Tables[0].Rows[0]["BankHolderName"].ToString();
+            }
+            return View(Obj);
         }
         [HttpPost]
-        [ActionName("UpdateAccountDetails")]
         public ActionResult UpdateAccountDetails(User Obj)
         {
             Obj.PK_UserId = Session["PK_UserId"].ToString();
@@ -403,8 +414,8 @@ namespace OMMIPL.Controllers
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
-           // model.FK_UserId = Session["PK_UserId"].ToString();
-            //model.FK_GameId = GameId;
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.FK_ColorId = ColorId;
             model.FK_PeriodId = PeriodId;
       
             try

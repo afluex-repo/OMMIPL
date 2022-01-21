@@ -25,21 +25,23 @@
 <div class="mail" id="mail">
     <div class="container">
         <div class="row form-row">
+        
             <div class="col-md-10 form-col">
                 <h3 class="w3l_head w3l_head1" style="font-weight: 600">Profile</h3>
                 @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
                 <div class="w3_mail_grids">
+                    <span style="color:red">@TempData["Msg"]</span>
                     <form action="/User/UpdateProfile" method="post">
                         <div class="col-md-6 w3_agile_mail_grid">
                             <span class="input input--ichiro">
-                                @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Sponsor Id", @onchange = "getsponsordetails(this);" })
-                                @Html.HiddenFor(m => m.FK_SponsorId)
+                                @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Sponsor Id"})
+                                @*@Html.HiddenFor(m => m.FK_SponsorId)*@
                             </span>
                             <span class="input input--ichiro">
                                 @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
                             </span>
                             <span class="input input--ichiro">
-                                @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
+                                @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", @readonly = "true" })
                             </span>
                             <span class="input input--ichiro">
                                 @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();", @onkeypress = "return isNumberKey(event);",@maxlength="6" })
@@ -47,8 +49,8 @@
                             <span class="input input--ichiro">
                                 @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" ,@readonly="true"})
                             </span>
-                            <input type="submit" value="Update" style="margin-top: 50px;"><br /><br />
-                            <span style="color:red">@TempData["Msg"]</span>
+                            <input type="submit" value="Update" style="margin-top: 50px;" onclick="return validation();"><br /><br />
+                           
                         </div>
                         <div class="col-md-6 w3_agile_mail_grid">
                             <span class="input input--ichiro">
@@ -128,6 +130,27 @@
             $('#Password').val('');
             $('#ConfirmPassword').val('');
             alert("Password and Confirm Password are different")
+            return false;
+        }
+    }
+    function validation() {
+        $('.errortext').removeClass('errortext');
+        if($('#FirstName').val()=='')
+        {
+            $('#FirstName').addClass('errortext');
+            $('#FirstName').focus();
+            return false;
+
+        }
+       
+        if ($('#PinCode').val() == '') {
+            $("#PinCode").addClass('errortext');
+            $('#PinCode').focus();
+            return false;
+        }
+        if ($('#Email').val() == '') {
+            $('#Email').addClass('errortext');
+            $('#Email').focus();
             return false;
         }
     }
