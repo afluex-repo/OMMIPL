@@ -117,6 +117,16 @@ namespace OMMIPL.Controllers
             ViewBag.ddlPaymentMode = ddlPaymentMode;
 
             #endregion
+            obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds2 = obj.UserProfile();
+            if(ds2!=null && ds2.Tables[0].Rows.Count>0 && ds2.Tables.Count>0)
+            {
+                obj.LoginId = ds2.Tables[0].Rows[0]["LoginId"].ToString();
+                obj.BankName = ds2.Tables[0].Rows[0]["MemberBankName"].ToString();
+             //   obj.IFSCCode = ds2.Tables[0].Rows[0]["IFSCCode"].ToString();
+               // obj.BankName = ds2.Tables[0].Rows[0]["MemberBankName"].ToString();
+            }
+
             return View(obj);
         }
         [HttpPost]
@@ -130,7 +140,7 @@ namespace OMMIPL.Controllers
                     model.Image = "../UploadDocument/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
                     postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image)));
                 }
-                model.DDChequeDate = string.IsNullOrEmpty(model.DDChequeDate) ? null : Comman.ConvertToSystemDate(model.DDChequeDate, "dd/MM/yyyy");
+              //  model.DDChequeDate = string.IsNullOrEmpty(model.DDChequeDate) ? null : Comman.ConvertToSystemDate(model.DDChequeDate, "dd/MM/yyyy");
                 model.AddedBy = Session["PK_UserId"].ToString();
                 DataSet ds = model.SaveEwalletRequest();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)

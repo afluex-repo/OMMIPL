@@ -26,18 +26,23 @@
                     <div class="row">
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Login Id </label>
-                            @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "Login Id" })
+                            @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "Login Id", @readonly="true" })
                         </div>
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Amount <span style="color: red">*</span></label>
                             @Html.TextBoxFor(m => m.Amount, new { @class = "input__field", @placeholder = "Amount", @onkeypress = "return isNumberOrDecimal(event);" })
                         </div>
+                        @*<div class="col-md-4 w3_agile_mail_grid">
+                            <label>Payment Mode <span style="color: red">*</span></label>
+                            @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field default-select", @data_style = "select-with-transition", @onchange ="return getpaymentdetails();" })
+                        </div>*@
+
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Payment Mode <span style="color: red">*</span></label>
-                            @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field default-select", @data_size = "7", @data_style = "select-with-transition", @onchange = "getpaymentdetails();" })
+                            @Html.DropDownListFor(m => m.PaymentMode, new SelectList(ViewBag.ddlPaymentMode, "Value", "Text"), new { @class = "input__field", @onchange = "return getpaymentdetails();" })
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="myid">
                         <div class="col-md-4 w3_agile_mail_grid" id="bankname" style="display: none">
                             <div class="mb-3">
                                 <label class="mb-1 text-white fs-14">Bank Name <span class="text-danger">*</span></label>
@@ -64,15 +69,16 @@
                                 @Html.TextBoxFor(m => m.BankBranch, new { @class = "input__field", @placeholder = "Bank Branch" })
                             </div>
                         </div>
-                        <div class="col-md-4 w3_agile_mail_grid">
+                        @*<div class="col-md-4 w3_agile_mail_grid" id="Upload">
                             <label>Upload Document </label>
                             <input type="file" name="PostedFile" id="PostedFile" class="input__field" placeholder="Upload Document" />
-                        </div>
-                        <div class="col-md-4 w3_agile_mail_grid">
+                        </div>*@
+                        <div class="col-md-4 w3_agile_mail_grid" style="display: none" id="qr">
                             <label>QR Code</label><br />
                             <img src="/images/QRCode.png" />
                         </div>
                     </div>
+                    <br />
                     <div class="row">
                         <div class="col-md-4 w3_agile_mail_grid">
                             <input type="submit" id="btnsave" value="Wallet Request" onclick="return validateform();">
@@ -88,12 +94,9 @@
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script>
     function validateform() {
+        debugger
         $(".errortext").removeClass("errortext");
-        if ($('#LoginId').val() == '0') {
-            $("#LoginId").addClass('errortext');
-            $('#LoginId').focus();
-            return false;
-        }
+      
         if ($('#Amount').val() == '') {
             $("#Amount").addClass('errortext');
             $('#Amount').focus();
@@ -105,7 +108,7 @@
             return false;
         }
 
-        if (($("#PaymentMode option:selected").text()) != 'Cash') {
+        if (($("#PaymentMode option:selected").text()) == 'QUICK PAYMENT') {
             if ($('#BankName').val() == '') {
                 $("#BankName").addClass('errortext');
                 $('#BankName').focus();
@@ -138,19 +141,23 @@
 
     function getpaymentdetails() {
         debugger;
-        var paymentmode = ($("#PaymentMode option:selected").text());
-        if (paymentmode != "Cash") {
-            bankname.style.display = "block";
-            chequeno.style.display = "block";
-            chequdate.style.display = "block";
-            bankbranch.style.display = "block";
+        //var paymentmode = ($("#PaymentMode option:selected").text());
+        if ($("#PaymentMode").val() == '7') {
+            $("#bankname").show();
+            $("#chequeno").show();
+            $("#chequdate").show();
+            $("#chequdate").show();
+            $("#qr").hide();
         }
-        else {
-            bankname.style.display = "none";
-            chequeno.style.display = "none";
-            chequdate.style.display = "none";
-            bankbranch.style.display = "none";
+        else  if ($("#PaymentMode").val() == '8') {
+            $("#bankname").hide();
+            $("#chequeno").hide();
+            $("#chequdate").hide();
+            $("#chequdate").hide();
+            $("#qr").show();
+            $("#chequdate").show();
         }
+       
     }
 
 

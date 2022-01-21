@@ -72,6 +72,14 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
             return ds;
         }
+        public DataSet UserProfile()
+        {
+            SqlParameter[] para = {
+                                      new SqlParameter("@FK_UserId", PK_UserId),
+                                  };
+            DataSet ds = DBHelper.ExecuteQuery("UserProfile", para);
+            return ds;
+        }
         public DataSet GetEwalletDetails()
         {
             SqlParameter[] para =
