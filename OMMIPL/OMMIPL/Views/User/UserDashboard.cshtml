@@ -120,7 +120,7 @@
                         <div class="body-layout">
                             <div class="body-contant">
                                 <h2 class="card-title main balance">Main Balance</h2>
-                                <span class="card-detail">₹ @ViewBag.MainBalance</span>
+                                <span class="card-detail" id="spBalance">₹ @ViewBag.MainBalance</span>
                                 <h2 class="card-title main period">Period</h2>
                                 <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
                                 <input type="hidden" id="hdfPeriodId" value="@Model.FK_PeriodId" />
@@ -129,25 +129,24 @@
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
                                 <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
-                            <div class="body-color text-center" style="background-color:@Model.ColorName">
+                            <div id="divColor" class="body-color text-center" style="background-color:@Model.ColorName">
                                 @if (Model != null)
                                 {
                                     string text = "";
-                                    if (Model.ColorName == "Red")
+                                    if (Model.ColorName == "red")
                                     {
                                         text = "R";
                                     }
-                                    else if (Model.ColorName == "Green")
+                                    else if (Model.ColorName == "green")
                                     {
                                         text = "G";
                                     }
-                                    else if (Model.ColorName == "Blue")
+                                    else if (Model.ColorName == "blue")
                                     {
                                         text = "B";
                                     }
                                     <div class="color-symbol"><span id="spColor">@text</span></div>
                                 }
-
                                 <div class="time-counter"><span class="digit"></span></div>
                             </div>
                         </div>
@@ -425,27 +424,33 @@
         $(document).ready(function () {
             debugger;
             var timer2 = $("#hdfDuration").val();
-            var interval = setInterval(function () {
-                var timer = timer2.split(':');
-                minutes = parseInt(timer[0], 10);
-                seconds = parseInt(timer[1], 10);
-                --seconds;
-                minutes = (seconds < 0) ? --minutes : minutes;
-                if (minutes < 0) {
-                    clearInterval(interval);
-                }
-                seconds = (seconds < 0) ? 59 : seconds;
-                seconds = (seconds < 10) ? '0' + seconds : seconds;
-                if (minutes == 0 && seconds == 0) {
-                    clearInterval(interval);
-                    window.location.href = "/User/UserDashboard";
-                }
-                if (minutes == 0 && seconds == 30) {
-                    getResponse();
-                }
-                $('.digit').html(minutes + ':' + seconds);
-                timer2 = minutes + ':' + seconds;
-            }, 1000);
+            if (timer2 == "00:00")
+            {
+                window.location.href = "/User/UserDashboard";
+            }
+            else {
+                var interval = setInterval(function () {
+                    var timerX1 = timer2.split(':');
+                    minutes = parseInt(timerX1[0], 10);
+                    seconds = parseInt(timerX1[1], 10);
+                    --seconds;
+                    minutes = (seconds < 0) ? --minutes : minutes;
+                    if (minutes < 0) {
+                        clearInterval(interval);
+                    }
+                    seconds = (seconds < 0) ? 59 : seconds;
+                    seconds = (seconds < 10) ? '0' + seconds : seconds;
+                    if (minutes == 0 && seconds == 0) {
+                        clearInterval(interval);
+                        window.location.href = "/User/UserDashboard";
+                    }
+                    if (minutes == 0 && seconds == 30) {
+                        getResponse();
+                    }
+                    $('.digit').html(minutes + ':' + seconds);
+                    timer2 = minutes + ':' + seconds;
+                }, 1000);
+            }
             //function gfg_Run() {
             //    setInterval(function () {
 
@@ -541,27 +546,31 @@
                             $('.digit2').html('');
                             $('.time-counter').html('<span class="digit1"></span>');
                             var timer3 = $("#hdfDuration").val();
-                            var interval1 = setInterval(function () {
-                                var timer1 = timer3.split(':');
-                                minutes1 = parseInt(timer1[0], 10);
-                                seconds1 = parseInt(timer1[1], 10);
-                                --seconds1;
-                                minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
-                                if (minutes1 < 0) {
-                                    clearInterval(interval1);
-                                }
-                                seconds1 = (seconds1 < 0) ? 59 : seconds1;
-                                seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
-                                if (minutes1 == 0 && seconds1 == 0) {
-                                    clearInterval(interval1);
-                                    window.location.href = "/User/UserDashboard";
-                                }
-                                if (minutes1 == 0 && seconds1 == 30) {
-                                    getResponse();
-                                }
-                                $('.digit1').html(minutes1 + ':' + seconds1);
-                                timer3 = minutes1 + ':' + seconds1;
-                            }, 1000);
+                            if (timer3 == "00:00") {
+                            }
+                            else {
+                                var interval1 = setInterval(function () {
+                                    var timer1 = timer3.split(':');
+                                    minutes1 = parseInt(timer1[0], 10);
+                                    seconds1 = parseInt(timer1[1], 10);
+                                    --seconds1;
+                                    minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
+                                    if (minutes1 < 0) {
+                                        clearInterval(interval1);
+                                    }
+                                    seconds1 = (seconds1 < 0) ? 59 : seconds1;
+                                    seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
+                                    if (minutes1 == 0 && seconds1 == 0) {
+                                        clearInterval(interval1);
+                                        window.location.href = "/User/UserDashboard";
+                                    }
+                                    if (minutes1 == 0 && seconds1 == 30) {
+                                        getResponse();
+                                    }
+                                    $('.digit1').html(minutes1 + ':' + seconds1);
+                                    timer3 = minutes1 + ':' + seconds1;
+                                }, 1000);
+                            }
                         }
                         else if (GameId == "7") {
                             minutes = 0;
@@ -574,28 +583,33 @@
                             $('.digit').html('');
                             $('.digit2').html('');
                             $('.time-counter').html('<span class="digit2"></span>');
-                            var timer4 = $("#hdfDuration").val();
-                            var interval2 = setInterval(function () {
-                                var timer3 = timer4.split(':');
-                                minutes2 = parseInt(timer3[0], 10);
-                                seconds2 = parseInt(timer3[1], 10);
-                                --seconds2;
-                                minutes2 = (seconds2 < 0) ? --minutes2 : minutes2;
-                                if (minutes2 < 0) {
-                                    clearInterval(interval2);
-                                }
-                                seconds2 = (seconds2 < 0) ? 59 : seconds2;
-                                seconds2 = (seconds2 < 10) ? '0' + seconds2 : seconds2;
-                                if (minutes2 == 0 && seconds2 == 0) {
-                                    clearInterval(interval2);
-                                    window.location.href = "/User/UserDashboard";
-                                }
-                                if (minutes2 == 0 && seconds2 == 30) {
-                                    getResponse();
-                                }
-                                $('.digit2').html(minutes2 + ':' + seconds2);
-                                timer4 = minutes2 + ':' + seconds2;
-                            }, 1000);
+                            var timer5 = $("#hdfDuration").val();
+                            if (timer5 == "00:00")
+                            {
+                            }
+                            else {
+                                var interval2 = setInterval(function () {
+                                    var timer4 = timer5.split(':');
+                                    minutes2 = parseInt(timer4[0], 10);
+                                    seconds2 = parseInt(timer4[1], 10);
+                                    --seconds2;
+                                    minutes2 = (seconds2 < 0) ? --minutes2 : minutes2;
+                                    if (minutes2 < 0) {
+                                        clearInterval(interval2);
+                                    }
+                                    seconds2 = (seconds2 < 0) ? 59 : seconds2;
+                                    seconds2 = (seconds2 < 10) ? '0' + seconds2 : seconds2;
+                                    if (minutes2 == 0 && seconds2 == 0) {
+                                        clearInterval(interval2);
+                                        window.location.href = "/User/UserDashboard";
+                                    }
+                                    if (minutes2 == 0 && seconds2 == 30) {
+                                        getResponse();
+                                    }
+                                    $('.digit2').html(minutes2 + ':' + seconds2);
+                                    timer5 = minutes2 + ':' + seconds2;
+                                }, 1000);
+                            }
                         }
                         else {
 
@@ -662,6 +676,22 @@
                 $('#Amount').focus();
                 return false;
             }
+            if ($("#hdfGameId").val() == "7") {
+                if ($("#FK_ColorId").val() == 1) {
+                    $("#divColor").attr("style", "background-color:red");
+                    $("#spColor").text("R");
+                }
+                else if ($("#FK_ColorId").val() == 2) {
+                    $("#divColor").attr("style", "background-color:green");
+                    $("#spColor").text("G");
+                }
+                else if ($("#FK_ColorId").val() == 3) {
+                    $("#divColor").attr("style", "background-color:blue");
+                    $("#spColor").text("B");
+                }
+                else {
+                }
+            }
             debugger;
             $.ajax({
                 url: "/User/GameStart",
@@ -672,23 +702,7 @@
                     debugger;
                     if (response != null) {
                         if (response.Message == "1") {
-                            if (GameId == "7")
-                            {
-                                if ($("#FK_ColorId").val() == 1) {
-                                    $("#btnColor").attr("style", "background-color:red");
-                                    $("#btnColor").text("R");
-                                }
-                                else if ($("#FK_ColorId").val() == 2) {
-                                    $("#btnColor").attr("style", "background-color:green");
-                                    $("#btnColor").text("G");
-                                }
-                                else if ($("#FK_ColorId").val() == 3) {
-                                    $("#btnColor").attr("style", "background-color:blue");
-                                    $("#btnColor").text("B");
-                                }
-                                else {
-                                }
-                            }
+                            $("#spBalance").text(response.BalanceAmount);
                             $("#FK_ColorId").val('');
                             $("#Amount").val('');
                             $('#myModal').modal('hide');

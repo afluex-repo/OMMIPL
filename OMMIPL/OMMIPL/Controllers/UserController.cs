@@ -88,14 +88,14 @@ namespace OMMIPL.Controllers
                 }
                 model.lstColor = lstColor;
             }
-            //if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[2].Rows.Count > 0)
-            //{
-            //    model.PeriodNo = (Convert.ToInt32(ds1.Tables[2].Rows[0]["AttemptNo"]) + 1).ToString();
-            //}
-            //else
-            //{
-            //    model.PeriodNo = "1";
-            //}
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[2].Rows.Count > 0)
+            {
+                model.ColorName = ds1.Tables[2].Rows[0]["ColorName"].ToString().ToLower();
+            }
+            else
+            {
+                model.ColorName = "red";
+            }
             return View(model);
         }
         public ActionResult UserProfile()
@@ -267,12 +267,17 @@ namespace OMMIPL.Controllers
             User model = new User();
             model.FK_ColorId = ColorId;
             model.FK_GameId = GameId;
-            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.PK_UserId = Session["PK_UserId"].ToString();
             model.Amount = Amount;
             model.FK_PeriodId = PeriodId;
             DataSet ds = model.GameStart();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
+                DataSet ds1 = model.GetMainBalance();
+                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+                {
+                    model.BalanceAmount = ds1.Tables[0].Rows[0]["amount"].ToString();
+                }
                 if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
                     model.Message = "1";

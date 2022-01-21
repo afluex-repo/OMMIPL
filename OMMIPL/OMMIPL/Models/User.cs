@@ -66,6 +66,7 @@ namespace OMMIPL.Models
         public string ColorName { get; set; }
         public TimeSpan time { get; set; }
         public string duration { get; set; }
+        public string BalanceAmount { get; set; }
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
@@ -207,7 +208,7 @@ namespace OMMIPL.Models
             SqlParameter[] para = { new SqlParameter("@FK_GameId", FK_GameId),
                 new SqlParameter("@FK_PeriodId", FK_PeriodId),
                 new SqlParameter("@FK_ColorId", FK_ColorId),
-                new SqlParameter("@FK_UserId", FK_UserId),
+                new SqlParameter("@FK_UserId", PK_UserId),
                  new SqlParameter("@Amount", Amount),
             };
             DataSet ds = DBHelper.ExecuteQuery("SaveUserGameRequest", para);
