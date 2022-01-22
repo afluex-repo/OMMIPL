@@ -322,10 +322,52 @@ namespace OMMIPL.Controllers
             return RedirectToAction("E_WalletReport", "Admin");
         }
 
-
+        public ActionResult DeleteQR(string Id)
+        {
+            try
+            {
+                Admin model = new Admin();
+                model.AddedBy = "1";
+                model.PK_QRId = Id;
+                DataSet ds = model.DeleteQR();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Msg"] = "Record Deleted Successfully";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("QRMaster", "Admin");
+        }
         public ActionResult QRMaster()
         {
-            return View();
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+            DataSet ds = model.QRMasterList();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.AccountName = r["AccountName"].ToString();
+                    Obj.Number = r["Number"].ToString();
+                    Obj.PK_QRId = r["PK_QRId"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                    Obj.UpLoadQR = r["UpLoadQR"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstReports = lst;
+            }
+            return View(model);
         }
         [HttpPost]
         [ActionName("QRMaster")]

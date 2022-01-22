@@ -226,7 +226,7 @@ namespace OMMIPL.Models
                                        new SqlParameter("@email", Email),
                                        new SqlParameter("@Massage", Massage),
                                         new SqlParameter("@Address", Address),
-                                        new SqlParameter("@AddedBy", Name),
+                                        new SqlParameter("@AddedBy", AddedBy),
                                   };
             DataSet ds = DBHelper.ExecuteQuery("SaveContactUs", para);
             return ds;
