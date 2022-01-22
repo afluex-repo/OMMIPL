@@ -211,6 +211,14 @@ namespace OMMIPL.Controllers
                 //}
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
+                    {
+                        model.ColorName = ds.Tables[2].Rows[0]["ColorName"].ToString();
+                    }
+                    else
+                    {
+                        model.ColorName = "";
+                    }
                     model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
                     model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
                     model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
