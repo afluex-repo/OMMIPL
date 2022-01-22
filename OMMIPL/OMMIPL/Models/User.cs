@@ -21,7 +21,7 @@ namespace OMMIPL.Models
         public string UserType { get; set; }
         public List<User> lstReports { get; set; }
         public List<User> lstLedget { get; set; }
-
+        public string PK_QRId { get; set; }
         public string Amount { get; set; }
         public string PaymentMode { get; set; }
         public string QRCode { get; set; }
@@ -66,9 +66,38 @@ namespace OMMIPL.Models
         public string ColorName { get; set; }
         public TimeSpan time { get; set; }
         public string duration { get; set; }
+        public string ddlstatus { get; set; }
+        public List<User> lstGameReport { get; set; }
+
+        public string LastName { get; set; }
+        public string PK_PeriodId { get; set; }
+
+        public string Fk_ChosenColorId { get; set; }
+        public string FK_ResultId { get; set; }
+        public string color { get; set; }
+           public string Time { get; set; }
+        public string windate { get; set; }
+
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
+            return ds;
+        }
+        public DataSet GetGameReport()
+        {
+            SqlParameter[] para =
+            {
+                   new SqlParameter("@LoginID",LoginId),
+                   new SqlParameter("@Action",ddlstatus),
+                    new SqlParameter("@FromDate",FromDate),
+                    new SqlParameter("@ToDate",ToDate)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GameReport", para);
+            return ds;
+        }
+        public DataSet GetOR()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetOR");
             return ds;
         }
         public DataSet UserProfile()

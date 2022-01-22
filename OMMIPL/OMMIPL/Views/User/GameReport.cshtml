@@ -1,9 +1,166 @@
-﻿
+﻿@model OMMIPL.Models.User
 @{
     ViewBag.Title = "GameReport";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("GameReport", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    @*<div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
+                            <label class="mb-1 text-white fs-14">LoginID </label>
+                            @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "LoginID", })
+                        </div>
+                    </div>*@
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
+                            <label class="mb-1 text-white fs-14"><span style="color:red">*</span>Status</label>
+                            <select id="ddlstatus" class="input__field" name="ddlstatus">
+                                <option value="0">Select</option>
+                                <option value="Winner">Winner</option>
+                                <option value="Looser">Lose</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
+                            <label class="mb-1 text-white fs-14">From Date </label>
+                            @Html.TextBoxFor(m => m.FromDate, new { @class = "input__field", @placeholder = "From Date", @readonly = true })
+                        </div>
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
+                            <label class="mb-1 text-white fs-14">To Date</label>
+                            @Html.TextBoxFor(m => m.ToDate, new { @class = "input__field", @placeholder = "To Date", @readonly = true })
+                        </div>
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
+                            <label class="mb-1 text-white fs-14"></label>
+                            <input type="submit" name="submit" value="Search" class="btn btn-default" onclick="return ValidateForm();" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Game"]
+                    </p><br />
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr style="text-align:center;">
+                                    <th>S No.</th>
+                                    <th>Name</th>
+                                    <th>LastName</th>
+                                    <th>LoginID</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.lstGameReport != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var Item in Model.lstGameReport)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+
+                                                <td>@Item.Name</td>
+                                                <td>@Item.LastName</td>
+                                                <td>@Item.LoginId</td>
+                                                <td>@Item.windate</td>
+                                                <td>@Item.Time</td>
+
+
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script>
+
+    function ValidateForm() {
+        debugger;
+        $(".errortext").removeClass("errortext");
+        if ($("#ddlstatus").val() == "0") {
+            $("#ddlstatus").addClass('errortext');
+            $('#ddlstatus').focus();
+            return false;
+        }
+
+
+    }
+
+    $('#FromDate').datepicker({
+        format: 'dd/mm/yyyy',
+        changeYear: true,
+        changeMonth: true,
+
+    });
+    $('#ToDate').datepicker({
+        format: 'dd/mm/yyyy',
+        changeYear: true,
+        changeMonth: true,
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#tableExport').after('<div id="nav"></div>');
+        var rowsShown = 10;
+        var rowsTotal = $('#tableExport tbody tr').length;
+        var numPages = rowsTotal / rowsShown;
+        for (i = 0; i < numPages; i++) {
+            var pageNum = i + 1;
+            $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+        }
+        $('#tableExport tbody tr').hide();
+        $('#tableExport tbody tr').slice(0, rowsShown).show();
+        $('#nav a:first').addClass('active');
+        $('#nav a').bind('click', function () {
+
+            $('#nav a').removeClass('active');
+            $(this).addClass('active');
+            var currPage = $(this).attr('rel');
+            var startItem = currPage * rowsShown;
+            var endItem = startItem + rowsShown;
+            $('#tableExport tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+            css('display', 'table-row').animate({ opacity: 1 }, 300);
+        });
+    });
+</script>
 
 
 

@@ -486,7 +486,7 @@ namespace OMMIPL.Controllers
                             }
                         }
 
-                        TempData["Msg"] = "Send message on your email-Id successfully";
+                        TempData["Msg"] = "Send message on your email-Id successfull";
                     }
                     else
                     {
