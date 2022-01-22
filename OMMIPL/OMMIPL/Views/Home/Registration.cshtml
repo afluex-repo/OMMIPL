@@ -1,27 +1,49 @@
 ﻿@model OMMIPL.Models.Home
 @{
     ViewBag.Title = "Registration";
-    Layout = "~/Views/Shared/_WebLayout.cshtml";
+    Layout = null;
 }
+<link href="~/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="~/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="../../../../../../assests/css/font-awesome.min.css">
+<link href="http://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Jura:300,400,500,600" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+      rel='stylesheet' type='text/css'>
 <style>
-    div#mail {
-    background-color: #ff5000;
-}
-
-.row.form-row {
+    .mail{
+        height: 100vh;
+        background-color: #064b78;
+    }
+   .row.form-row { 
     display: flex;
     justify-content: center;
 }
-.col-md-10.form-col {
+
+    .col-md-8.form-col {
+    
+    background-image: linear-gradient(to right, #70b3e0, #b9dcef);
     border: 1px solid white;
     border-radius: 20px;
-    padding: 30px 10px;
+    padding: 30px;
+}
+
+    .input--ichiro {
+    margin-top: 1em;
+}
+    .input__field {
+    padding: 10px;
+}
+    .w3_agile_mail_grid textarea {
+    margin: 0em;
+    min-height: 145px;
 }
 </style>
 <div class="mail" id="mail">
     <div class="container">
         <div class="row form-row">
-            <div class="col-md-10 form-col">
+            <div class="col-md-8 form-col">
             <h3 class="w3l_head w3l_head1">Sign Up</h3>
             @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
             <div class="w3_mail_grids">
@@ -40,14 +62,13 @@
                         <span class="input input--ichiro">
                             @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Password", @type = "Password" })
                         </span>
-                        <span class="input input--ichiro">
-                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
-                        </span>
+                        
                         <span class="input input--ichiro">
                             @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
                         </span>
-                        <input type="submit" value="Submit"><br /><br />
-                        <span style="color:red">@TempData["Msg"]</span>
+                        <span class="input input--ichiro">
+                            @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
+                        </span>
                     </div>
                     <div class="col-md-6 w3_agile_mail_grid">
                         <span class="input input--ichiro">
@@ -66,8 +87,10 @@
                             @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
                         </span>
                         <span class="input input--ichiro">
-                            @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
+                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
                         </span>
+                        <input type="submit" value="Submit" style="margin-top: 50px;"><br /><br />
+                        <span style="color:red">@TempData["Msg"]</span>
                     </div>
                     <div class="clearfix"> </div>
                 </form>

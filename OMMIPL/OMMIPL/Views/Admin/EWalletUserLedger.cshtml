@@ -3,19 +3,7 @@
     ViewBag.Title = "EWalletUserLedger";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<style>
-    /*============Pagination=================*/
-    div#nav {
-        float: right;
-    }
 
-        div#nav a {
-            background-color: #111111;
-            color: #fff;
-            font-weight: 600;
-            padding: 1px 10px;
-        }
-</style>
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
@@ -67,6 +55,7 @@
                     <br /><br />
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+
                             <thead>
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
@@ -75,7 +64,7 @@
                                     <th>Payment Mode</th>
                                     <th>Narration</th>
                                     <th>Txn Date</th>
-                                  
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,8 +82,8 @@
                                                 <td>@Item.paymodename</td>
                                                 <td>@Item.Narration</td>
                                                 <td>@Item.CurrentDate</td>
-                                                
-                                               
+
+
                                             </tr>
                                             i++;
                                         }
@@ -102,7 +91,8 @@
                                 }
                             </tbody>
                         </table>
-                    </div>
+
+</div>
                 </div>
             }
         </div>
@@ -135,5 +125,3 @@
         });
     });
 </script>
-
-

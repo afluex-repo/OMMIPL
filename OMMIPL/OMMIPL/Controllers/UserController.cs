@@ -20,19 +20,25 @@ namespace OMMIPL.Controllers
             List<Game> lstPrediction = new List<Game>();
             List<Game> lstResult = new List<Game>();
             model.PK_UserId = Session["PK_UserId"].ToString();
+            model.FK_GameId = "7";
             DataSet ds = model.GetMainBalance();
             DataSet ds1 = model.GetAllGames();
             DataSet ds2 = model.GetUserGamePrediction();
-
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[1].Rows.Count > 0)
+            {
+                model.FK_PeriodId = ds2.Tables[1].Rows[0]["PK_PeriodId"].ToString(); 
+                model.PeriodNo = ds2.Tables[1].Rows[0]["PeriodNo"].ToString();
+                model.StartTime = ds2.Tables[1].Rows[0]["StartTime"].ToString();
+                model.EndTime = ds2.Tables[1].Rows[0]["EndTime"].ToString();
+                model.time = TimeSpan.Parse(ds2.Tables[1].Rows[0]["Duration"].ToString());
+                model.duration = model.time.ToString("mm\\:ss");
+            }
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
             }
             if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
             {
-                model.FK_GameId = ds1.Tables[0].Rows[0]["PK_GameId"].ToString();
-                model.ColorName = ds1.Tables[2].Rows[0]["ColorName"].ToString();
-                model.Duration = ds1.Tables[0].Rows[0]["GameTime"].ToString();
                 foreach (DataRow r in ds1.Tables[0].Rows)
                 {
                     Game obj = new Game();
@@ -66,7 +72,7 @@ namespace OMMIPL.Controllers
                     obj.PeriodNo = r["PeriodNo"].ToString();
                     obj.ColorName = r["ChosenColor"].ToString();
                     obj.ResultantColor = r["ResultantColor"].ToString();
-                    
+
                     lstResult.Add(obj);
                 }
                 model.lstResult = lstResult;
@@ -183,30 +189,71 @@ namespace OMMIPL.Controllers
             return View(model);
         }
 
-        public ActionResult GameDetailsById()
+        public ActionResult GameDetailsById(string GameId)
         {
             User model = new User();
             List<Game> lstColor = new List<Game>();
+            List<Game> lstPrediction = new List<Game>();
             model.FK_UserId = Session["PK_UserId"].ToString();
+            model.FK_GameId = GameId;
             try
             {
                 DataSet ds = model.GetGameDetailsById();
+                //if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                //{
+                //    model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
+                //    model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
+                //    model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
+                //    //model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
+                //    model.Amount = ds.Tables[0].Rows[0]["Amount"].ToString();
+                //    model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
+                //}
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
-                    model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
-                    model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
-                    //model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
-                    model.Amount = ds.Tables[0].Rows[0]["Amount"].ToString();
-                    model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
+                    model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
+                    model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
+                    model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
+                    model.FK_PeriodId = ds.Tables[0].Rows[0]["PK_PeriodId"].ToString();
+                    model.time = TimeSpan.Parse(ds.Tables[0].Rows[0]["Duration"].ToString());
+                    model.duration = model.time.ToString("mm\\:ss");
                 }
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                if(GameId=="7")
                 {
-                    model.PeriodNo = ds.Tables[1].Rows[0]["PeriodNo"].ToString();
-                    model.StartTime = ds.Tables[1].Rows[0]["StartTime"].ToString();
-                    model.EndTime = ds.Tables[1].Rows[0]["EndTime"].ToString();
-                    model.FK_PeriodId = ds.Tables[1].Rows[0]["FK_PeriodId"].ToString();
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["ChosenColor"].ToString();
+                            obj.ResultantColor = r["ResultantColor"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
                 }
+                else if(GameId == "8")
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["Fk_ChosenColorId"].ToString();
+                            obj.ResultantColor = r["FK_ResultId"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
+                }
+                else
+                {
+
+                }
+                
             }
             catch (Exception ex)
             {
@@ -215,7 +262,7 @@ namespace OMMIPL.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GameStart(string ColorId,string GameId,string Amount, string PeriodId)
+        public ActionResult GameStart(string ColorId, string GameId, string Amount, string PeriodId)
         {
             User model = new User();
             model.FK_ColorId = ColorId;
@@ -281,29 +328,30 @@ namespace OMMIPL.Controllers
             return RedirectToAction("UpdateAccountDetails", "User");
         }
 
-        public ActionResult TXNLadget()
-        {
-            List<User> Lst = new List<User>();
-            User model = new User();
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
-            model.PK_UserId = Session["PK_UserId"].ToString();
-       
-            DataSet ds11 = model.GetEwalletLedger();
-            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow r in ds11.Tables[0].Rows)
-                {
-                    User Obj = new User();
-                    Obj.CreditAmount = r["CreditAmount"].ToString();
-                    Obj.DebitAmount = r["DebitAmount"].ToString();
-                    Obj.Date = r["date"].ToString();
-                    Lst.Add(Obj);
-                }
-                model.lstLedget = Lst;
-            }
-            return View(model);
-        }
+        //public ActionResult TXNLadget()
+        //{
+        //    List<User> Lst = new List<User>();
+        //    User model = new User();
+        //    model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+        //    model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+        //    model.PK_UserId = Session["PK_UserId"].ToString();
+
+        //    DataSet ds11 = model.GetEwalletLedger();
+        //    if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+        //    {
+        //        foreach (DataRow r in ds11.Tables[0].Rows)
+        //        {
+        //            User Obj = new User();
+        //            Obj.CreditAmount = r["CreditAmount"].ToString();
+        //            Obj.DebitAmount = r["DebitAmount"].ToString();
+        //            Obj.Narration = r["Narration"].ToString();
+        //            Obj.Date = r["date"].ToString();
+        //            Lst.Add(Obj);
+        //        }
+        //        model.lstLedget = Lst;
+        //    }
+        //    return View(model);
+        //}
 
         public ActionResult ChangePassword()
         {
@@ -311,34 +359,34 @@ namespace OMMIPL.Controllers
         }
         [HttpPost]
         [ActionName("ChangePassword")]
-        public ActionResult ChangePassword( User model)
+        public ActionResult ChangePassword(User model)
         {
             model.PK_UserId = Session["PK_UserId"].ToString();
             if (model.NewPassword == model.CfPassword)
             {
                 model.oldPassword = Crypto.Encrypt(model.oldPassword);
-                model.NewPassword= Crypto.Encrypt(model.NewPassword);
+                model.NewPassword = Crypto.Encrypt(model.NewPassword);
                 DataSet ds = model.ChangePsssword();
-                 try
+                try
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                        if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                         {
-                            if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
-                            {
                             @TempData["Msg"] = "Password Change  Successfully";
-                            }
-                            else
-                            {
+                        }
+                        else
+                        {
                             @TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
-                            }
                         }
                     }
-                    catch (Exception ex)
-                    {
+                }
+                catch (Exception ex)
+                {
 
                     @TempData["Msg"] = ex.Message;
-                    }
-               }
+                }
+            }
             else
             {
                 @TempData["Msg"] = "Your Password is Not Match";
@@ -351,6 +399,44 @@ namespace OMMIPL.Controllers
             return View();
         }
 
-    
+        public ActionResult GetGameResponse(string PeriodId,string ColorId)
+        {
+            User model = new User();
+            List<Game> lstColor = new List<Game>();
+           // model.FK_UserId = Session["PK_UserId"].ToString();
+            //model.FK_GameId = GameId;
+            model.FK_PeriodId = PeriodId;
+      
+            try
+            {
+                DataSet ds = model.GetGameResponse();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    //model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
+                    //model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
+                    //model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ResultId"].ToString();
+                    model.Message = "1";
+                    if (ColorId == model.FK_ColorId)
+                    {
+                        model.Result = "Yes";
+                    }
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+                    model.Message = "0";
+                    model.Result = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                model.Result = ex.Message;
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

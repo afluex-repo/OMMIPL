@@ -70,42 +70,43 @@ div#nav a {
                     </div>
 
                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
-                            <thead>
-                                <tr style="text-align:center;">
-                                    <th>S No.</th>
-                                    <th>Name</th>
-                                    <th>LastName</th>
-                                    <th>LoginID</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
+                       <table class="table table-bordered table-striped table-md" data-page-length='25' id="tableExport" style="width:100%;">
+                           <thead>
+                               <tr style="text-align:center;">
+                                   <th>S No.</th>
+                                   <th>Name</th>
+                                   <th>LastName</th>
+                                   <th>LoginID</th>
+                                   <th>Date</th>
+                                   <th>Time</th>
+                               </tr>
+                           </thead>
                            <tbody>
-                                @if (Model != null)
-                                {
-                                    if (Model.lstGameReport != null)
-                                    {
-                                        int i = 1;
-                                        foreach (var Item in Model.lstGameReport)
-                                        {
-                                            <tr>
-                                                <td>@i</td>
+                               @if (Model != null)
+                               {
+                                   if (Model.lstGameReport != null)
+                                   {
+                                       int i = 1;
+                                       foreach (var Item in Model.lstGameReport)
+                                       {
+                                           <tr>
+                                               <td>@i</td>
 
-                                                <td>@Item.Name</td>
-                                                <td>@Item.LastName</td>
-                                                <td>@Item.LoginID</td>
-                                                <td>@Item.windate</td>
-                                                <td>@Item.Time</td>
+                                               <td>@Item.Name</td>
+                                               <td>@Item.LastName</td>
+                                               <td>@Item.LoginID</td>
+                                               <td>@Item.windate</td>
+                                               <td>@Item.Time</td>
 
 
-                                            </tr>
-                                            i++;
-                                        }
-                                    }
-                                }
-                            </tbody>
-                        </table>
+                                           </tr>
+                                           i++;
+                                       }
+                                   }
+                               }
+                           </tbody>
+                       </table>
+
                     </div>
                 </div>
             }

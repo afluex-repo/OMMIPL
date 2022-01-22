@@ -1,4 +1,5 @@
 ﻿@model OMMIPL.Models.User
+
 @{
     ViewBag.Title = "TXNLadget";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -36,7 +37,7 @@ div#nav a {
                     <div class="col-md-4 w3_agile_mail_grid">
                         <div class="mb-3">
                             <label class="mb-1 text-white fs-14"></label>
-                           <input type="submit" name="submit"  value="Search" class="btn btn-default" />
+                           <input type="submit" name="btnSave"  value="Search" class="btn btn-default" />
                         </div>
                     </div>
                 </div>
@@ -61,8 +62,9 @@ div#nav a {
                                     <th>S No.</th>
                                     <th>Credit Amount</th>
                                     <th>Debit Amount</th>
+                                    <th>Narration</th>
                                     <th>Date</th>
-                                     </tr>
+                                </tr>
                             </thead>
                             <tbody>
                                 @if (Model != null)
@@ -77,9 +79,10 @@ div#nav a {
 
                                                 <td>@Item.CreditAmount</td>
                                                 <td>@Item.DebitAmount</td>
+                                                <td>@Item.Narration</td>
                                                 <td>@Item.Date</td>
-                                               
-                                              
+
+
                                             </tr>
                                             i++;
                                         }
@@ -99,7 +102,10 @@ div#nav a {
 
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+
+
 <script>
+   
     $('#FromDate').datepicker({
         format: 'dd/mm/yyyy',
         changeYear: true,

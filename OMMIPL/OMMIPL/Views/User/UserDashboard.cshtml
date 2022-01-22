@@ -123,9 +123,9 @@
                                 <span class="card-detail">₹ @ViewBag.MainBalance</span>
                                 <h2 class="card-title main period">Period</h2>
                                 <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
-                                <input type="hidden" id="hdfPeriodId" />
+                                <input type="hidden" id="hdfPeriodId" value="@Model.FK_PeriodId" />
                                 <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
-                                <input type="hidden" value="@Model.Duration" id="hdfDuration" />
+                                <input type="hidden" value="@Model.duration" id="hdfDuration" />
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
                                 <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
@@ -148,7 +148,7 @@
                                     <div class="color-symbol"><span id="spColor">@text</span></div>
                                 }
 
-                                <div class="time-counter"><span class="digit" style="display:none"></span></div>
+                                <div class="time-counter"><span class="digit"></span></div>
                             </div>
                         </div>
                     </div>
@@ -165,18 +165,18 @@
                                 foreach (var item in Model.lst)
                                 {
                                     var href = "#menu" + i;
-                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById();">@item.GameName</a></li>
+                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById(@item.FK_GameId);">@item.GameName</a></li>
                                     i++;
                                 }
                             }
                         }
                     </ul>
-                    <div class="card first-view">
+                    <div class="card first-view" style="display: none;">
                         <div class="card-body">
                             <h5 class="card-title" style="font-size: 40px; font-weight: 600; text-align: center; margin: 50px;">Welcome To <span style="color: #e8a201;">OMMIPL</span> <i class="fa fa-trophy" aria-hidden="true" style="font-size: 100px; color: #e8a201;"></i></h5>
                         </div>
                     </div>
-                    <div class="tab-content game-view" style="display: none;">
+                    <div class="tab-content game-view">
                         <div class="modal fade" id="myModal" role="dialog">
                             <div class="modal-dialog color">
                                 <div class="modal-content color-content">
@@ -201,7 +201,7 @@
                                                     <label><span>Amount</span><span class="text-red">*</span></label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control" })
+                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -238,7 +238,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table1">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -250,7 +250,7 @@
                                             <tbody>
                                                 @if (Model != null)
                                                 {
-                                                    if (Model.lst != null)
+                                                    if (Model.lstPrediction != null)
                                                     {
                                                         foreach (var item in Model.lstPrediction)
                                                         {
@@ -274,7 +274,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive tableFixHead head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table2">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -286,7 +286,7 @@
                                             <tbody>
                                                 @if (Model != null)
                                                 {
-                                                    if (Model.lst != null)
+                                                    if (Model.lstResult != null)
                                                     {
                                                         foreach (var item in Model.lstResult)
                                                         {
@@ -326,7 +326,7 @@
                                         <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
                                     <hr />
-                                    <div class="table-responsive head-color">
+                                    <div class="table-responsive tableFixHead head-color" id="table3">
                                         <table class="table table-responsive">
                                             <thead>
                                                 <tr>
@@ -346,58 +346,57 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <h3 class="card-title">Record Colour X10</h3>
-                                            <button type="button" class="btn btn-md btn-more">More</button>
-                                        </div>
-                                        <hr />
-                                        <div class="table-responsive tableFixHead head-color">
-                                            <table class="table table-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Period</th>
-                                                        <th>Number</th>
-                                                        <th class="text-center">Result</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>2021122299</td>
-                                                        <td class="text-green">3</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2021122298</td>
-                                                        <td class="text-green">2</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2021122297</td>
-                                                        <td class="text-green">8</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2021122296</td>
-                                                        <td class="text-green">5</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2021122297</td>
-                                                        <td class="text-green">7</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2021122295</td>
-                                                        <td class="text-green">0</td>
-                                                        <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Record Colour X10</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <div class="table-responsive tableFixHead head-color" id="table4">
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Number</th>
+                                                    <th class="text-center">Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>2021122299</td>
+                                                    <td class="text-green">3</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2021122298</td>
+                                                    <td class="text-green">2</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2021122297</td>
+                                                    <td class="text-green">8</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2021122296</td>
+                                                    <td class="text-green">5</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2021122297</td>
+                                                    <td class="text-green">7</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2021122295</td>
+                                                    <td class="text-green">0</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
+
                             </div>
                             <div id="menu3" class="tab-pane fade">
                                 <div class="card">
@@ -416,21 +415,91 @@
     </div>
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $(".dash-nav").click(function () {
-                $(".digit").show();
-                $(".first-view").hide();
-                $(".game-view").show();
-            });
-        });
-    </script>
-    <script>
         var minutes = 0;
         var seconds = 0;
-        var ColorId = "";
-        function GameDetailsById() {
+        var minutes1 = 0;
+        var seconds1 = 0;
+        var minutes2 = 0;
+        var seconds2 = 0;
+
+        $(document).ready(function () {
             debugger;
-          //  $("#hdfGameId").val(GameId);
+            var timer2 = $("#hdfDuration").val();
+            var interval = setInterval(function () {
+                var timer = timer2.split(':');
+                minutes = parseInt(timer[0], 10);
+                seconds = parseInt(timer[1], 10);
+                --seconds;
+                minutes = (seconds < 0) ? --minutes : minutes;
+                if (minutes < 0) {
+                    clearInterval(interval);
+                }
+                seconds = (seconds < 0) ? 59 : seconds;
+                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                if (minutes == 0 && seconds == 0) {
+                    clearInterval(interval);
+                    window.location.href = "/User/UserDashboard";
+                }
+                if (minutes == 0 && seconds == 30) {
+                    getResponse();
+                }
+                $('.digit').html(minutes + ':' + seconds);
+                timer2 = minutes + ':' + seconds;
+            }, 1000);
+            //function gfg_Run() {
+            //    setInterval(function () {
+
+            //    }, 180000);
+            //}
+        });
+        function getResponse() {
+            $.ajax({
+                url: "/User/GetGameResponse",
+                type: "Get",
+                datatype: "Json",
+                data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (response.Message == "1") {
+                            if (response.Result == "Yes") {
+                                //alert("Congrats! You won.");
+                            }
+                            else {
+                                //alert("Oops! You lose.");
+                            }
+                            if (response.FK_ColorId == "1") {
+                                $("#spColor").text("R");
+                                $(".body-color").attr("style", "background-color: red;");
+                            }
+                            else if (response.FK_ColorId == "2") {
+                                $("#spColor").text("G");
+                                $(".body-color").attr("style", "background-color: green;");
+                            }
+                            else if (response.FK_ColorId == "3") {
+                                $("#spColor").text("B");
+                                $(".body-color").attr("style", "background-color: blue;");
+                            }
+                            else {
+                            }
+                        }
+                        else {
+                            //alert(response.Result);
+                        }
+                    }
+                }
+            });
+        }
+        $(".dash-nav").click(function () {
+            $(".digit").show();
+            $(".first-view").hide();
+            $(".game-view").show();
+        });
+
+        var ColorId = "";
+        function GameDetailsById(GameId) {
+            debugger;
+            $("#hdfGameId").val(GameId);
             $.ajax({
                 url: "/User/GameDetailsById",
                 type: "Get",
@@ -442,28 +511,95 @@
                         $("#spPeriodNo").text(response.PeriodNo);
                         $("#hdfStartTime").val(response.StartTime);
                         $("#hdfEndTime").val(response.EndTime);
-                        //$(".digit").val(response.response);
-                        $("#hdfDuration").val(response.Duration);
                         $("#hdfPeriodId").val(response.FK_PeriodId);
-                        var timer2 = $("#hdfDuration").val();
-                        timer2 = timer2 + ":00";
-                        var interval = setInterval(function () {
-                            var timer = timer2.split(':');
-                            minutes = parseInt(timer[0], 10);
-                            seconds = parseInt(timer[1], 10);
-                            --seconds;
-                            minutes = (seconds < 0) ? --minutes : minutes;
-                            if (minutes < 0) {
-                                clearInterval(interval);
+                        $("#hdfDuration").val(response.duration);
+                        if (response.lstPrediction != null) {
+                            $("#table1").html('');
+                            $("#table2").html('');
+                            $("#table3").html('');
+                            $("#table4").html('');
+                            for (var i = 0; i < response.lstPrediction.length; i++) {
+                                if (GameId == "7") {
+                                    $("#table1").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Amount</th></tr></thead><tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName.ToLower() + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center">' + response.lstPrediction[i].Amount + '</td></tr></tbody></table>');
+                                    $("#table2").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Result</th></tr></thead><tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + obj[i].ColorName.ToLower() + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center"><button type="button" class="btn btn-' + response.lstPrediction[i].ResultantColor.ToLower() + ' btn-lg">' + response.lstPrediction[i].ResultantColor + '</button></td></tr></tbody></table>');
+                                }
+                                else if (GameId == "8") {
+                                    $("#table3").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Amount</th></tr></thead><tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center">' + response.lstPrediction[i].Amount + '</td></tr></tbody></table>');
+                                    $("#table4").append('<table class="table table-responsive"><thead><tr><th>Period</th><th>Colour</th><th class="text-center">Result</th></tr></thead><tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center"><button type="button" class="btn btn-' + response.lstPrediction[i].ResultantColor + ' btn-lg">' + response.lstPrediction[i].ResultantColor + '</button></td></tr></tbody></table>');
+                                }
                             }
-                            seconds = (seconds < 0) ? 59 : seconds;
-                            seconds = (seconds < 10) ? '0' + seconds : seconds;
-                            if (minutes == 0 && seconds == 0) {
-                                clearInterval(interval);
-                            }
-                            $('.digit').html(minutes + ':' + seconds);
-                            timer2 = minutes + ':' + seconds;
-                        }, 1000);
+                        }
+                        if (GameId == "8") {
+                            minutes = 0;
+                            seconds = 0;
+                            minutes1 = 0;
+                            seconds1 = 0;
+                            minutes2 = 0;
+                            seconds2 = 0;
+                            $('.digit').html('');
+                            $('.digit1').html('');
+                            $('.digit2').html('');
+                            $('.time-counter').html('<span class="digit1"></span>');
+                            var timer3 = $("#hdfDuration").val();
+                            var interval1 = setInterval(function () {
+                                var timer1 = timer3.split(':');
+                                minutes1 = parseInt(timer1[0], 10);
+                                seconds1 = parseInt(timer1[1], 10);
+                                --seconds1;
+                                minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
+                                if (minutes1 < 0) {
+                                    clearInterval(interval1);
+                                }
+                                seconds1 = (seconds1 < 0) ? 59 : seconds1;
+                                seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
+                                if (minutes1 == 0 && seconds1 == 0) {
+                                    clearInterval(interval1);
+                                    window.location.href = "/User/UserDashboard";
+                                }
+                                if (minutes1 == 0 && seconds1 == 30) {
+                                    getResponse();
+                                }
+                                $('.digit1').html(minutes1 + ':' + seconds1);
+                                timer3 = minutes1 + ':' + seconds1;
+                            }, 1000);
+                        }
+                        else if (GameId == "7") {
+                            minutes = 0;
+                            seconds = 0;
+                            minutes1 = 0;
+                            seconds1 = 0;
+                            minutes2 = 0;
+                            seconds2 = 0;
+                            $('.digit1').html('');
+                            $('.digit').html('');
+                            $('.digit2').html('');
+                            $('.time-counter').html('<span class="digit2"></span>');
+                            var timer4 = $("#hdfDuration").val();
+                            var interval2 = setInterval(function () {
+                                var timer3 = timer4.split(':');
+                                minutes2 = parseInt(timer3[0], 10);
+                                seconds2 = parseInt(timer3[1], 10);
+                                --seconds2;
+                                minutes2 = (seconds2 < 0) ? --minutes2 : minutes2;
+                                if (minutes2 < 0) {
+                                    clearInterval(interval2);
+                                }
+                                seconds2 = (seconds2 < 0) ? 59 : seconds2;
+                                seconds2 = (seconds2 < 10) ? '0' + seconds2 : seconds2;
+                                if (minutes2 == 0 && seconds2 == 0) {
+                                    clearInterval(interval2);
+                                    window.location.href = "/User/UserDashboard";
+                                }
+                                if (minutes2 == 0 && second2 == 30) {
+                                    getResponse();
+                                }
+                                $('.digit2').html(minutes2 + ':' + seconds2);
+                                timer4 = minutes2 + ':' + seconds2;
+                            }, 1000);
+                        }
+                        else {
+
+                        }
                     }
                 }
             });
@@ -473,14 +609,23 @@
 
         function SetPrediction(ColorId) {
             debugger;
-            if (minutes == 0 && seconds < 30) {
+            if ($("#hdfGameId").val() == "7") {
+                if (minutes == 0 && seconds > 0 && seconds < 30) {
+                    $('#myModal').modal('hide');
+                    alert("Your game time is over.")
+                }
+                if (minutes2 == 0 && seconds2 > 0 && seconds2 < 30) {
+                    $('#myModal').modal('hide');
+                    alert("Your game time is over.")
+                }
+            }
+            else if (($("#hdfGameId").val() == "8") && (minutes1 == 0 && seconds1 > 0 && seconds1 < 30)) {
                 $('#myModal').modal('hide');
                 alert("Your game time is over.")
             }
             else {
                 $('#myModal').modal('show');
-                if ($("#hdfGameId").val() == "7")
-                {
+                if ($("#hdfGameId").val() == "7") {
                     if (ColorId == 1) {
                         $("#btnColor").attr("style", "background-color:red");
                         $("#btnColor").text("R");
@@ -507,7 +652,7 @@
                 }
             }
         }
-        
+
         function SubmitPrediction() {
             debugger;
             $.ajax({
@@ -519,34 +664,9 @@
                     debugger;
                     if (response != null) {
                         if (response.Message == "1") {
-                            var start = Date.parse($("#hdfStartTime").val());
-                            var end = Date.parse(response.EndTime); 
-                            var diff = end - start;
-                            setTimeout(function () {
-                                if (response.Result == "Yes") {
-                                    alert("Congrats! You won.");
-                                }
-                                else {
-                                    alert("Oops! You lose.");
-                                }
-                                if (response.FK_ColorId == "1") {
-                                    $("#spColor").text("R");
-                                    $(".body-color").attr("style", "background-color: red;");
-                                }
-                                else if (response.FK_ColorId == "2") {
-                                    $("#spColor").text("G");
-                                    $(".body-color").attr("style", "background-color: green;");
-                                }
-                                else if (response.FK_ColorId == "3") {
-                                    $("#spColor").text("B");
-                                    $(".body-color").attr("style", "background-color: blue;");
-                                }
-                                else { }
-                            }, diff);
                             $('#myModal').modal('hide');
                         }
-                        else { 
-                            alert(response.Result);
+                        else {
                             $('#myModal').modal('hide');
                         }
                     }
@@ -570,28 +690,28 @@
     </script>
 
     @*<script type="text/javascript">
-        if (sessionStorage.getItem("hdfStartTime")) {
-            if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
-        var value = 0;
-      } else {
-                var value = sessionStorage.getItem("hdfStartTime");
-      }
-    } else {
-      var value = 0;
-    }
-        document.getElementById('hdfDuration').innerHTML = value;
+            if (sessionStorage.getItem("hdfStartTime")) {
+                if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
+            var value = 0;
+          } else {
+                    var value = sessionStorage.getItem("hdfStartTime");
+          }
+        } else {
+          var value = 0;
+        }
+            document.getElementById('hdfDuration').innerHTML = value;
 
-    var counter = function () {
-      if (value >= 10) {
-          sessionStorage.setItem("hdfStartTime", hdfEndTime);
-        value = 0;
-      } else {
-        value = parseInt(value) + 1;
-        sessionStorage.setItem("hdfStartTime", value);
-      }
-      document.getElementById('hdfDuration').innerHTML = value;
-    };
+        var counter = function () {
+          if (value >= 10) {
+              sessionStorage.setItem("hdfStartTime", hdfEndTime);
+            value = 0;
+          } else {
+            value = parseInt(value) + 1;
+            sessionStorage.setItem("hdfStartTime", value);
+          }
+          document.getElementById('hdfDuration').innerHTML = value;
+        };
 
-    var interval = setInterval(hdfStartTimes, 1000);
-    </script>*@
+        var interval = setInterval(hdfStartTimes, 1000);
+        </script>*@
     <!-- //gallery -->
