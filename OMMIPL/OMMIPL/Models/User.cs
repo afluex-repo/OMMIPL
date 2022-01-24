@@ -58,7 +58,7 @@ namespace OMMIPL.Models
         public string FK_GameId { get; set; }
         public string FK_ColorId { get; set; }
         public string FK_UserId { get; set; }
-        public string GameName { get; set; }
+     
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string FK_PeriodId { get; set; }
@@ -77,10 +77,18 @@ namespace OMMIPL.Models
         public string FK_ResultId { get; set; }
         public string color { get; set; }
         public string GameTime { get; set; }
+        public string GameName { get; set; }
         public string windate { get; set; }
         public string FK_PeriodId2 { get; set; }
-
+        public string PK_GameId { get; set; }
         public string BalanceAmount { get; set; }
+       
+        public List<User> ddlGameType { get; }
+        public DataSet GameTypeDataList()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetGameTypeDetails");
+            return ds;
+        }
         public DataSet GetPaymentModeDetails()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetPaymentModeDetails");
@@ -93,7 +101,8 @@ namespace OMMIPL.Models
                    new SqlParameter("@LoginID",LoginId),
                    new SqlParameter("@Action",ddlstatus),
                     new SqlParameter("@FromDate",FromDate),
-                    new SqlParameter("@ToDate",ToDate)
+                    new SqlParameter("@ToDate",ToDate),
+                    new SqlParameter ("@GameType", PK_GameId )
             };
             DataSet ds = DBHelper.ExecuteQuery("GameReport", para);
             return ds;

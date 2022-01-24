@@ -427,8 +427,27 @@ namespace OMMIPL.Controllers
 
         public ActionResult GameReport()
         {
-            List<User> lstGameReport = new List<User>();
             User model = new User();
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+
+            List<User> lstGameReport = new List<User>();
+            //User model = new User();
             model.LoginId = Session["LoginId"].ToString();
             model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
             model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
@@ -449,6 +468,8 @@ namespace OMMIPL.Controllers
                         obj.FK_ResultId = r["FK_ResultId"].ToString();
                         obj.color = r["color"].ToString();
                         obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
                         obj.windate = r["windate"].ToString();
                         obj.GameTime = r["Time"].ToString();
                         lstGameReport.Add(obj);
@@ -466,12 +487,26 @@ namespace OMMIPL.Controllers
         [HttpPost]
         public ActionResult GameReport(User model)
         {
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+
             List<User> lstGameReport = new List<User>();
-
             model.LoginId = Session["LoginId"].ToString();
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
-
             DataSet ds = model.GetGameReport();
             try
             {
@@ -488,6 +523,8 @@ namespace OMMIPL.Controllers
                         obj.FK_ResultId = r["FK_ResultId"].ToString();
                         obj.color = r["color"].ToString();
                         obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
                         obj.windate = r["windate"].ToString();
                         obj.GameTime = r["Time"].ToString();
                         lstGameReport.Add(obj);
@@ -509,7 +546,6 @@ namespace OMMIPL.Controllers
             model.FK_UserId = Session["PK_UserId"].ToString();
             model.FK_ColorId = ColorId;
             model.FK_PeriodId = PeriodId;
-      
             try
             {
                 DataSet ds = model.GetGameResponse();

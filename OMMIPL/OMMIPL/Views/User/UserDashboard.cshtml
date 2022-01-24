@@ -237,7 +237,7 @@
                                     <div class="d-flex">
                                         <h3 class="card-title">Your Prediction Record Colour-X3</h3>
                                         <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
-</div>
+                                        </div>
                                     <hr />
                                     <div class="table-responsive tableFixHead head-color">
                                         <table class="table table-responsive" id="table1">
@@ -414,6 +414,7 @@
             </div>
         </div>
     </div>
+    </div>
     <script src="~/js/jquery-2.2.3.min.js"></script>
     <script>
         var minutes = 0;
@@ -534,7 +535,6 @@
             $(".first-view").hide();
             $(".game-view").show();
         });
-
         var ColorId = "";
         function GameDetailsById(GameId) {
             debugger;
@@ -676,9 +676,6 @@
                 }
             });
         }
-
-
-
         function SetPrediction(ColorId) {
             debugger;
             if ($("#hdfGameId").val() == "7" && minutes == 0 && seconds > 0 && seconds < 30) {

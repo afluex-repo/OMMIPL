@@ -498,6 +498,23 @@ namespace OMMIPL.Controllers
         {
             List<Admin> lstGameReport = new List<Admin>();
             Admin model = new Admin();
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
             model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
             model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
             model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
@@ -518,8 +535,10 @@ namespace OMMIPL.Controllers
                         obj.FK_ResultId = r["FK_ResultId"].ToString();
                         obj.color = r["color"].ToString();
                         obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
                         obj.windate = r["windate"].ToString();
-                        obj.Time = r["Time"].ToString();
+                        obj.GameTime = r["Time"].ToString();
                         lstGameReport.Add(obj);
                     }
                     model.lstGameReport = lstGameReport;
@@ -535,11 +554,29 @@ namespace OMMIPL.Controllers
         [HttpPost]
         public ActionResult GameReport(Admin model)
         {
+
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
             List<Admin> lstGameReport = new List<Admin>();
           
             model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+         //   model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+          //  model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
 
             DataSet ds = model.GetGameReport();
             try
@@ -557,8 +594,10 @@ namespace OMMIPL.Controllers
                         obj.FK_ResultId = r["FK_ResultId"].ToString();
                         obj.color = r["color"].ToString();
                         obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
                         obj.windate = r["windate"].ToString();
-                        obj.Time = r["Time"].ToString();
+                        obj.GameTime = r["Time"].ToString();
                         lstGameReport.Add(obj);
                     }
                     model.lstGameReport = lstGameReport;
