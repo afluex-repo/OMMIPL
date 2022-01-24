@@ -7,7 +7,7 @@
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
-            @using (Html.BeginForm("GameReport", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            @using (Html.BeginForm("GameReport", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
             {
                 <div class="row">
                     @*<div class="col-md-4 w3_agile_mail_grid">
@@ -22,7 +22,7 @@
                             <select id="ddlstatus" class="input__field" name="ddlstatus">
                                 <option value="0">Select</option>
                                 <option value="Winner">Winner</option>
-                                <option value="Looser">Lose</option>
+                                <option value="Looser">Loser</option>
                             </select>
                         </div>
                     </div>
@@ -64,7 +64,6 @@
                                 <tr style="text-align:center;">
                                     <th>S No.</th>
                                     <th>Name</th>
-                                    <th>LastName</th>
                                     <th>LoginID</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -81,11 +80,10 @@
                                             <tr>
                                                 <td>@i</td>
 
-                                                <td>@Item.Name</td>
-                                                <td>@Item.LastName</td>
+                                                <td>@Item.Name @Item.LastName</td>
                                                 <td>@Item.LoginId</td>
                                                 <td>@Item.windate</td>
-                                                <td>@Item.Time</td>
+                                                <td>@Item.GameTime</td>
 
 
                                             </tr>

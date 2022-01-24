@@ -84,6 +84,7 @@ namespace OMMIPL.Controllers
                     {
                         User Obj = new User();
                         Obj.CreditAmount = r["CreditAmount"].ToString();
+                        Obj.Narration = r["Narration"].ToString();
                         Obj.DebitAmount = r["DebitAmount"].ToString();
                         Obj.Date = r["date"].ToString();
                         Lst.Add(Obj);
