@@ -42,7 +42,8 @@ namespace OMMIPL.Models
         public string AccountNO { get; set; }
         public string IFSCCode { get; set; }
         public string CreatedDate { get; set; }
-
+        public string PK_QRId { get; set; }
+        public string UpLoadQR { get; set; }
         public string CrAmount { get; set; }
         public string DrAmount { get; set; }
         public string Narration { get; set; }
@@ -61,7 +62,14 @@ namespace OMMIPL.Models
         public string PeriodNo { get; set; }
         public string windate { get; set; }
       
-
+        public DataSet QRMasterList()
+        {
+            SqlParameter[] para =
+                       {
+            };
+            DataSet ds = DBHelper.ExecuteQuery("QRMaster");
+            return ds;
+        }
         public DataSet GetRegistrationDetails()
         {
             SqlParameter[] para =
@@ -180,7 +188,16 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("ApproveDeclineEwalletRequest", para);
             return ds;
         }
-
+        public DataSet DeleteQR()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_QRId",PK_QRId),
+                 new SqlParameter("@DeletedBy",AddedBy)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("Delete_QRMaster", para);
+            return ds;
+        }
 
         public DataSet Delete()
         {

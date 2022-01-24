@@ -33,6 +33,13 @@ namespace OMMIPL.Controllers
                 model.time = TimeSpan.Parse(ds2.Tables[1].Rows[0]["Duration"].ToString());
                 model.duration = model.time.ToString("mm\\:ss");
             }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[2].Rows.Count > 0)
+            {
+                model.FK_PeriodId2 = ds2.Tables[2].Rows[0]["PK_PeriodId"].ToString();
+                model.time = TimeSpan.Parse(ds2.Tables[2].Rows[0]["Duration"].ToString());
+                model.duration2 = model.time.ToString("mm\\:ss");
+
+            }
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
@@ -420,7 +427,79 @@ namespace OMMIPL.Controllers
 
         public ActionResult GameReport()
         {
-            return View();
+            List<User> lstGameReport = new List<User>();
+            User model = new User();
+            model.LoginId = Session["LoginId"].ToString();
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        User obj = new User();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginId = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GameReport(User model)
+        {
+            List<User> lstGameReport = new List<User>();
+
+            model.LoginId = Session["LoginId"].ToString();
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        User obj = new User();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginId = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
         }
 
         public ActionResult GetGameResponse(string PeriodId,string ColorId)
@@ -439,9 +518,10 @@ namespace OMMIPL.Controllers
                     //model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
                     //model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
                     //model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
-                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ResultId"].ToString();
+                    model.FK_ResultId = ds.Tables[0].Rows[0]["FK_ResultId"].ToString();
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
                     model.Message = "1";
-                    if (ColorId == model.FK_ColorId)
+                    if (model.FK_ResultId == model.FK_ColorId)
                     {
                         model.Result = "Yes";
                     }

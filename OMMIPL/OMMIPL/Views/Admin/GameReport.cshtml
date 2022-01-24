@@ -22,7 +22,7 @@
                            <select id="ddlstatus" class="input__field" name="ddlstatus">
                                <option value="0">Select</option>
                                <option value="Winner">Winner</option>
-                               <option value="Looser">Lose</option>
+                               <option value="Looser">Loser</option>
                            </select>
                         </div>
                     </div>
@@ -64,7 +64,6 @@
                                <tr style="text-align:center;">
                                    <th>S No.</th>
                                    <th>Name</th>
-                                   <th>LastName</th>
                                    <th>LoginID</th>
                                    <th>Date</th>
                                    <th>Time</th>
@@ -81,8 +80,7 @@
                                            <tr>
                                                <td>@i</td>
 
-                                               <td>@Item.Name</td>
-                                               <td>@Item.LastName</td>
+                                               <td>@Item.Name @Item.LastName</td>
                                                <td>@Item.LoginID</td>
                                                <td>@Item.windate</td>
                                                <td>@Item.Time</td>

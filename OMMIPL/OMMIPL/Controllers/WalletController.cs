@@ -127,7 +127,14 @@ namespace OMMIPL.Controllers
              //   obj.IFSCCode = ds2.Tables[0].Rows[0]["IFSCCode"].ToString();
                // obj.BankName = ds2.Tables[0].Rows[0]["MemberBankName"].ToString();
             }
-
+            #region GetQR
+            DataSet DsS1 = obj.GetOR();
+           if(DsS1!=null && DsS1.Tables[0].Rows.Count>0 && DsS1.Tables.Count>0)
+            {
+                obj.Image = DsS1.Tables[0].Rows[0]["UpLoadQR"].ToString();
+                obj.PK_QRId = DsS1.Tables[0].Rows[0]["PK_QRId"].ToString();
+            }
+            #endregion
             return View(obj);
         }
         [HttpPost]

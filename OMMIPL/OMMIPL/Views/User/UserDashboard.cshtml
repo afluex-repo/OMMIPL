@@ -124,9 +124,10 @@
                                 <h2 class="card-title main period">Period</h2>
                                 <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
                                 <input type="hidden" id="hdfPeriodId" value="@Model.FK_PeriodId" />
-                                <input type="hidden" id="hdfPeriodIdJ"/>
+                                <input type="hidden" id="hdfPeriodIdJ" value="@Model.FK_PeriodId2"/>
                                 <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
                                 <input type="hidden" value="@Model.duration" id="hdfDuration" />
+                                <input type="hidden" value="@Model.duration2" id="hdfDuration2" />
                                 <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
                                 <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
@@ -148,7 +149,7 @@
                                     }
                                     <div class="color-symbol"><span id="spColor">@text</span></div>
                                 }
-                                <div class="time-counter"><span class="digit"></span></div>
+                                <div class="time-counter"><span class="digit"></span><span class="digitx2" style="display:none"></span></div>
                             </div>
                         </div>
                     </div>
@@ -235,8 +236,8 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <h3 class="card-title">Your Prediction Record Colour-X3</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
-                                    </div>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
+</div>
                                     <hr />
                                     <div class="table-responsive tableFixHead head-color">
                                         <table class="table table-responsive" id="table1">
@@ -271,7 +272,7 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <h3 class="card-title">Record Colour-X3</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
                                     </div>
                                     <hr />
                                     <div class="table-responsive tableFixHead head-color">
@@ -323,7 +324,7 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <h3 class="card-title">Your Prediction Record Jackpot X10</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
                                     </div>
                                     <hr />
                                     <div class="table-responsive tableFixHead head-color">
@@ -421,7 +422,8 @@
         var seconds1 = 0;
         var minutes2 = 0;
         var seconds2 = 0;
-
+        var minutesx2 = 0;
+        var secondsx2 = 0;
         $(document).ready(function () {
             debugger;
             var timer2 = $("#hdfDuration").val();
@@ -446,10 +448,38 @@
                         window.location.href = "/User/UserDashboard";
                     }
                     if (minutes == 0 && seconds == 30) {
-                        getResponse();
+                        getResponse($("#hdfPeriodId").val());
                     }
                     $('.digit').html(minutes + ':' + seconds);
                     timer2 = minutes + ':' + seconds;
+                }, 1000);
+            }
+
+            var timerx = $("#hdfDuration2").val();
+            if (timerx == "00:00") {
+                window.location.href = "/User/UserDashboard";
+            }
+            else {
+                var intervalx2 = setInterval(function () {
+                    var timerX2 = timerx.split(':');
+                    minutesx2 = parseInt(timerX2[0], 10);
+                    secondsx2 = parseInt(timerX2[1], 10);
+                    --secondsx2;
+                    minutesx2 = (secondsx2 < 0) ? --minutesx2 : minutesx2;
+                    if (minutesx2 < 0) {
+                        clearInterval(intervalx2);
+                    }
+                    secondsx2 = (secondsx2 < 0) ? 59 : secondsx2;
+                    secondsx2 = (secondsx2 < 10) ? '0' + secondsx2 : secondsx2;
+                    if (minutesx2 == 0 && secondsx2 == 0) {
+                        clearInterval(intervalx2);
+                        window.location.href = "/User/UserDashboard";
+                    }
+                    if (minutesx2 == 0 && secondsx2 == 30) {
+                        getResponse($("#hdfPeriodIdJ").val());
+                    }
+                    $('.digitx2').html(minutesx2 + ':' + secondsx2);
+                    timerx = minutesx2 + ':' + secondsx2;
                 }, 1000);
             }
             //function gfg_Run() {
@@ -458,46 +488,10 @@
             //    }, 180000);
             //}
         });
-        function getResponse() {
-            $.ajax({
-                url: "/User/GetGameResponse",
-                type: "Get",
-                datatype: "Json",
-                data: { PeriodId: $("#hdfPeriodId").val(), ColorId: $("#FK_ColorId").val() },
-                success: function (response) {
-                    debugger;
-                    if (response != null) {
-                        if (response.Message == "1") {
-                            if (response.Result == "Yes") {
-                                //alert("Congrats! You won.");
-                            }
-                            else {
-                                //alert("Oops! You lose.");
-                            }
-                            if (response.FK_ColorId == "1") {
-                                $("#spColor").text("R");
-                                $(".body-color").attr("style", "background-color: red;");
-                            }
-                            else if (response.FK_ColorId == "2") {
-                                $("#spColor").text("G");
-                                $(".body-color").attr("style", "background-color: green;");
-                            }
-                            else if (response.FK_ColorId == "3") {
-                                $("#spColor").text("B");
-                                $(".body-color").attr("style", "background-color: blue;");
-                            }
-                            else {
-                            }
-                        }
-                        else {
-                            //alert(response.Result);
-                        }
-                    }
-                }
-            });
-        }
+    
 
         function getResponse(PeriodId) {
+            debugger;
             $.ajax({
                 url: "/User/GetGameResponse",
                 type: "Get",
