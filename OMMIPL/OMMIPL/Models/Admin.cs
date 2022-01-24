@@ -55,13 +55,19 @@ namespace OMMIPL.Models
         public string ddlstatus { get; set; }
         public string LastName { get; set; }
         public string PK_PeriodId { get; set; }
-
+        public string GameTime { get; set; }
+        public string GameName { get; set; }
         public string Fk_ChosenColorId { get; set; }
         public string FK_ResultId { get; set; }
         public string color { get; set; }
         public string PeriodNo { get; set; }
         public string windate { get; set; }
-      
+        public string PK_GameId { get; set; }
+        public DataSet GameTypeDataList()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetGameTypeDetails");
+            return ds;
+        }
         public DataSet QRMasterList()
         {
             SqlParameter[] para =
@@ -128,7 +134,8 @@ namespace OMMIPL.Models
                    new SqlParameter("@LoginID",LoginID),
                    new SqlParameter("@Action",ddlstatus),
                     new SqlParameter("@FromDate",FromDate),
-                    new SqlParameter("@ToDate",ToDate)
+                    new SqlParameter("@ToDate",ToDate),
+                   new SqlParameter ("@GameType", PK_GameId )
             };
             DataSet ds = DBHelper.ExecuteQuery("GameReport", para);
             return ds;
