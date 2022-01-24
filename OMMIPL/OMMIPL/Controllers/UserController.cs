@@ -444,13 +444,13 @@ namespace OMMIPL.Controllers
         }
 
         [HttpPost]
-        public ActionResult GameReport(Admin model)
+        public ActionResult GameReport(User model)
         {
-            List<Admin> lstGameReport = new List<Admin>();
+            List<User> lstGameReport = new List<User>();
 
-            model.LoginID = Session["LoginId"].ToString();
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+            model.LoginId = Session["LoginId"].ToString();
+          //  model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+          //  model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
 
             DataSet ds = model.GetGameReport();
             try
@@ -459,10 +459,10 @@ namespace OMMIPL.Controllers
                 {
                     foreach (DataRow r in ds.Tables[0].Rows)
                     {
-                        Admin obj = new Admin();
+                        User obj = new User();
                         obj.Name = r["FirstName"].ToString();
                         obj.LastName = r["LastName"].ToString();
-                        obj.LoginID = r["LoginId"].ToString();
+                        obj.LoginId = r["LoginId"].ToString();
                         obj.PK_PeriodId = r["PK_PeriodId"].ToString();
                         obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
                         obj.FK_ResultId = r["FK_ResultId"].ToString();

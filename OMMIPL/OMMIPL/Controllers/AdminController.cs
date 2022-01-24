@@ -538,8 +538,8 @@ namespace OMMIPL.Controllers
             List<Admin> lstGameReport = new List<Admin>();
           
             model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
-            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
-            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+         //   model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+          //  model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
 
             DataSet ds = model.GetGameReport();
             try
