@@ -37,83 +37,85 @@
                 <div class="col-lg-4 col-md-8 col-12 mx-auto mb-50">
                     <img width="550" height="550" src="~/assets/img/others/about-thumb.jpg" alt="">
                 </div>
-                <div class="col-lg-7 col-md-8 col-12 mx-auto mb-50">
-                    <div class="contact_form_inner">
-                        <span style="color:red">@TempData["Msg"]</span>
-                        <form id="contact-form" action="/Home/Registration" method="post">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Invited Id", @onchange = "getsponsordetails(this);" })
-                                        @Html.HiddenFor(m => m.FK_SponsorId)
+                @using (Html.BeginForm("RegistrationAction", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+                {
+                    <div class="col-lg-7 col-md-8 col-12 mx-auto mb-50">
+                        <div class="contact_form_inner">
+                            <span style="color:red">@TempData["Msg"]</span>
+                            <form id="contact-form" action="/Home/RegistrationAction">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.SponsorLoginId, new { @class = "input__field", @placeholder = "Invited Id", @onchange = "getsponsordetails(this);" })
+                                            @Html.HiddenFor(m => m.FK_SponsorId)
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.SponsorName, new { @class = "input__field", @placeholder = "Invited By", @disabled = "true" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.LastName, new { @class = "input__field", @placeholder = "Last Name" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Password", @type = "Password" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "input__field", @placeholder = "Confim Password", @type = "Password", @onblur = "return validateConfPassword();" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_textarea">
+                                            @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
+                                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.SponsorName, new { @class = "input__field", @placeholder = "Invited By", @disabled = "true" })
-                                    </div>
+                                <div class="form_input_btn text-center">
+                                    <button type="submit" class="btn btn-link">SUBMIT <img width="20" height="20" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "input__field", @placeholder = "First Name" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.LastName, new { @class = "input__field", @placeholder = "Last Name" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No", @maxlength = "10", @onkeypress = "return isNumberKey(event);", })
-                                    </div>
-                                </div>
-                               
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.Password, new { @class = "input__field", @placeholder = "Password", @type = "Password" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "input__field", @placeholder = "Confim Password", @type = "Password", @onblur = "return validateConfPassword();" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_input">
-                                        @Html.TextBoxFor(m => m.State, new { @class = "input__field", @placeholder = "State" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form_textarea">
-                                        @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
-                                    </div>
-                                </div>
-                                
-                                </div>
-                                    <div class="form_input_btn text-center">
-                                        <button type="submit" class="btn btn-link">SUBMIT <img width="20" height="20" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
-                                    </div>
-                                    <p class="form-message" style="color:red">@TempData["Msg"]</p>
-                            
-</form>
+                                <p class="form-message" style="color:red">@TempData["Msg"]</p>
+
+                            </form>
+                        </div>
                     </div>
-</div>
+                }
             </div>
         </div>
     </section>
