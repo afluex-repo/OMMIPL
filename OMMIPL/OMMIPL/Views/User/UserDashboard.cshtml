@@ -107,6 +107,16 @@
     .head-color thead th {
         background-color: #f9e18a;
     }
+       .tabs {
+            font-size: 12px;
+            display: flex;
+            margin: 0;
+        }
+         .tabs span {
+            background-color:transparent;
+            padding: 10px;
+            box-shadow:2px 2px gray unset;
+        }
 </style>
 <!-- gallery -->
 <div class="team-bottom" id="work">
@@ -190,19 +200,56 @@
                                             <div class="row form-group">
                                                 <div class="col-sm-12">
                                                     <span class="input right">
+                                                        <label>Amount</label>
+                                                    </span>
+                                                    <div class="tabs">
+                                                        <a onclick="return CalculateValue(1);">1</a>
+                                                        <a  onclick="return CalculateValue(10);">10</a>
+                                                        <a  onclick="return CalculateValue(100);">100</a>
+                                                        <a  onclick="return CalculateValue(1000);">1000</a>
+                                                        <a onclick="return CalculateValue(10000);">10000</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                        <label>Number</label>
+                                                    </span>
+                                                    <div class="tabs">
+                                                        <span>-</span>
+                                                        <span>&nbsp;</span>
+                                                        <span></span>
+                                                        <span>&nbsp;</span>
+                                                        <span>+</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                       Total Amount is <label id="lblAmount"></label>
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                        I agree to <a>Rule</a>
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
                                                         <label>Color</label>
                                                         <button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>
                                                         @Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })
                                                     </span>
                                                 </div>
-
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col-sm-3">
                                                     <label><span>Amount</span><span class="text-red">*</span></label>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
+                                                    @Html.HiddenFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
                                                 </div>
                                             </div>
                                             <div class="row form-group">
