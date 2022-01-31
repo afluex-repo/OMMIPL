@@ -187,7 +187,7 @@ namespace OMMIPL.Models
                                       new SqlParameter("@LastName", LastName),
                                       new SqlParameter("@MobileNo", MobileNo),
                                       new SqlParameter("@Email", Email),
-                                      new SqlParameter("@FK_SponosorId", FK_SponsorId),
+                                      new SqlParameter("@FK_SponsorId", FK_SponsorId),
                                       new SqlParameter("@PinCode", PinCode),
                                       new SqlParameter("@State", State),
                                       new SqlParameter("@City", City),
@@ -226,6 +226,7 @@ namespace OMMIPL.Models
                                        new SqlParameter("@email", Email),
                                        new SqlParameter("@Massage", Massage),
                                         new SqlParameter("@Address", Address),
+                                        new SqlParameter("@AddedBy", Name),
                                   };
             DataSet ds = DBHelper.ExecuteQuery("SaveContactUs", para);
             return ds;

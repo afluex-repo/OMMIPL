@@ -130,6 +130,137 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\animate.css" />
+    <Content Include="assets\css\icofont.min.css" />
+    <Content Include="assets\css\magnific-popup.css" />
+    <Content Include="assets\css\nice-select.css" />
+    <Content Include="assets\css\slick.css" />
+    <Content Include="assets\css\style.css" />
+    <Content Include="assets\css\vendor\bootstrap.min.css" />
+    <Content Include="assets\img\bg\body-bg.jpg" />
+    <Content Include="assets\img\bg\breadcrumbs-bg.png" />
+    <Content Include="assets\img\bg\gaming-bg1.jpg" />
+    <Content Include="assets\img\bg\gaming-bg1.png" />
+    <Content Include="assets\img\bg\gaming-update.jpg" />
+    <Content Include="assets\img\bg\hero-bg1.jpg" />
+    <Content Include="assets\img\bg\hero-position-img.png" />
+    <Content Include="assets\img\blog\blog-grid-1.jpg" />
+    <Content Include="assets\img\blog\blog-grid-2.jpg" />
+    <Content Include="assets\img\blog\blog-grid-3.jpg" />
+    <Content Include="assets\img\blog\blog-grid-4.jpg" />
+    <Content Include="assets\img\blog\blog-grid-5.jpg" />
+    <Content Include="assets\img\blog\blog-grid-6.jpg" />
+    <Content Include="assets\img\blog\blog-sidebar-thumb.jpg" />
+    <Content Include="assets\img\blog\blog-sticky.jpg" />
+    <Content Include="assets\img\blog\blog1.jpg" />
+    <Content Include="assets\img\blog\blog2.jpg" />
+    <Content Include="assets\img\blog\blog3.jpg" />
+    <Content Include="assets\img\blog\blog4.jpg" />
+    <Content Include="assets\img\blog\blog5.jpg" />
+    <Content Include="assets\img\blog\blog6.jpg" />
+    <Content Include="assets\img\blog\blog7.jpg" />
+    <Content Include="assets\img\blog\blog8.jpg" />
+    <Content Include="assets\img\blog\blog_details_layer.jpg" />
+    <Content Include="assets\img\blog\post-comment1.jpg" />
+    <Content Include="assets\img\blog\post-comment2.jpg" />
+    <Content Include="assets\img\favicon.ico" />
+    <Content Include="assets\img\icon\arrrow-icon.jpg" />
+    <Content Include="assets\img\icon\arrrow-icon2.jpg" />
+    <Content Include="assets\img\icon\arrrow-left-icon.jpg" />
+    <Content Include="assets\img\icon\dribble.jpg" />
+    <Content Include="assets\img\icon\email.jpg" />
+    <Content Include="assets\img\icon\facebook-bg.jpg" />
+    <Content Include="assets\img\icon\location.jpg" />
+    <Content Include="assets\img\icon\mob-icon-home.png" />
+    <Content Include="assets\img\icon\mob-icon-myaccount.png" />
+    <Content Include="assets\img\icon\mob-icon-wallet.png" />
+    <Content Include="assets\img\icon\mob-icon-win.png" />
+    <Content Include="assets\img\icon\navigation-arrow1.jpg" />
+    <Content Include="assets\img\icon\navigation-arrow2.jpg" />
+    <Content Include="assets\img\icon\navigation-bg1.jpg" />
+    <Content Include="assets\img\icon\navigation-bg2.jpg" />
+    <Content Include="assets\img\icon\navigation-bg3.jpg" />
+    <Content Include="assets\img\icon\navigation-bg4.jpg" />
+    <Content Include="assets\img\icon\phone.jpg" />
+    <Content Include="assets\img\icon\reply.jpg" />
+    <Content Include="assets\img\icon\scroll-top.jpg" />
+    <Content Include="assets\img\icon\twittre.jpg" />
+    <Content Include="assets\img\icon\youtobe-bg.jpg" />
+    <Content Include="assets\img\logo\logo.jpg" />
+    <Content Include="assets\img\logo\logo1.jpg" />
+    <Content Include="assets\img\others\404.jpg" />
+    <Content Include="assets\img\others\about-thumb.jpg" />
+    <Content Include="assets\img\others\btn-bg.jpg" />
+    <Content Include="assets\img\others\btn-signup.jpg" />
+    <Content Include="assets\img\others\dot-button.jpg" />
+    <Content Include="assets\img\others\game-details-thumb.jpg" />
+    <Content Include="assets\img\others\game-vs1.jpg" />
+    <Content Include="assets\img\others\game-vs2.jpg" />
+    <Content Include="assets\img\others\game-vs3.jpg" />
+    <Content Include="assets\img\others\gaming-world-bg1.jpg" />
+    <Content Include="assets\img\others\gaming-world-bg2.jpg" />
+    <Content Include="assets\img\others\gaming-world-bg3.jpg" />
+    <Content Include="assets\img\others\gaming-world1.jpg" />
+    <Content Include="assets\img\others\gaming-world2.jpg" />
+    <Content Include="assets\img\others\gaming-world3.jpg" />
+    <Content Include="assets\img\others\menu_shape.jpg" />
+    <Content Include="assets\img\others\play-btn.jpg" />
+    <Content Include="assets\img\others\play-btn2.jpg" />
+    <Content Include="assets\img\others\player-bg-maskot.jpg" />
+    <Content Include="assets\img\others\players1.jpg" />
+    <Content Include="assets\img\others\players2.jpg" />
+    <Content Include="assets\img\others\players3.jpg" />
+    <Content Include="assets\img\others\players4.jpg" />
+    <Content Include="assets\img\others\players5.jpg" />
+    <Content Include="assets\img\others\players6.jpg" />
+    <Content Include="assets\img\others\popular-game-thumb1.jpg" />
+    <Content Include="assets\img\others\popular-game-thumb2.jpg" />
+    <Content Include="assets\img\others\popular-game-thumb3.jpg" />
+    <Content Include="assets\img\others\popular-game-thumb4.jpg" />
+    <Content Include="assets\img\others\popular-game-thumb5.jpg" />
+    <Content Include="assets\img\others\tam-text-shape.jpg" />
+    <Content Include="assets\img\others\tam-text-shape2.jpg" />
+    <Content Include="assets\img\others\team1.jpg" />
+    <Content Include="assets\img\others\team2.jpg" />
+    <Content Include="assets\img\others\team3.jpg" />
+    <Content Include="assets\img\others\testimonial-thumb.jpg" />
+    <Content Include="assets\img\others\text-mini-shape.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb1.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb10.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb2.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb3.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb4.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb5.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb6.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb7.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb8.jpg" />
+    <Content Include="assets\img\others\upcoming-game-thumb9.jpg" />
+    <Content Include="assets\img\others\winners1.jpg" />
+    <Content Include="assets\img\others\winners2.jpg" />
+    <Content Include="assets\img\others\winners3.jpg" />
+    <Content Include="assets\img\others\winners4.jpg" />
+    <Content Include="assets\img\others\winners5.jpg" />
+    <Content Include="assets\img\others\winners6.jpg" />
+    <Content Include="assets\img\player\details\player-details-img.jpg" />
+    <Content Include="assets\img\player\list\player-1.jpg" />
+    <Content Include="assets\img\player\list\player-2.jpg" />
+    <Content Include="assets\img\player\list\player-3.jpg" />
+    <Content Include="assets\img\player\list\player-4.jpg" />
+    <Content Include="assets\img\player\list\player-5.jpg" />
+    <Content Include="assets\img\player\list\player-6.jpg" />
+    <Content Include="assets\js\ajax-mail.js" />
+    <Content Include="assets\js\jquery-waypoints.js" />
+    <Content Include="assets\js\jquery.counterup.min.js" />
+    <Content Include="assets\js\jquery.magnific-popup.min.js" />
+    <Content Include="assets\js\jquery.nice-select.js" />
+    <Content Include="assets\js\main.js" />
+    <Content Include="assets\js\slick.min.js" />
+    <Content Include="assets\js\vendor\bootstrap.min.js" />
+    <Content Include="assets\js\vendor\jquery-3.6.0.min.js" />
+    <Content Include="assets\js\vendor\jquery-migrate-3.3.2.min.js" />
+    <Content Include="assets\js\vendor\modernizr-3.7.1.min.js" />
+    <Content Include="assets\js\vendor\popper.js" />
+    <Content Include="assets\js\wow.min.js" />
     <Content Include="css\AjaxLoader.html" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\font-awesome.css" />
@@ -261,8 +392,12 @@
     <Content Include="Views\Home\GenerateGameResponseForColorX3.cshtml" />
     <Content Include="Views\Home\GenerateGamePeriodForJackpotX10.cshtml" />
     <Content Include="Views\Home\GenerateGameResponseForJackpotX10.cshtml" />
+    <Content Include="assets\fonts\icofont.woff" />
+    <Content Include="assets\fonts\icofont.woff2" />
     <None Include="Properties\PublishProfiles\OMMIPL.pubxml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Admin\AdminDashboard - Copy.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -292,7 +427,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63482</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63484/</IISUrl>
+          <IISUrl>http://localhost:63481/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
