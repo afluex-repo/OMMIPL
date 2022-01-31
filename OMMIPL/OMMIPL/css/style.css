@@ -496,7 +496,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 /*-- //banner --*/
 /*-- about --*/
 .about, .services, .team-bottom, .mail {
-    padding: 5em 0;
+    padding: 3em 0;
 }
 
 .w3l_head {
@@ -2162,4 +2162,14 @@ span.card-detail {
     .card h2{
         font-size: 20px;
     }
+}
+/*============Pagination=================*/
+div#nav {
+    float: right;
+}
+div#nav a {
+    background-color: #111111;
+    color: #fff;
+    font-weight: 600;
+    padding: 1px 10px;
 }

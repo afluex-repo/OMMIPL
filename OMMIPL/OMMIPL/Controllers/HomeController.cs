@@ -502,5 +502,9 @@ namespace OMMIPL.Controllers
             return RedirectToAction("ContactUs", "Home");
 
         }
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }
