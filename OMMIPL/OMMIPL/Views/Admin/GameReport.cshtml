@@ -23,6 +23,12 @@ div#nav a {
                 <div class="row">
                     <div class="col-md-4 w3_agile_mail_grid">
                         <div class="mb-3">
+                            <label class="mb-1 text-white fs-14"><span style="color:red">*</span>Game Type </label>
+                            @Html.DropDownListFor(m => m.PK_GameId, new SelectList(ViewBag.ddlGameType, "Value", "Text"), new { @class = "input__field", @placeholder = "Select Game Type", })
+                        </div>
+                    </div>
+                    <div class="col-md-4 w3_agile_mail_grid">
+                        <div class="mb-3">
                             <label class="mb-1 text-white fs-14">LoginID </label>
                             @Html.TextBoxFor(m => m.LoginID, new { @class = "input__field", @placeholder = "LoginID", })
                         </div>
@@ -33,7 +39,7 @@ div#nav a {
                            <select id="ddlstatus" class="input__field" name="ddlstatus">
                                <option value="0">Select</option>
                                <option value="Winner">Winner</option>
-                               <option value="Looser">Lose</option>
+                               <option value="Looser">Loser</option>
                            </select>
                         </div>
                     </div>
@@ -75,8 +81,12 @@ div#nav a {
                                <tr style="text-align:center;">
                                    <th>S No.</th>
                                    <th>Name</th>
-                                   <th>LastName</th>
-                                   <th>LoginID</th>
+                                   <th>Chose Response</th>
+                                   <th>Result Response</th>
+                                   <th>Result Color</th>
+                                   <th>PeriodNo</th>
+                                   <th>Amount</th>
+                                   <th>GameName</th>
                                    <th>Date</th>
                                    <th>Time</th>
                                </tr>
@@ -91,15 +101,16 @@ div#nav a {
                                        {
                                            <tr>
                                                <td>@i</td>
-
-                                               <td>@Item.Name</td>
-                                               <td>@Item.LastName</td>
-                                               <td>@Item.LoginID</td>
+                                               <td>@Item.Name  &nbsp; @Item.LastName</td>
+                                               <td>@Item.Fk_ChosenColorId</td>
+                                               <td>@Item.FK_ResultId</td>
+                                               <td>@Item.color</td>
+                                               <td>@Item.PeriodNo</td>
+                                               <td>@Item.Amount</td>
+                                               <td>@Item.GameName</td>
                                                <td>@Item.windate</td>
-                                               <td>@Item.Time</td>
-
-
-                                           </tr>
+                                               <td>@Item.GameTime</td>
+                                            </tr>
                                            i++;
                                        }
                                    }

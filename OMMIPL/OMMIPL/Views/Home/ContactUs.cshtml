@@ -135,6 +135,41 @@
     <!-- page wrapper end -->
 }
 <script>
+    function validation() {
+       
+        $(".errortext").removeClass("errortext");
+        if ($("#Name").val() == "") {
+            $("#Name").addClass("errortext");
+            $('#Name').focus();
+            return false;
+        }
+        if ($("#MobileNo").val() == "")
+        {
+            $("#MobileNo").addClass("errortext");
+            $('#MobileNo').focus();
+            return false;
+        }
+        if ($("#Email").val() == "") {
+            $("#Email").addClass("errortext");
+            $('#Email').focus();
+            return false;
+        }
+        if ($("#Address").val() == "") {
+            $("#Address").addClass("errortext'");
+            $('#Address').focus();
+            return false;
+        }
+        if ($("#Massage").val() == "") {
+            $("#Massage").addClass("errortext");
+            $('#Massage').focus();
+            return false;
+
+        }
+    }
+
+
+
+
     function getsponsordetails(obj) {
         $(".errortext").removeClass("errortext");
         $.ajax({

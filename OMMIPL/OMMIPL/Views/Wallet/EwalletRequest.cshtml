@@ -43,12 +43,7 @@
                         </div>
                     </div>
                     <div class="row" id="myid">
-                        <div class="col-md-4 w3_agile_mail_grid" id="bankname" style="display: none">
-                            <div class="mb-3">
-                                <label class="mb-1 text-white fs-14">Bank Name <span class="text-danger">*</span></label>
-                                @Html.TextBoxFor(m => m.BankName, new { @class = "input__field", @placeholder = "Bank Name" })
-                            </div>
-                        </div>
+                        
                         <div class="col-md-4 w3_agile_mail_grid" id="chequeno" style="display: none">
                             <div class="mb-3">
                                 <label class="mb-1 text-white fs-14">Transaction No  <span class="text-danger">*</span></label>
@@ -60,6 +55,11 @@
                                 <label class="mb-1 text-white fs-14">Transaction Date <span class="text-danger">*</span></label>
                                 @Html.TextBoxFor(m => m.DDChequeDate, new { @class = "input__field", @placeholder = "Transaction Date", @readonly = true })
                             </div>
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid" style="display: none" id="qr">
+                            <label>QR Code</label><br />
+                            <img src="@Model.Image" style="width: 300px" />
+                            @*<img src="/images/QRCode.png" />*@
                         </div>
                     </div>
                     <div class="row">
@@ -73,9 +73,11 @@
                             <label>Upload Document </label>
                             <input type="file" name="PostedFile" id="PostedFile" class="input__field" placeholder="Upload Document" />
                         </div>*@
-                        <div class="col-md-4 w3_agile_mail_grid" style="display: none" id="qr">
-                            <label>QR Code</label><br />
-                            <img src="/images/QRCode.png" />
+                        <div class="col-md-4 w3_agile_mail_grid" id="bankname" style="display: none">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Bank Name <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.BankName, new { @class = "input__field", @placeholder = "Bank Name" })
+                            </div>
                         </div>
                     </div>
                     <br />
@@ -102,35 +104,24 @@
             $('#Amount').focus();
             return false;
         }
-        if ($('#PaymentMode').val() == '') {
+        if ($('#PaymentMode').val() == '0') {
             $("#PaymentMode").addClass('errortext');
             $('#PaymentMode').focus();
             return false;
         }
 
-        //if (($("#PaymentMode option:selected").text()) == 'QUICK PAYMENT') {
-        //    if ($('#BankName').val() == '') {
-        //        $("#BankName").addClass('errortext');
-        //        $('#BankName').focus();
-        //        return false;
-        //    }
-        //    if ($('#DDChequeNo').val() == '') {
-        //        $("#DDChequeNo").addClass('errortext');
-        //        $('#DDChequeNo').focus();
-        //        return false;
-        //    }
-        //    if ($('#DDChequeDate').val() == '') {
-        //        $("#DDChequeDate").addClass('errortext');
-        //        $('#DDChequeDate').focus();
-        //        return false;
-        //    }
-        //    if ($('#BankBranch').val() == '') {
-        //        $("#BankBranch").addClass('errortext');
-        //        $('#BankBranch').focus();
-        //        return false;
-        //    }
-        //}
-
+        if (($("#PaymentMode option:selected").text()) == 'MANUAL') {
+            if ($('#DDChequeNo').val() == '') {
+                $("#DDChequeNo").addClass('errortext');
+                $('#DDChequeNo').focus();
+                return false;
+            }
+            if ($('#DDChequeDate').val() == '') {
+                $("#DDChequeDate").addClass('errortext');
+                $('#DDChequeDate').focus();
+                return false;
+            }
+        }
     }
 
 

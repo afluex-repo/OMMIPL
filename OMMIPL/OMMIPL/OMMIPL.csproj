@@ -312,6 +312,23 @@
     <Content Include="js\responsiveslides.min.js" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="UploadQR\08fdd501-e72a-4a7b-8ad2-d203ab2f8502.jpg" />
+    <Content Include="UploadQR\0c427a07-b8f9-4ecf-8c7e-975917c5987d.png" />
+    <Content Include="UploadQR\0edc9eae-f056-4163-ab67-8b6c6d87a38d.png" />
+    <Content Include="UploadQR\144b2fd1-b9b6-4095-87d5-8f0e41647196.jpeg" />
+    <Content Include="UploadQR\2c4c7d6e-4f89-4821-992b-343ddb4c43f9.png" />
+    <Content Include="UploadQR\419a3951-eb29-432e-8a5c-76978cda7563.png" />
+    <Content Include="UploadQR\44f7bc10-e55e-4afc-9d13-eabce24a5305.jpeg" />
+    <Content Include="UploadQR\48596d39-4522-4c60-a1ee-96ecad2a1ae1.png" />
+    <Content Include="UploadQR\4b24ede4-23e9-4f29-825a-a2639791942b.png" />
+    <Content Include="UploadQR\5f1fd3c9-ce50-44cb-adad-3d55b1a73b8d.png" />
+    <Content Include="UploadQR\712f5b8a-45f6-4e7d-b67e-e109319cdc85.jpg" />
+    <Content Include="UploadQR\ac045502-9a0c-4db3-bf58-6f959e61addf.png" />
+    <Content Include="UploadQR\ba80340f-314b-473c-8270-7139b13ae954.jpeg" />
+    <Content Include="UploadQR\c907c88b-f4a3-4310-98b9-0084524665db.png" />
+    <Content Include="UploadQR\eb646281-f6b5-448d-8aef-042f570519d5.jpeg" />
+    <Content Include="UploadQR\f84c2d9c-46d8-4c5f-8068-ca1b5662ec04.jpg" />
+    <Content Include="UploadQR\fd16cc39-97ab-450a-b3b7-5e7ba58ff036.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -427,7 +444,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63482</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63481/</IISUrl>
+          <IISUrl>http://localhost:63482/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

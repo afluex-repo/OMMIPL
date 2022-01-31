@@ -101,8 +101,8 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
     <div class="header">
         <div class="w3layouts_header_left">
             <div class="top-nav-text">
-                <p>Call Us : <span class="call">+00 111 2222 333</span></p>
-                <p>Email Us : <span class="mail"><a href="mailto:info@example.com">info@example.com</a></span></p>
+                @*<p>Call Us : <span class="call">+00 111 2222 333</span></p>*@
+                <p>Email Us : <span class="mail"><a href="mailto:info@ommipl.com">info@ommipl.com</a></span></p>
             </div>
         </div>
         <div class="w3layouts_header_right">
@@ -187,7 +187,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
         @RenderBody()
         <!-- footer -->
         <div class="w3l_footer">
-            <div class="container">
+            <div class="container" style="margin-left:300px">
 
                 <div class="w3ls_footer_grids">
 
@@ -202,17 +202,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                             </div>
                             <div class="clearfix"> </div>
                         </div>
-                        <div class="col-md-4 w3ls_footer_grid_left">
-                            <div class="w3ls_footer_grid_leftl">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                            </div>
-                            <div class="w3ls_footer_grid_leftr">
-                                <h4>Email</h4>
-                                <a href="mailto:info@example.com">info@example.com</a>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                        <div class="col-md-4 w3ls_footer_grid_left">
+                        @*<div class="col-md-4 w3ls_footer_grid_left">
                             <div class="w3ls_footer_grid_leftl">
                                 <i class="fa fa-phone" aria-hidden="true"></i>
                             </div>
@@ -221,13 +211,24 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
                                 <p>(+000) 003 003 0052</p>
                             </div>
                             <div class="clearfix"> </div>
+                        </div>*@
+                        <div class="col-md-4 w3ls_footer_grid_left">
+                            <div class="w3ls_footer_grid_leftl">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                            </div>
+                            <div class="w3ls_footer_grid_leftr">
+                                <h4>Email</h4>
+                                <a href="mailto:info@ommipl.com">info@ommipl.com</a>
+                            </div>
+                            <div class="clearfix"> </div>
                         </div>
+                      
                         <div class="clearfix"> </div>
                     </div>
                 </div>
             </div>
             <div class="w3l_footer_pos">
-                <p>© @DateTime.Now.Year OMMIPL. All Rights Reserved | Design by <a href="https://afluex.com/">Afluex Multiservices LLP</a></p>
+                <p>© @DateTime.Now.Year OMMIPL. All Rights Reserved @*| Design by <a href="https://afluex.com/">Afluex Multiservices LLP</a>*@</p>
             </div>
         </div>
         <!-- //footer -->
