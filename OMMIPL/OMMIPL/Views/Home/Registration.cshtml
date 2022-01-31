@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 <style>
-    .form_textarea textarea {
-        height: 62px;
-        overflow-y: hidden;
+    .form_textarea textarea{
+        height: 150px;
+        /*overflow-y: hidden;*/
     }
 </style>
 <!-- breadcrumbs area start -->
@@ -37,9 +37,9 @@
                 <div class="col-lg-4 col-md-8 col-12 mx-auto mb-50">
                     <img width="550" height="550" src="~/assets/img/others/about-thumb.jpg" alt="">
                 </div>
-                @using (Html.BeginForm("RegistrationAction", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
-                {
                     <div class="col-lg-7 col-md-8 col-12 mx-auto mb-50">
+@using (Html.BeginForm("RegistrationAction", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+{
                         <div class="contact_form_inner">
                             <span style="color:red">@TempData["Msg"]</span>
                             <form id="contact-form" action="/Home/RegistrationAction">
@@ -88,6 +88,11 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form_input">
+                                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form_input">
                                             @Html.TextBoxFor(m => m.City, new { @class = "input__field", @placeholder = "City" })
                                         </div>
                                     </div>
@@ -101,11 +106,6 @@
                                             @Html.TextAreaFor(m => m.Address, new { @class = "input__field", @placeholder = "Enter Address" })
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form_input">
-                                            @Html.TextBoxFor(m => m.PinCode, new { @class = "input__field", @placeholder = "Pin Code", @onchange = "return getstatecity();" })
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="form_input_btn text-center">
                                     <button type="submit" class="btn btn-link">SUBMIT <img width="20" height="20" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
@@ -114,8 +114,8 @@
 
                             </form>
                         </div>
+}
                     </div>
-                }
             </div>
         </div>
     </section>

@@ -118,7 +118,7 @@ namespace OMMIPL.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult RegistrationAction(Home model)
+        public ActionResult Registration(Home model)
         {
             try
             {
