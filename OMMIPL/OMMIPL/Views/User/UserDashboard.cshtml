@@ -117,6 +117,41 @@
             padding: 10px;
             box-shadow:2px 2px gray unset;
         }
+         .select-amount {
+    margin: 5px 2px;
+    background-color: #f9e18a;
+    padding: 2px 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+         h6.input.right.para {
+    font-size: 15px;
+}
+         p.sign {
+            padding: 0px 10px;
+            font-size: 26px;
+            font-weight: 600;
+            border: 1px solid;
+            margin: 0px 15px;
+            cursor: pointer;
+        }
+    p.sign:hover {
+        background-color: #89848421;
+        box-shadow: 4px 5px 4px #0a0a0a29;
+    }
+         p.quantity {
+    border: 1px solid #0000002b;
+    padding: 0px 20px;
+    font-size: 20px;
+    background-color: #d9e9f7;
+}
+         .color-circle {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #dd0808;
+    background-color: red;
+    border-radius: 50%;
+}
 </style>
 <!-- gallery -->
 <div class="team-bottom" id="work">
@@ -197,61 +232,66 @@
                                     </div>
                                     <div class="modal-body">
                                         <form action="/User/SubmitPrediction" type="Post">
-                                            <div class="row form-group">
+                                            <div class="row">
                                                 <div class="col-sm-12">
                                                     <span class="input right">
                                                         <label>Amount</label>
                                                     </span>
                                                     <div class="tabs">
-                                                        <a onclick="return CalculateValue(1);">1</a>
-                                                        <a  onclick="return CalculateValue(10);">10</a>
-                                                        <a  onclick="return CalculateValue(100);">100</a>
-                                                        <a  onclick="return CalculateValue(1000);">1000</a>
-                                                        <a onclick="return CalculateValue(10000);">10000</a>
-                                                    </div>
+                                                        <div class="select-amount"><a onclick="return CalculateValue(1);">1</a></div>
+                                                        <div class="select-amount">
+                                                            <a onclick="return CalculateValue(10);">10</a>
+                                                        </div>
+                                                            <div class="select-amount">
+                                                                <a onclick="return CalculateValue(100);">100</a>
+                                                            </div>
+                                                                <div class="select-amount">
+                                                                    <a onclick="return CalculateValue(1000);">1000</a>
+                                                                </div>
+                                                                    <div class="select-amount">
+                                                                        <a onclick="return CalculateValue(10000);">10000</a>
+                                                                    </div>
+                                                                    </div>
                                                 </div>
-                                                <div class="col-sm-12">
+                                                <div class="col-sm-12" style="margin-top: 15px;">
                                                     <span class="input right">
                                                         <label>Number</label>
                                                     </span>
-                                                    <div class="tabs">
-                                                        <span>-</span>
+                                                    <div class="d-flex" style="margin-top: 10px;">
+                                                        <p class="sign">-</p>
                                                         <span>&nbsp;</span>
-                                                        <span></span>
+                                                        <p class="quantity">8</p>
                                                         <span>&nbsp;</span>
-                                                        <span>+</span>
+                                                        <p class="sign">+</p>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-12">
-                                                    <span class="input right">
-                                                       Total Amount is <label id="lblAmount"></label>
-                                                    </span>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <span class="input right">
-                                                        I agree to <a>Rule</a>
-                                                    </span>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <span class="input right">
-                                                    </span>
-                                                </div>
-                                                <div class="col-sm-12">
+                                                <div class="col-sm-12" style="margin-top: 15px;">
                                                     <span class="input right">
                                                         <label>Color</label>
-                                                        <button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>
-                                                        @Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })
+                                                        <div class="color-circle"></div>
+                                                        @*<button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>*@
+                                                        @*@Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })*@
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-3" style="margin-top: 15px;">
                                                     <label><span>Amount</span><span class="text-red">*</span></label>
                                                 </div>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-9" style="margin-top: 15px;">
                                                     @Html.HiddenFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
                                                 </div>
+                                                <div class="col-sm-12" style="margin-top: 25px;">
+                                                    <h6 class="input right para">
+                                                       Total Amount is <label id="lblAmount">Rs 4567</label>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-sm-12" style="margin-bottom: 20px;">
+                                                    <h6 class="input right para">
+                                                        I agree to <a>Rule</a>
+                                                    </h6>
+                                                </div>
+                                               
                                             </div>
+                                            
                                             <div class="row form-group">
                                                 <div class="col-sm-12 submit">
                                                     <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPrediction();">Submit</button>
