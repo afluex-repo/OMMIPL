@@ -23,6 +23,9 @@ namespace OMMIPL.Models
         public List<Admin> lstGame { get; set; }
         public List<Admin> lstContact { get; set; }
         public List<Admin> lstReports { get; set; }
+        public List<Admin> lstRegistration { get; set; }
+        public List<Admin> lstUserledger { get; set; }
+        public List<Admin> lstGameReport { get; set; }
         public string BankName { get; set; }
         public string BankBranch { get; set; }
         public string DDChequeNo { get; set; }
@@ -30,12 +33,59 @@ namespace OMMIPL.Models
         public string PaymentMode { get; set; }
         public string Status { get; set; }
         public string RequestId { get; set; }
-
+        public string Message { get; set; }
         public string AccountName { get; set; }
         public string Number { get; set; }
         public string PK_UserId { get; set; }
         public string LoginID { get; set; }
-
+        public string FathersName { get; set; }
+        public string AccountNO { get; set; }
+        public string IFSCCode { get; set; }
+        public string CreatedDate { get; set; }
+        public string PK_QRId { get; set; }
+        public string UpLoadQR { get; set; }
+        public string CrAmount { get; set; }
+        public string DrAmount { get; set; }
+        public string Narration { get; set; }
+        public string CurrentDate { get; set; }
+        public string paymodename { get; set; }
+        public string paymodeid { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string ddlstatus { get; set; }
+        public string LastName { get; set; }
+        public string PK_PeriodId { get; set; }
+        public string GameTime { get; set; }
+        public string GameName { get; set; }
+        public string Fk_ChosenColorId { get; set; }
+        public string FK_ResultId { get; set; }
+        public string color { get; set; }
+        public string PeriodNo { get; set; }
+        public string windate { get; set; }
+        public string PK_GameId { get; set; }
+        public DataSet GameTypeDataList()
+        {
+            DataSet ds = DBHelper.ExecuteQuery("GetGameTypeDetails");
+            return ds;
+        }
+        public DataSet QRMasterList()
+        {
+            SqlParameter[] para =
+                       {
+            };
+            DataSet ds = DBHelper.ExecuteQuery("QRMaster");
+            return ds;
+        }
+        public DataSet GetRegistrationDetails()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@LoginId",LoginID),
+               
+            };
+            DataSet ds = DBHelper.ExecuteQuery("RegistrationList", para);
+            return ds;
+        }
         public DataSet SaveGame()
         {
             SqlParameter[] para =
@@ -77,6 +127,20 @@ namespace OMMIPL.Models
             DataSet ds = DBHelper.ExecuteQuery("GetGameDetails", para);
             return ds;
         }
+        public DataSet GetGameReport()
+        {
+            SqlParameter[] para =
+            {
+                   new SqlParameter("@LoginID",LoginID),
+                   new SqlParameter("@Action",ddlstatus),
+                    new SqlParameter("@FromDate",FromDate),
+                    new SqlParameter("@ToDate",ToDate),
+                   new SqlParameter ("@GameType", PK_GameId )
+            };
+            DataSet ds = DBHelper.ExecuteQuery("GameReport", para);
+            return ds;
+        }
+
 
         public DataSet DeleteGame()
         {
@@ -125,12 +189,22 @@ namespace OMMIPL.Models
             SqlParameter[] para =
             {
                 new SqlParameter("@PK_RequestID",RequestId),
-                 new SqlParameter("@ApprovedBy",AddedBy)
+                 new SqlParameter("@Status",Status),
+                 new SqlParameter("@AddedBy",AddedBy)
             };
-            DataSet ds = DBHelper.ExecuteQuery("Declined", para);
+            DataSet ds = DBHelper.ExecuteQuery("ApproveDeclineEwalletRequest", para);
             return ds;
         }
-
+        public DataSet DeleteQR()
+        {
+            SqlParameter[] para =
+            {
+                new SqlParameter("@PK_QRId",PK_QRId),
+                 new SqlParameter("@DeletedBy",AddedBy)
+            };
+            DataSet ds = DBHelper.ExecuteQuery("Delete_QRMaster", para);
+            return ds;
+        }
 
         public DataSet Delete()
         {

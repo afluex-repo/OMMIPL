@@ -19,7 +19,24 @@ namespace OMMIPL.Controllers
 
         public ActionResult ContactList()
         {
-            return View();
+            Admin model = new Admin();
+            List<Admin> lst = new List<Admin>();
+            DataSet ds11 = model.GetContactDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.Message = r["Massage"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstContact = lst;
+            }
+            return View(model);
         }
         [HttpPost]
         [ActionName("ContactList")]
@@ -36,6 +53,7 @@ namespace OMMIPL.Controllers
                     Obj.Email = r["Email"].ToString();
                     Obj.MobileNo = r["Mobile"].ToString();
                     Obj.Address = r["Address"].ToString();
+                    Obj.Message = r["Massage"].ToString();
                     lst.Add(Obj);
                 }
                 model.lstContact = lst;
@@ -214,47 +232,54 @@ namespace OMMIPL.Controllers
         }
 
 
+        //public ActionResult Approve(string Id)
+        //{
+        //    try
+        //    {
+        //        Admin model = new Admin();
+        //        model.AddedBy = "1";
+        //        model.RequestId = Id;
+        //        DataSet ds = model.Approv();
+        //        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+        //            {
+        //                TempData["Game"] = "Record Approved Successfully";
+        //            }
+        //            else
+        //            {
+        //                TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["Game"] = ex.Message;
+        //    }
+        //    return RedirectToAction("reports", "Admin");
+        //}
 
-        public ActionResult Approve(string Id)
+        public ActionResult EWalletRequestDeclineApprove(string Id, string status)
         {
             try
             {
                 Admin model = new Admin();
-                model.AddedBy = "1";
-                model.RequestId = Id;
-                DataSet ds = model.Approv();
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
-                    {
-                        TempData["Game"] = "Record Approved Successfully";
-                    }
-                    else
-                    {
-                        TempData["Game"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["Game"] = ex.Message;
-            }
-            return RedirectToAction("reports", "Admin");
-        }
-
-        public ActionResult Decline(string Id)
-        {
-            try
-            {
-                Admin model = new Admin();
-                model.AddedBy = "1";
+                model.Status = status;
+                model.AddedBy = Session["PK_AdminId"].ToString();
                 model.RequestId = Id;
                 DataSet ds = model.Decline();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                     {
-                        TempData["Game"] = "Record Declined Successfully";
+                        if (status == "Approved")
+                        {
+                            TempData["Game"] = "Record Approve Successfully";
+                        }
+                        else
+                        {
+                            TempData["Game"] = "Record Declined Successfully";
+                        }
                     }
                     else
                     {
@@ -266,7 +291,7 @@ namespace OMMIPL.Controllers
             {
                 TempData["Game"] = ex.Message;
             }
-            return RedirectToAction("reports", "Admin");
+            return RedirectToAction("E_WalletReport", "Admin");
         }
 
 
@@ -294,13 +319,55 @@ namespace OMMIPL.Controllers
             {
                 TempData["Game"] = ex.Message;
             }
-            return RedirectToAction("reports", "Admin");
+            return RedirectToAction("E_WalletReport", "Admin");
         }
 
-
+        public ActionResult DeleteQR(string Id)
+        {
+            try
+            {
+                Admin model = new Admin();
+                model.AddedBy = "1";
+                model.PK_QRId = Id;
+                DataSet ds = model.DeleteQR();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        TempData["Msg"] = "Record Deleted Successfully";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("QRMaster", "Admin");
+        }
         public ActionResult QRMaster()
         {
-            return View();
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+            DataSet ds = model.QRMasterList();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.AccountName = r["AccountName"].ToString();
+                    Obj.Number = r["Number"].ToString();
+                    Obj.PK_QRId = r["PK_QRId"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                    Obj.UpLoadQR = r["UpLoadQR"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstReports = lst;
+            }
+            return View(model);
         }
         [HttpPost]
         [ActionName("QRMaster")]
@@ -333,7 +400,214 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("QRMaster", "Admin");
         }
+         public ActionResult UserRegistrationList()
+        {
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+           // model.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginID"].ToString();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.FathersName = r["FathersName"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.AccountNO = r["AccountNO"].ToString();
+                    Obj.IFSCCode = r["IFSCCode"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                   
+                    lst.Add(Obj);
+                }
+                model.lstRegistration = lst;
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ActionName("UserRegistrationList")]
+        public ActionResult UserRegistrationList(Admin model)
+        {
 
+            List<Admin> lst = new List<Admin>();
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[0].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.LoginID = r["LoginID"].ToString();
+                    Obj.Name = r["Name"].ToString();
+                    Obj.FathersName = r["FathersName"].ToString();
+                    Obj.MobileNo = r["Mobile"].ToString();
+                    Obj.Email = r["Email"].ToString();
+                    Obj.AccountNO = r["AccountNO"].ToString();
+                    Obj.IFSCCode = r["IFSCCode"].ToString();
+                    Obj.Address = r["Address"].ToString();
+                    Obj.CreatedDate = r["CreatedDate"].ToString();
+                    lst.Add(Obj);
+                }
+                model.lstRegistration = lst;
+            }
+            return View(model);
+        }
+       
+        public ActionResult EWalletUserLedger(String LoginID)
+        {
+            List<Admin> lst = new List<Admin>();
+            Admin model = new Admin();
+            model.LoginID = LoginID;
+            DataSet ds11 = model.GetRegistrationDetails();
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+            {
+                    model.LoginID = ds11.Tables[0].Rows[0]["LoginID"].ToString();
+                    model.Name = ds11.Tables[0].Rows[0]["Name"].ToString();
+                    model.FathersName = ds11.Tables[0].Rows[0]["FathersName"].ToString();
+                    model.MobileNo = ds11.Tables[0].Rows[0]["Mobile"].ToString();
+                    model.Email = ds11.Tables[0].Rows[0]["Email"].ToString();
+                    model.AccountNO = ds11.Tables[0].Rows[0]["AccountNO"].ToString();
+                    model.IFSCCode = ds11.Tables[0].Rows[0]["IFSCCode"].ToString();
+                    model.Address = ds11.Tables[0].Rows[0]["Address"].ToString();
+                    model.CreatedDate = ds11.Tables[0].Rows[0]["CreatedDate"].ToString();
+            }
+            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[1].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds11.Tables[1].Rows)
+                {
+                    Admin Obj = new Admin();
+                    Obj.CrAmount = r["CrAmount"].ToString();
+                    Obj.DrAmount = r["DrAmount"].ToString();
+                    Obj.Narration = r["Narration"].ToString();
+                    Obj.CurrentDate = r["CurrentDate"].ToString();
+                    Obj.paymodename = r["paymodename"].ToString();
+                    Obj.paymodeid = r["paymodeid"].ToString();
+                    Obj.PK_UserId = r["FK_UserId"].ToString();
+                 
 
+                    lst.Add(Obj);
+                }
+                model.lstUserledger = lst;
+            }
+            return View(model);
+        }
+
+        public ActionResult GameReport()
+        {
+            List<Admin> lstGameReport = new List<Admin>();
+            Admin model = new Admin();
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+            model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        Admin obj = new Admin();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginID = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GameReport(Admin model)
+        {
+
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+            List<Admin> lstGameReport = new List<Admin>();
+          
+            model.LoginID = string.IsNullOrEmpty(model.LoginID) ? null : model.LoginID;
+         //   model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+          //  model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        Admin obj = new Admin();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginID = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
     }
 }

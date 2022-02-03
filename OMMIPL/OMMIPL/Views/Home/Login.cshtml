@@ -3,43 +3,61 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
-<style>
-    .errorclass{
 
-    }
-</style>
-<div class="mail" id="mail">
+<!-- breadcrumbs area start -->
+<div class="breadcrumbs_aree breadcrumbs_bg mb-140" data-bgimg="../assets/img/bg/breadcrumbs-bg.png">
     <div class="container">
-        <h3 class="w3l_head w3l_head1">Sign In</h3>
-        @*<p class="w3ls_head_para w3ls_head_para1">send us a message</p>*@
-        <div class="w3_mail_grids">
-            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
-            {
-                <div class="col-md-4 w3_agile_mail_grid"></div>
-                <div class="col-md-4 w3_agile_mail_grid">
-                    <span class="input input--ichiro">
-                        @Html.TextBoxFor(m=>m.LoginId, new { @class= "input__field", @placeholder = "Enter Mobile No." })
-                    </span>
-                    <span class="input input--ichiro">
-                        @Html.PasswordFor(m => m.Password, new { @class = "input__field", @placeholder = "Enter Password" })
-                    </span>
-                    <br /><br />
-                    <input type="submit" value="Sign In" onclick="return ValidateForm();"><br /><br />
-                    <a href="@Url.Action("Registration","Home")">New User? Create Account</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="@Url.Action("ForgetPassword","Home")">Forget Password</a>
-                    <p style="color:red;">
-                        @TempData["Msg"]
-                    </p>
-                  
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs_text text-center">
+                    <h1>Login</h1>
+                    <ul class="d-flex justify-content-center">
+                        <li><a href="index.html">Home </a></li>
+                        <li> <span>//</span></li>
+                        <li>  Login</li>
+                    </ul>
                 </div>
-                <div class="col-md-4 w3_agile_mail_grid">
-                   
-                </div>
-                <div class="clearfix"> </div>
-            }
+            </div>
         </div>
     </div>
 </div>
+<!-- breadcrumbs area end -->
+<!-- page wrapper start -->
+<div class="page_wrapper">
+
+    <!-- contact section start -->
+    <section class="contact_page_section mb-140">
+@using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+{
+        <div class="container">
+            <div class="row justify-content-between align-items-center mb-n50">
+                <div class="col-lg-6 col-md-8 col-12 mx-auto mb-50">
+                    <img width="550" height="550" src="~/assets/img/others/about-thumb.jpg" alt="">
+                </div>
+                <div class="col-lg-5 col-md-8 col-12 mx-auto mb-50">
+                    <div class="section_title text-center mb-60">
+                        <h2>Login</h2>
+                    </div>
+                    <div class="form_input">
+                        @Html.TextBoxFor(m => m.LoginId, new { @class = "input__field", @placeholder = "Enter Mobile No." })
+                    </div>
+                    <div class="form_input">
+                        @Html.PasswordFor(m => m.Password, new { @class = "input__field", @placeholder = "Enter Password" })
+                    </div>
+                    <div class="form_input_btn text-center mb-40">
+                        <button type="submit" class="btn btn-link">Login<img width="20" height="20" onclick="return ValidateForm();" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
+                    </div>
+                    <p class="text-center">Don't have any account, <a href="@Url.Action("Registration","Home")">Signup here</a></p>
+                    <p class="text-center"><a href="@Url.Action("ForgetPassword","Home")">Forget Password</a></p>
+                </div>
+            </div>
+        </div>
+}
+    </section>
+    <!-- contact section end -->
+
+</div>
+<!-- page wrapper end -->
 <script>
     function ValidateForm()
     {

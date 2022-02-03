@@ -5,12 +5,10 @@
     ViewBag.Title = "Withdraw";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
-
-
 <div class="mail" id="mail">
     <div class="container">
         <div class="w3_mail_grids">
-            @using (Html.BeginForm("Withdraw", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            @using (Html.BeginForm("Withdraw", "Wallet", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
             {
                 <div class="row">
                     <p style="color:red;">
@@ -22,18 +20,18 @@
                         <div class="col-sm-8">
                         </div>
                         <div class="col-sm-2">
-                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                            <a href="/User/UpdateAccountDetails" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add Account Details</a>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 w3_agile_mail_grid">
+                        @*<div class="col-md-4 w3_agile_mail_grid">
                             <label>Balance</label>
                             @Html.TextBoxFor(m => m.Balance, new { @class = "input__field", @placeholder = "Balance", @onkeypress = "return isNumberOrDecimal(event);" })
                         </div>
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Mobile No <span style="color: red">*</span> </label>
                             @Html.TextBoxFor(m => m.MobileNo, new { @class = "input__field", @placeholder = "Mobile No",@maxlength="10", @onkeypress = "return isNumberKey(event);" })
-                        </div>
+                        </div>*@
                         <div class="col-md-4 w3_agile_mail_grid">
                             <label>Amount <span style="color: red">*</span></label>
                             @Html.TextBoxFor(m => m.Amount, new { @class = "input__field", @placeholder = "Amount", @onkeypress = "return isNumberOrDecimal(event);" })
@@ -54,16 +52,6 @@
 <script>
     function validateform() {
         $(".errortext").removeClass("errortext");
-        if ($('#Balance').val() == '0') {
-            $("#Balance").addClass('errortext');
-            $('#Balance').focus();
-            return false;
-        }
-        if ($('#MobileNo').val() == '') {
-            $("#MobileNo").addClass('errortext');
-            $('#MobileNo').focus();
-            return false;
-        }
         if ($('#Amount').val() == '') {
             $("#Amount").addClass('errortext');
             $('#Amount').focus();

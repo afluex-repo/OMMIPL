@@ -7,7 +7,7 @@
 <style>
     .card.balance {
         min-height: 250px !important;
-        background-image: linear-gradient(to right, #f2c300, #ff5305);
+        background-image: linear-gradient(to right, #70b3e0, #0861a7);
         color: black;
         border-radius: 15px;
         margin-bottom: 25px;
@@ -53,6 +53,105 @@
         background-color: #fd6204;
         color: white;
     }
+
+    .modal-content.color-content {
+        padding: 0px 20px;
+    }
+
+    .modal-header.color {
+        padding: 10px 30px 0px 30px;
+    }
+
+    .modal-content.color-content h4 {
+        color: #333333;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    span.input.right {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-dialog.color {
+        width: 400PX;
+    }
+
+    .col-sm-12.submit {
+        text-align: end;
+    }
+
+    .modal-header .close {
+        position: absolute;
+        right: 15px;
+    }
+
+    .close:hover, .close:focus {
+        color: #000;
+        background-color: #7a7777;
+        padding: 1px 4px;
+        border-radius: 50%;
+    }
+
+    .tableFixHead {
+        overflow: auto;
+        height: 480px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    .head-color thead th {
+        background-color: #f9e18a;
+    }
+       .tabs {
+            font-size: 12px;
+            display: flex;
+            margin: 0;
+        }
+         .tabs span {
+            background-color:transparent;
+            padding: 10px;
+            box-shadow:2px 2px gray unset;
+        }
+         .select-amount {
+    margin: 5px 2px;
+    background-color: #f9e18a;
+    padding: 2px 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+         h6.input.right.para {
+    font-size: 15px;
+}
+         p.sign {
+            padding: 0px 10px;
+            font-size: 26px;
+            font-weight: 600;
+            border: 1px solid;
+            margin: 0px 15px;
+            cursor: pointer;
+        }
+    p.sign:hover {
+        background-color: #89848421;
+        box-shadow: 4px 5px 4px #0a0a0a29;
+    }
+         p.quantity {
+    border: 1px solid #0000002b;
+    padding: 0px 20px;
+    font-size: 20px;
+    background-color: #d9e9f7;
+}
+         .color-circle {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #dd0808;
+    background-color: red;
+    border-radius: 50%;
+}
 </style>
 <!-- gallery -->
 <div class="team-bottom" id="work">
@@ -61,18 +160,41 @@
             <p class="w3ls_head_para w3ls_head_para1">Lorem Ipsum Dolor</p>*@
         <div class="row dashboard">
             <div class="col-md-4">
-                <div class="card balance">
+                <div class="card balance" id="divCounter">
                     <div class="card-body">
                         <div class="body-layout">
                             <div class="body-contant">
                                 <h2 class="card-title main balance">Main Balance</h2>
-                                <span class="card-detail">₹ @ViewBag.MainBalance</span>
+                                <span class="card-detail" id="spBalance">₹ @ViewBag.MainBalance</span>
                                 <h2 class="card-title main period">Period</h2>
-                                <span class="card-detail">2256</span>
+                                <span class="card-detail" id="spPeriodNo">@Model.PeriodNo</span>
+                                <input type="hidden" id="hdfPeriodId" value="@Model.FK_PeriodId" />
+                                <input type="hidden" id="hdfPeriodIdJ" value="@Model.FK_PeriodId2"/>
+                                <input type="hidden" id="hdfGameId" value="@Model.FK_GameId" />
+                                <input type="hidden" value="@Model.duration" id="hdfDuration" />
+                                <input type="hidden" value="@Model.duration2" id="hdfDuration2" />
+                                <input type="hidden" value="@Model.EndTime" id="hdfEndTime" />
+                                <input type="hidden" value="@Model.StartTime" id="hdfStartTime" />
                             </div>
-                            <div class="body-color text-center">
-                                <div class="color-symbol">G</div>
-                                <div class="time-counter"><span class="digit">2</span> <span class="digit">2</span> : <span class="digit">2</span> <span class="digit">2</span></div>
+                            <div id="divColor" class="body-color text-center" style="background-color:@Model.ColorName">
+                                @if (Model != null)
+                                {
+                                    string text = "";
+                                    if (Model.ColorName == "red")
+                                    {
+                                        text = "R";
+                                    }
+                                    else if (Model.ColorName == "green")
+                                    {
+                                        text = "G";
+                                    }
+                                    else if (Model.ColorName == "blue")
+                                    {
+                                        text = "B";
+                                    }
+                                    <div class="color-symbol"><span id="spColor">@text</span></div>
+                                }
+                                <div class="time-counter"><span class="digit"></span><span class="digitx2" style="display:none"></span></div>
                             </div>
                         </div>
                     </div>
@@ -81,202 +203,709 @@
             <div class="col-md-8">
                 <div class="w3layouts_gallery_grids">
                     <ul class="nav nav-tabs nav-justified ">
-                        <li class="active dash-nav"><a data-toggle="tab" href="#home">Colour-X3</a></li>
-                        <li class="dash-nav"><a data-toggle="tab" href="#menu1">Jackpot-X10</a></li>
-                        <li class="dash-nav"><a data-toggle="tab" href="#menu2">Jackpot-X100</a></li>
+                        @if (Model != null)
+                        {
+                            if (Model.lst != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.lst)
+                                {
+                                    var href = "#menu" + i;
+                                    <li class="dash-nav"><a data-toggle="tab" href="@href" onclick="return GameDetailsById(@item.FK_GameId);">@item.GameName</a></li>
+                                    i++;
+                                }
+                            }
+                        }
                     </ul>
-
-                    <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-md-4"><button type="button" class="btn btn-green btn-block">Green</button></div>
-                                    <div class="col-md-4"><button type="button" class="btn btn-red btn-block">Red</button></div>
-                                    <div class="col-md-4"><button type="button" class="btn btn-blue btn-block">Blue</button></div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <h3 class="card-title">Your Predition Record Colour X3</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
+                    <div class="card first-view" style="display: none;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 40px; font-weight: 600; text-align: center; margin: 50px;">Welcome To <span style="color: #e8a201;">OMMIPL</span> <i class="fa fa-trophy" aria-hidden="true" style="font-size: 100px; color: #e8a201;"></i></h5>
+                        </div>
+                    </div>
+                    <div class="tab-content game-view">
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog color">
+                                <div class="modal-content color-content">
+                                    <div class="modal-header color">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Submit Prediction</h4>
                                     </div>
-                                    <hr />
-                                    <table class="table table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>Colour</th>
-                                                <th class="text-center">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2021122298</td>
-                                                <td class="text-red">Red</td>
-                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
-                                            </tr>
+                                    <div class="modal-body">
+                                        <form action="/User/SubmitPrediction" type="Post">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <span class="input right">
+                                                        <label>Amount</label>
+                                                    </span>
+                                                    <div class="tabs">
+                                                        <div class="select-amount"><a onclick="return CalculateValue(1);">1</a></div>
+                                                        <div class="select-amount">
+                                                            <a onclick="return CalculateValue(10);">10</a>
+                                                        </div>
+                                                            <div class="select-amount">
+                                                                <a onclick="return CalculateValue(100);">100</a>
+                                                            </div>
+                                                                <div class="select-amount">
+                                                                    <a onclick="return CalculateValue(1000);">1000</a>
+                                                                </div>
+                                                                    <div class="select-amount">
+                                                                        <a onclick="return CalculateValue(10000);">10000</a>
+                                                                    </div>
+                                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" style="margin-top: 15px;">
+                                                    <span class="input right">
+                                                        <label>Number</label>
+                                                    </span>
+                                                    <div class="d-flex" style="margin-top: 10px;">
+                                                        <p class="sign">-</p>
+                                                        <span>&nbsp;</span>
+                                                        <p class="quantity">8</p>
+                                                        <span>&nbsp;</span>
+                                                        <p class="sign">+</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" style="margin-top: 15px;">
+                                                    <span class="input right">
+                                                        <label>Color</label>
+                                                        <div class="color-circle"></div>
+                                                        @*<button type="button" class="btn btn-red btn-md jackpot-btn" id="btnColor">R</button>*@
+                                                        @*@Html.HiddenFor(m => m.FK_ColorId, new { @class = "form-control" })*@
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-3" style="margin-top: 15px;">
+                                                    <label><span>Amount</span><span class="text-red">*</span></label>
+                                                </div>
+                                                <div class="col-sm-9" style="margin-top: 15px;">
+                                                    @Html.HiddenFor(m => m.Amount, new { @class = "form-control", @onkeypress = "return isNumberKey(event);" })
+                                                </div>
+                                                <div class="col-sm-12" style="margin-top: 25px;">
+                                                    <h6 class="input right para">
+                                                       Total Amount is <label id="lblAmount">Rs 4567</label>
+                                                    </h6>
+                                                </div>
+                                                <div class="col-sm-12" style="margin-bottom: 20px;">
+                                                    <h6 class="input right para">
+                                                        I agree to <a>Rule</a>
+                                                    </h6>
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                            <div class="row form-group">
+                                                <div class="col-sm-12 submit">
+                                                    <button type="button" id="btnSubmit" class="btn btn-success" onclick="return SubmitPrediction();">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <h3 class="card-title">Record Colour X3</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
                                     </div>
-                                    <hr />
-                                    <table class="table table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>Colour</th>
-                                                <th class="text-center">Result</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2021122299</td>
-                                                <td class="text-blue">Blue</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122298</td>
-                                                <td class="text-blue">Blue</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122297</td>
-                                                <td class="text-blue">Blue</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122296</td>
-                                                <td class="text-red">Red</td>
-                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">Red</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122297</td>
-                                                <td class="text-blue">Blue</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">Blue</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122295</td>
-                                                <td class="text-green">Green</td>
-                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">Green</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
+
                             </div>
                         </div>
-                        <div id="menu1" class="tab-pane fade">
+                        <div id="menu1" class="tab-pane fade in active">
                             <div class="card">
-                                <div class="grid jackpot10 text-center ">
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">0</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">1</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">2</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">3</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">4</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">5</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">6</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn">7</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn">8</button></div>
-                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn">9</button></div>
+                                <div class="row">
+                                    @if (Model != null)
+                                    {
+                                        if (Model.lstColor != null)
+                                        {
+                                            foreach (var item in Model.lstColor)
+                                            {
+                                                <div class="col-md-4"><button type="button" class="btn btn-@item.ColorName.ToLower() btn-block" value="@item.FK_ColorId" onclick="return SetPrediction(@item.FK_ColorId);" data-toggle="modal">@item.ColorName</button></div>
+                                            }
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <h3 class="card-title">Your Predition Record Jackpot X10</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
-                                    </div>
+                                        <h3 class="card-title">Your Prediction Record Colour-X3</h3>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
+                                        </div>
                                     <hr />
-                                    <table class="table table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>Number</th>
-                                                <th class="text-center">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2021122298</td>
-                                                <td>8</td>
-                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">8</button></td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive tableFixHead head-color">
+                                        <table class="table table-responsive" id="table1">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Chosen Colour</th>
+                                                    <th class="text-center">Amount(In Rs.)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+                                                    if (Model.lstPrediction != null)
+                                                    {
+                                                        foreach (var item in Model.lstPrediction)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.PeriodNo</td>
+                                                                <td class="text-@item.ColorName.ToLower()">@item.ColorName</td>
+                                                                <td class="text-center">@item.Amount</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex">
-                                        <h3 class="card-title">Record Colour X10</h3>
-                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                        <h3 class="card-title">Record Colour-X3</h3>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
                                     </div>
                                     <hr />
-                                    <table class="table table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>Number</th>
-                                                <th class="text-center">Result</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>2021122299</td>
-                                                <td class="text-green">3</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122298</td>
-                                                <td class="text-green">2</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122297</td>
-                                                <td class="text-green">8</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122296</td>
-                                                <td class="text-green">5</td>
-                                                <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122297</td>
-                                                <td class="text-green">7</td>
-                                                <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2021122295</td>
-                                                <td class="text-green">0</td>
-                                                <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive tableFixHead head-color">
+                                        <table class="table table-responsive" id="table2">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Chosen Colour</th>
+                                                    <th class="text-center">Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+                                                    if (Model.lstResult != null)
+                                                    {
+                                                        foreach (var item in Model.lstResult)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.PeriodNo</td>
+                                                                <td class="text-@item.ColorName.ToLower()">@item.ColorName</td>
+                                                                <td class="text-center"><button type="button" class="btn btn-@item.ResultantColor.ToLower() btn-lg">@item.ResultantColor</button></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div id="menu2" class="tab-pane fade">
                             <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title" style="color: red; font-size: 32px; font-weight: 600; text-align: center; margin: 50px;">!! Coming Soon <i class="fa fa-bullhorn" aria-hidden="true" style="font-size: 100px;"></i></h5>
+                                <div class="grid jackpot10 text-center ">
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(0);">0</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(1);">1</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(2);">2</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(3);">3</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(4);">4</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(5);">5</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(6);">6</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-red btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(7);">7</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-blue btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(8);">8</button></div>
+                                    <div class="grid-item"><button type="button" class="btn btn-green btn-lg jackpot-btn" data-toggle="modal" onclick="return SetPrediction(9);">9</button></div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Your Prediction Record Jackpot X10</h3>
+                                        <a href="/User/GameReport" class="btn btn-md btn-more">More</a>
+                                    </div>
+                                    <hr />
+                                    <div class="table-responsive tableFixHead head-color">
+                                        <table class="table table-responsive" id="table3">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Chosen Number</th>
+                                                    <th class="text-center">Amount(In Rs.)</th>
+                                                </tr>
+                                            </thead>
+                                            @*<tbody>
+                                                    <tr>
+                                                        <td>2021122298</td>
+                                                        <td>8</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-red btn-lg">8</button></td>
+                                                    </tr>
 
+                                                </tbody>*@
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <h3 class="card-title">Record Jackpot X10</h3>
+                                        <button type="button" class="btn btn-md btn-more">More</button>
+                                    </div>
+                                    <hr />
+                                    <div class="table-responsive tableFixHead head-color">
+                                        <table class="table table-responsive" id="table4">
+                                            <thead>
+                                                <tr>
+                                                    <th>Period</th>
+                                                    <th>Chosen Number</th>
+                                                    <th class="text-center">Result</th>
+                                                </tr>
+                                            </thead>
+                                            @*<tbody>
+                                                    <tr>
+                                                        <td>2021122299</td>
+                                                        <td class="text-green">3</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">3</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2021122298</td>
+                                                        <td class="text-green">2</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">5</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2021122297</td>
+                                                        <td class="text-green">8</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">2</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2021122296</td>
+                                                        <td class="text-green">5</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-red btn-lg">0</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2021122297</td>
+                                                        <td class="text-green">7</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-blue btn-lg">6</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2021122295</td>
+                                                        <td class="text-green">0</td>
+                                                        <td class="text-center"><button type="button" class="btn btn-green btn-lg">7</button></td>
+                                                    </tr>
+                                                </tbody>*@
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="menu3" class="tab-pane fade">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="color: red; font-size: 32px; font-weight: 600; text-align: center; margin: 50px;">!! Coming Soon <i class="fa fa-bullhorn" aria-hidden="true" style="font-size: 100px;"></i></h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-<!-- //gallery -->
+    </div>
+    <script src="~/js/jquery-2.2.3.min.js"></script>
+    <script>
+        var minutes = 0;
+        var seconds = 0;
+        var minutes1 = 0;
+        var seconds1 = 0;
+        var minutes2 = 0;
+        var seconds2 = 0;
+        var minutesx2 = 0;
+        var secondsx2 = 0;
+        $(document).ready(function () {
+            debugger;
+            var timer2 = $("#hdfDuration").val();
+            if (timer2 == "00:00")
+            {
+                window.location.href = "/User/UserDashboard";
+            }
+            else {
+                var interval = setInterval(function () {
+                    var timerX1 = timer2.split(':');
+                    minutes = parseInt(timerX1[0], 10);
+                    seconds = parseInt(timerX1[1], 10);
+                    --seconds;
+                    minutes = (seconds < 0) ? --minutes : minutes;
+                    if (minutes < 0) {
+                        clearInterval(interval);
+                    }
+                    seconds = (seconds < 0) ? 59 : seconds;
+                    seconds = (seconds < 10) ? '0' + seconds : seconds;
+                    if (minutes == 0 && seconds == 0) {
+                        clearInterval(interval);
+                        window.location.href = "/User/UserDashboard";
+                    }
+                    if (minutes == 0 && seconds == 30) {
+                        getResponse($("#hdfPeriodId").val());
+                    }
+                    $('.digit').html(minutes + ':' + seconds);
+                    timer2 = minutes + ':' + seconds;
+                }, 1000);
+            }
+
+            var timerx = $("#hdfDuration2").val();
+            if (timerx == "00:00") {
+                window.location.href = "/User/UserDashboard";
+            }
+            else {
+                var intervalx2 = setInterval(function () {
+                    var timerX2 = timerx.split(':');
+                    minutesx2 = parseInt(timerX2[0], 10);
+                    secondsx2 = parseInt(timerX2[1], 10);
+                    --secondsx2;
+                    minutesx2 = (secondsx2 < 0) ? --minutesx2 : minutesx2;
+                    if (minutesx2 < 0) {
+                        clearInterval(intervalx2);
+                    }
+                    secondsx2 = (secondsx2 < 0) ? 59 : secondsx2;
+                    secondsx2 = (secondsx2 < 10) ? '0' + secondsx2 : secondsx2;
+                    if (minutesx2 == 0 && secondsx2 == 0) {
+                        clearInterval(intervalx2);
+                        window.location.href = "/User/UserDashboard";
+                    }
+                    if (minutesx2 == 0 && secondsx2 == 30) {
+                        getResponse($("#hdfPeriodIdJ").val());
+                    }
+                    $('.digitx2').html(minutesx2 + ':' + secondsx2);
+                    timerx = minutesx2 + ':' + secondsx2;
+                }, 1000);
+            }
+            //function gfg_Run() {
+            //    setInterval(function () {
+
+            //    }, 180000);
+            //}
+        });
+    
+
+        function getResponse(PeriodId) {
+            debugger;
+            $.ajax({
+                url: "/User/GetGameResponse",
+                type: "Get",
+                datatype: "Json",
+                data: { PeriodId: PeriodId, ColorId: $("#FK_ColorId").val() },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (response.Message == "1") {
+                            if (response.Result == "Yes") {
+                                //alert("Congrats! You won.");
+                            }
+                            else {
+                                //alert("Oops! You lose.");
+                            }
+                            if (response.FK_ColorId == "1") {
+                                $("#spColor").text("R");
+                                $(".body-color").attr("style", "background-color: red;");
+                            }
+                            else if (response.FK_ColorId == "2") {
+                                $("#spColor").text("G");
+                                $(".body-color").attr("style", "background-color: green;");
+                            }
+                            else if (response.FK_ColorId == "3") {
+                                $("#spColor").text("B");
+                                $(".body-color").attr("style", "background-color: blue;");
+                            }
+                            else {
+                            }
+                        }
+                        else {
+                            //alert(response.Result);
+                        }
+                    }
+                }
+            });
+        }
+        $(".dash-nav").click(function () {
+            $(".digit").show();
+            $(".first-view").hide();
+            $(".game-view").show();
+        });
+        var ColorId = "";
+        function GameDetailsById(GameId) {
+            debugger;
+            $("#hdfGameId").val(GameId);
+            $.ajax({
+                url: "/User/GameDetailsById",
+                type: "Get",
+                datatype: "Json",
+                data: { GameId: GameId },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (GameId == "7") {
+                            $("#hdfPeriodId").val(response.FK_PeriodId);
+                            if (response.ColorName == "1") {
+                                $("#divColor").attr("style", "background-color:red");
+                                $("#spColor").text("R");
+                            }
+                            else if (response.ColorName == "2") {
+                                $("#divColor").attr("style", "background-color:green");
+                                $("#spColor").text("G");
+                            }
+                            else if (response.ColorName == "3") {
+                                $("#divColor").attr("style", "background-color:blue");
+                                $("#spColor").text("B");
+                            }
+                            else {
+                            }
+                        }
+                        else if (GameId == "8") {
+                            $("#spColor").text(response.ColorName);
+                        }
+                        else {
+
+                        }
+                        //$("#spPeriodNo").text(response.PeriodNo);
+                        $("#spPeriodNo").text(response.PeriodNo);
+                        $("#hdfStartTime").val(response.StartTime);
+                        $("#hdfEndTime").val(response.EndTime);
+                        $("#hdfDuration").val(response.duration);
+                        if (response.lstPrediction != null) {
+                            $("#table1 tbody tr td").remove();
+                            $("#table2 tbody tr td").remove();
+                            $("#table3 tbody tr td").remove();
+                            $("#table4 tbody tr td").remove();
+                            for (var i = 0; i < response.lstPrediction.length; i++) {
+                                if (GameId == "7") {
+                                    $("#table1").append('<tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center">' + response.lstPrediction[i].Amount + '</td></tr></tbody></table>');
+                                    $("#table2").append('<tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center"><button type="button" class="btn btn-' + response.lstPrediction[i].ResultantColor + ' btn-lg">' + response.lstPrediction[i].ResultantColor + '</button></td></tr></tbody>');
+                                }
+                                else if (GameId == "8") {
+                                    $("#table3").append('<tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center">' + response.lstPrediction[i].Amount + '</td></tr></tbody></table>');
+                                    $("#table4").append('<tbody><tr><td>' + response.lstPrediction[i].PeriodNo + '</td><td class="text-' + response.lstPrediction[i].ColorName + '">' + response.lstPrediction[i].ColorName + '</td><td class="text-center"><button type="button" class="btn btn-' + response.lstPrediction[i].ResultantColor + ' btn-lg">' + response.lstPrediction[i].ResultantColor + '</button></td></tr></tbody>');
+                                }
+                            }
+                        }
+                        if (GameId == "8") {
+                            minutes = 0;
+                            seconds = 0;
+                            minutes1 = 0;
+                            seconds1 = 0;
+                            minutes2 = 0;
+                            seconds2 = 0;
+                            $("#hdfPeriodIdJ").val(response.FK_PeriodId);
+                            $('.digit').html('');
+                            $('.digit1').html('');
+                            $('.digit2').html('');
+                            $('.time-counter').html('<span class="digit1"></span>');
+                            var timer3 = $("#hdfDuration").val();
+                            if (timer3 == "00:00") {
+                            }
+                            else {
+                                var interval1 = setInterval(function () {
+                                    var timer1 = timer3.split(':');
+                                    minutes1 = parseInt(timer1[0], 10);
+                                    seconds1 = parseInt(timer1[1], 10);
+                                    --seconds1;
+                                    minutes1 = (seconds1 < 0) ? --minutes1 : minutes1;
+                                    if (minutes1 < 0) {
+                                        clearInterval(interval1);
+                                    }
+                                    seconds1 = (seconds1 < 0) ? 59 : seconds1;
+                                    seconds1 = (seconds1 < 10) ? '0' + seconds1 : seconds1;
+                                    if (minutes1 == 0 && seconds1 == 0) {
+                                        clearInterval(interval1);
+                                        window.location.href = "/User/UserDashboard";
+                                    }
+                                    if (minutes1 == 0 && seconds1 == 30) {
+                                        getResponse($("#hdfPeriodIdJ").val());
+                                    }
+                                    $('.digit1').html(minutes1 + ':' + seconds1);
+                                    timer3 = minutes1 + ':' + seconds1;
+                                }, 1000);
+                            }
+                        }
+                        else if (GameId == "7") {
+                            minutes = 0;
+                            seconds = 0;
+                            minutes1 = 0;
+                            seconds1 = 0;
+                            minutes2 = 0;
+                            seconds2 = 0;
+                            $('.digit1').html('');
+                            $('.digit').html('');
+                            $('.digit2').html('');
+                            $('.time-counter').html('<span class="digit2"></span>');
+                            var timer5 = $("#hdfDuration").val();
+                            if (timer5 == "00:00")
+                            {
+                            }
+                            else {
+                                var interval2 = setInterval(function () {
+                                    var timer4 = timer5.split(':');
+                                    minutes2 = parseInt(timer4[0], 10);
+                                    seconds2 = parseInt(timer4[1], 10);
+                                    --seconds2;
+                                    minutes2 = (seconds2 < 0) ? --minutes2 : minutes2;
+                                    if (minutes2 < 0) {
+                                        clearInterval(interval2);
+                                    }
+                                    seconds2 = (seconds2 < 0) ? 59 : seconds2;
+                                    seconds2 = (seconds2 < 10) ? '0' + seconds2 : seconds2;
+                                    if (minutes2 == 0 && seconds2 == 0) {
+                                        clearInterval(interval2);
+                                        window.location.href = "/User/UserDashboard";
+                                    }
+                                    if (minutes2 == 0 && seconds2 == 30) {
+                                        getResponse($("#hdfPeriodId").val());
+                                    }
+                                    $('.digit2').html(minutes2 + ':' + seconds2);
+                                    timer5 = minutes2 + ':' + seconds2;
+                                }, 1000);
+                            }
+                        }
+                        else {
+
+                        }
+                    }
+                }
+            });
+        }
+        function SetPrediction(ColorId) {
+            debugger;
+            if ($("#hdfGameId").val() == "7" && minutes == 0 && seconds > 0 && seconds < 30) {
+                $('#myModal').modal('hide');
+                alert("Your game time is over.")
+            }
+            else if ($("#hdfGameId").val() == "7" && minutes2 == 0 && seconds2 > 0 && seconds2 < 30) {
+                $('#myModal').modal('hide');
+                alert("Your game time is over.")
+            }
+            else if (($("#hdfGameId").val() == "8") && (minutes1 == 0 && seconds1 > 0 && seconds1 < 30)) {
+                $('#myModal').modal('hide');
+                alert("Your game time is over.")
+            }
+            else {
+                $('#myModal').modal('show');
+                if ($("#hdfGameId").val() == "7") {
+                    if (ColorId == 1) {
+                        $("#btnColor").attr("style", "background-color:red");
+                        $("#btnColor").text("R");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else if (ColorId == 2) {
+                        $("#btnColor").attr("style", "background-color:green");
+                        $("#btnColor").text("G");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else if (ColorId == 3) {
+                        $("#btnColor").attr("style", "background-color:blue");
+                        $("#btnColor").text("B");
+                        $("#FK_ColorId").val(ColorId);
+                    }
+                    else {
+                    }
+                }
+                else if ($("#hdfGameId").val() == "8") {
+                    $("#btnColor").text(ColorId);
+                    $("#FK_ColorId").val(ColorId);
+                }
+                else {
+                }
+            }
+        }
+
+        function SubmitPrediction() {
+            if ($("#FK_ColorId").val() == "") {
+                $("#FK_ColorId").addClass('errortext');
+                $('#FK_ColorId').focus();
+                return false;
+            }
+            if ($("#Amount").val() == "") {
+                $("#Amount").addClass('errortext');
+                $('#Amount').focus();
+                return false;
+            }
+            debugger;
+            $.ajax({
+                url: "/User/GameStart",
+                type: "Get",
+                datatype: "Json",
+                data: { GameId: $("#hdfGameId").val(), ColorId: $("#FK_ColorId").val(), Amount: $("#Amount").val(), PeriodId: $("#hdfPeriodId").val(), },
+                success: function (response) {
+                    debugger;
+                    if (response != null) {
+                        if (response.Message == "1") {
+                            $("#spBalance").text(response.BalanceAmount);
+                            $("#Amount").val('');
+                            $('#myModal').modal('hide');
+                            if ($("#hdfGameId").val() == "7") {
+                                if ($("#FK_ColorId").val() == 1) {
+                                    $("#divColor").attr("style", "background-color:red");
+                                    $("#spColor").text("R");
+                                }
+                                else if ($("#FK_ColorId").val() == 2) {
+                                    $("#divColor").attr("style", "background-color:green");
+                                    $("#spColor").text("G");
+                                }
+                                else if ($("#FK_ColorId").val() == 3) {
+                                    $("#divColor").attr("style", "background-color:blue");
+                                    $("#spColor").text("B");
+                                }
+                                else {
+                                }
+                            }
+                            else if ($("#hdfGameId").val() == "8") {
+                                $("#hdfPeriodIdJ").val($("#hdfPeriodId").val());
+                                $("#spColor").text($("#FK_ColorId").val());
+                            }
+                            else {
+
+                            }
+                            $("#FK_ColorId").val('');
+                        }
+                        else {
+                            $("#FK_ColorId").val('');
+                            $("#Amount").val('');
+                            $('#myModal').modal('hide');
+                            alert(response.Result);
+
+                        }
+                    }
+                }
+
+            });
+        }
+        function changeColor() {
+            if (seconds <= 300 && seconds > 90) {
+                document.body.style.background = "green";
+            }
+
+            else if (seconds <= 90 && seconds > 30) {
+                document.body.style.background = "yellow";
+            }
+
+            else {
+                document.body.style.background = "red";
+            }
+        }
+    </script>
+
+    @*<script type="text/javascript">
+            if (sessionStorage.getItem("hdfStartTime")) {
+                if (sessionStorage.getItem("hdfStartTime") >= hdfEndTime) {
+            var value = 0;
+          } else {
+                    var value = sessionStorage.getItem("hdfStartTime");
+          }
+        } else {
+          var value = 0;
+        }
+            document.getElementById('hdfDuration').innerHTML = value;
+
+        var counter = function () {
+          if (value >= 10) {
+              sessionStorage.setItem("hdfStartTime", hdfEndTime);
+            value = 0;
+          } else {
+            value = parseInt(value) + 1;
+            sessionStorage.setItem("hdfStartTime", value);
+          }
+          document.getElementById('hdfDuration').innerHTML = value;
+        };
+
+        var interval = setInterval(hdfStartTimes, 1000);
+        </script>*@
+    <!-- //gallery -->

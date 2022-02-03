@@ -18,7 +18,7 @@ namespace OMMIPL.Controllers
         {
             return View();
         }
-      public ActionResult Contact()
+        public ActionResult Contact()
         {
             return View();
         }
@@ -47,9 +47,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("Contact", "Home");
         }
-        
-
-        [HttpGet]
         public ActionResult Login()
         {
             Home model = new Home();
@@ -64,16 +61,34 @@ namespace OMMIPL.Controllers
             DataSet ds = model.Login();
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
-                if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
+                if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                 {
-                    if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                    model.UserType = ds.Tables[0].Rows[0]["UserType"].ToString();
+                    if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Associate")
                     {
-                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                        if (model.Password == Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString()))
+                        {
+                            Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_UserId"].ToString();
+                            Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
+                            Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
+                            Session["LoginId"] = ds.Tables[0].Rows[0]["LoginId"].ToString();
+                            FormName = "UserDashboard";
+                            ControllerName = "User";
+                        }
+                        else
+                        {
+                            TempData["Msg"] = "Something went wrong";
+                            FormName = "Login";
+                            ControllerName = "Home";
+                        }
+                    }
+                    else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
+                    {
+                        Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
                         Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                        Session["ProfilePic"] = ds.Tables[0].Rows[0]["ProfilePic"].ToString();
-                        FormName = "UserDashboard";
-                        ControllerName = "User";
+                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
+                        FormName = "AdminDashboard";
+                        ControllerName = "Admin";
                     }
                     else
                     {
@@ -82,17 +97,9 @@ namespace OMMIPL.Controllers
                         ControllerName = "Home";
                     }
                 }
-                else if (ds.Tables[0].Rows[0]["UserType"].ToString() == "Admin")
-                {
-                        Session["PK_AdminId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
-                        Session["DisplayName"] = ds.Tables[0].Rows[0]["DisplayName"].ToString();
-                        Session["PK_UserId"] = ds.Tables[0].Rows[0]["PK_AdminId"].ToString();
-                    FormName = "AdminDashboard";
-                        ControllerName = "Admin";
-                }
                 else
                 {
-                    TempData["Msg"] = "Something went wrong";
+                    TempData["Msg"] = "Invalid Login Id or Password";
                     FormName = "Login";
                     ControllerName = "Home";
                 }
@@ -111,7 +118,7 @@ namespace OMMIPL.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult RegistrationAction(Home model)
+        public ActionResult Registration(Home model)
         {
             try
             {
@@ -174,13 +181,10 @@ namespace OMMIPL.Controllers
             }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
-
-
-        public ActionResult UploadQR( string ID)
+        public ActionResult UploadQR(string ID)
         {
             Home model = new Home();
-            if(ID!=null)
+            if (ID != null)
             {
                 model.UploadQRId = ID;
                 DataSet ds11 = model.GetUploadQRDetails();
@@ -192,16 +196,16 @@ namespace OMMIPL.Controllers
 
                 }
             }
-          
+
             return View(model);
         }
         [HttpPost]
-        public ActionResult UploadQR(Home model,HttpPostedFileBase postedFile)
+        public ActionResult UploadQR(Home model, HttpPostedFileBase postedFile)
         {
             try
             {
 
-                if(model.UploadQRId==null)
+                if (model.UploadQRId == null)
                 {
                     if (postedFile != null)
                     {
@@ -252,9 +256,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("UploadQR", "Home");
         }
-
-        
-
         public ActionResult GetUploadQRDetails()
         {
             Home model = new Home();
@@ -275,8 +276,6 @@ namespace OMMIPL.Controllers
             }
             return View(model);
         }
-
-
         public ActionResult DeleteUploadQR(string ID)
         {
             try
@@ -303,10 +302,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
-        
-
         public ActionResult Active(string ID)
         {
             try
@@ -333,8 +328,6 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
         public ActionResult InActive(string ID)
         {
             try
@@ -361,13 +354,10 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("GetUploadQRDetails", "Home");
         }
-
-
         public ActionResult ForgetPassword()
         {
             return View();
         }
-
         [HttpPost]
         [ActionName("ForgetPassword")]
         public ActionResult ForgetPassword(Home model)
@@ -387,7 +377,7 @@ namespace OMMIPL.Controllers
                             {
                                 model.Name = ds.Tables[0].Rows[0]["Name"].ToString();
                                 model.Password = Crypto.Decrypt(ds.Tables[0].Rows[0]["Password"].ToString());
-                                mailbody = "Dear  " + model.Name + ", <br/> Your Password Is : " +model.Password;
+                                mailbody = "Dear  " + model.Name + ", <br/> Your Password Is : " + model.Password;
                                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
                                 {
                                     Host = "smtp.gmail.com",
@@ -407,10 +397,10 @@ namespace OMMIPL.Controllers
                             }
                             catch (Exception ex)
                             {
-
+                                TempData["Msg"] = ex.Message;
                             }
                         }
-                        
+
                         TempData["Msg"] = "Send Password your email-Id successfully";
                     }
                     else
@@ -425,8 +415,96 @@ namespace OMMIPL.Controllers
             }
             return RedirectToAction("Login", "Home");
         }
-        
+        public ActionResult GenerateGamePeriodForColorX3()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGamePeriodForColorX3();
+            return View();
+        }
+        public ActionResult GenerateGameResponseForColorX3()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGameResponseForColorX3();
+            return View();
+        }
+        public ActionResult GenerateGamePeriodForJackpotX10()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGamePeriodForJackpotX10();
+            return View();
+        }
+        public ActionResult GenerateGameResponseForJackpotX10()
+        {
+            Home obj = new Home();
+            DataSet ds = obj.GenerateGameResponseForJackpotX10();
+            return View();
+        }
+        public ActionResult ContactUs()
+        {
+            return View();
 
+        }
+        [HttpPost]
+        public ActionResult ContactUs(Home model)
+        {
+            try
+            {
+                DataSet ds = model.SaveContactUs();
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                    {
+                        model.Email = ds.Tables[0].Rows[0]["Email"].ToString();
+                        if (model.Email != null)
+                        {
+                            string mailbody = "";
+                            try
+                            {
+                                model.Name = ds.Tables[0].Rows[0]["Name"].ToString();
+                                model.MobileNo = (ds.Tables[0].Rows[0]["Mobile"].ToString());
+                                mailbody = "Dear  " + model.Name + ", <br/> We will contact on your mobile number as soon as possible. : " + model.MobileNo;
+                                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
+                                {
+                                    Host = "smtp.gmail.com",
+                                    Port = 587,
+                                    EnableSsl = true,
+                                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                                    UseDefaultCredentials = true,
+                                    Credentials = new NetworkCredential("developer2.afluex@gmail.com", "deve@486")
+                                };
+                                using (var message = new MailMessage("developer2.afluex@gmail.com", model.Email)
+                                {
+                                    IsBodyHtml = true,
+                                    Subject = "Contact us",
+                                    Body = mailbody
+                                })
+                                    smtp.Send(message);
+                            }
+                            catch (Exception ex)
+                            {
+                                TempData["Msg"] = ex.Message;
+                            }
+                        }
 
+                        TempData["Msg"] = "Send message on your email-Id successfull";
+                    }
+                    else
+                    {
+                        TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                TempData["Msg"] = ex.Message;
+            }
+            return RedirectToAction("ContactUs", "Home");
+
+        }
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }

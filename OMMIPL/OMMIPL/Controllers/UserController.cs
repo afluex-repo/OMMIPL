@@ -12,17 +12,97 @@ namespace OMMIPL.Controllers
 {
     public class UserController : BaseController
     {
-        // GET: User
         public ActionResult UserDashboard()
         {
             User model = new User();
+            List<Game> lst = new List<Game>();
+            List<Game> lstColor = new List<Game>();
+            List<Game> lstPrediction = new List<Game>();
+            List<Game> lstResult = new List<Game>();
             model.PK_UserId = Session["PK_UserId"].ToString();
+            model.FK_GameId = "7";
             DataSet ds = model.GetMainBalance();
-            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
+            DataSet ds1 = model.GetAllGames();
+            DataSet ds2 = model.GetUserGamePrediction();
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[1].Rows.Count > 0)
+            {
+                model.FK_PeriodId = ds2.Tables[1].Rows[0]["PK_PeriodId"].ToString(); 
+                model.PeriodNo = ds2.Tables[1].Rows[0]["PeriodNo"].ToString();
+                model.StartTime = ds2.Tables[1].Rows[0]["StartTime"].ToString();
+                model.EndTime = ds2.Tables[1].Rows[0]["EndTime"].ToString();
+                model.time = TimeSpan.Parse(ds2.Tables[1].Rows[0]["Duration"].ToString());
+                model.duration = model.time.ToString("mm\\:ss");
+            }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[2].Rows.Count > 0)
+            {
+                model.FK_PeriodId2 = ds2.Tables[2].Rows[0]["PK_PeriodId"].ToString();
+                model.time = TimeSpan.Parse(ds2.Tables[2].Rows[0]["Duration"].ToString());
+                model.duration2 = model.time.ToString("mm\\:ss");
+
+            }
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ViewBag.MainBalance = ds.Tables[0].Rows[0]["amount"].ToString();
             }
-           
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds1.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.FK_GameId = r["PK_GameId"].ToString();
+                    obj.GameName = r["GameName"].ToString();
+                    obj.Amount = Convert.ToDecimal(r["Amount"]);
+                    obj.Duration = r["GameTime"].ToString();
+                    obj.Image = r["Image"].ToString();
+                    obj.Document = r["Document"].ToString();
+                    lst.Add(obj);
+                }
+                model.lst = lst;
+            }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds2.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.PeriodNo = r["PeriodNo"].ToString();
+                    obj.ColorName = r["ChosenColor"].ToString();
+                    obj.Amount = Convert.ToDecimal(r["Amount"]);
+                    lstPrediction.Add(obj);
+                }
+                model.lstPrediction = lstPrediction;
+            }
+            if (ds2 != null && ds2.Tables.Count > 0 && ds2.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds2.Tables[0].Rows)
+                {
+                    Game obj = new Game();
+                    obj.PeriodNo = r["PeriodNo"].ToString();
+                    obj.ColorName = r["ChosenColor"].ToString();
+                    obj.ResultantColor = r["ResultantColor"].ToString();
+
+                    lstResult.Add(obj);
+                }
+                model.lstResult = lstResult;
+            }
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[1].Rows.Count > 0)
+            {
+                foreach (DataRow r in ds1.Tables[1].Rows)
+                {
+                    Game obj = new Game();
+                    obj.FK_ColorId = r["PK_ColorId"].ToString();
+                    obj.ColorName = r["Color"].ToString();
+                    lstColor.Add(obj);
+                }
+                model.lstColor = lstColor;
+            }
+            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[2].Rows.Count > 0)
+            {
+                model.ColorName = ds1.Tables[2].Rows[0]["ColorName"].ToString().ToLower();
+            }
+            else
+            {
+                model.ColorName = "red";
+            }
             return View(model);
         }
         public ActionResult UserProfile()
@@ -62,6 +142,7 @@ namespace OMMIPL.Controllers
         {
             try
             {
+                obj.PK_UserId = Session["PK_UserId"].ToString();
                 DataSet ds = obj.UpdateProfile();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
@@ -116,153 +197,386 @@ namespace OMMIPL.Controllers
             return View(model);
         }
 
-        public ActionResult PlayGame(string Id)
+        public ActionResult GameDetailsById(string GameId)
         {
-            Game model = new Game();
+            User model = new User();
             List<Game> lstColor = new List<Game>();
-            model.FK_GameId = Id;
+            List<Game> lstPrediction = new List<Game>();
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.FK_GameId = GameId;
             try
             {
                 DataSet ds = model.GetGameDetailsById();
+                //if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                //{
+                //    model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
+                //    model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
+                //    model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
+                //    //model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
+                //    model.Amount = ds.Tables[0].Rows[0]["Amount"].ToString();
+                //    model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
+                //}
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    model.FK_GameId = ds.Tables[0].Rows[0]["PK_GameId"].ToString();
-                    model.GameName = ds.Tables[0].Rows[0]["GameName"].ToString();
-                    model.Image = ds.Tables[0].Rows[0]["Image"].ToString();
-                    model.Document = ds.Tables[0].Rows[0]["Document"].ToString();
-                    model.Amount = Convert.ToDecimal(ds.Tables[0].Rows[0]["Amount"]);
-                    model.Duration = ds.Tables[0].Rows[0]["GameTime"].ToString();
-                }
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
-                {
-                    foreach (DataRow r in ds.Tables[1].Rows)
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[2].Rows.Count > 0)
                     {
-                        Game obj = new Game();
-                        obj.FK_ColorId = r["PK_ColorId"].ToString();
-                        obj.ColorName = r["Color"].ToString();
-                        lstColor.Add(obj);
+                        model.ColorName = ds.Tables[2].Rows[0]["ColorName"].ToString();
                     }
-                    model.lst = lstColor;
+                    else
+                    {
+                        model.ColorName = "";
+                    }
+                    model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
+                    model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
+                    model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
+                    model.FK_PeriodId = ds.Tables[0].Rows[0]["PK_PeriodId"].ToString();
+                    model.time = TimeSpan.Parse(ds.Tables[0].Rows[0]["Duration"].ToString());
+                    model.duration = model.time.ToString("mm\\:ss");
                 }
+                if(GameId=="7")
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["ChosenColor"].ToString();
+                            obj.ResultantColor = r["ResultantColor"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
+                }
+                else if(GameId == "8")
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[1].Rows.Count > 0)
+                    {
+                        foreach (DataRow r in ds.Tables[1].Rows)
+                        {
+                            Game obj = new Game();
+                            obj.PeriodNo = r["PeriodNo"].ToString();
+                            obj.ColorName = r["Fk_ChosenColorId"].ToString();
+                            obj.ResultantColor = r["FK_ResultId"].ToString();
+                            obj.Amount = Convert.ToDecimal(r["Amount"]);
+                            lstPrediction.Add(obj);
+                        }
+                        model.lstPrediction = lstPrediction;
+                    }
+                }
+                else
+                {
+
+                }
+                
             }
             catch (Exception ex)
             {
-                TempData["Msg"] = ex.Message;
+                model.Result = ex.Message;
             }
-            return View(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-
-        public ActionResult EwalletRequest()
+        public ActionResult GameStart(string ColorId, string GameId, string Amount, string PeriodId)
         {
-            #region ddlPaymentMode
-            User obj = new User();
-            int count = 0;
-            List<SelectListItem> ddlPaymentMode = new List<SelectListItem>();
-            DataSet ds1 = obj.GetPaymentModeDetails();
-            if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
+            User model = new User();
+            model.FK_ColorId = ColorId;
+            model.FK_GameId = GameId;
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            model.Amount = Amount;
+            model.FK_PeriodId = PeriodId;
+            DataSet ds = model.GameStart();
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                foreach (DataRow r in ds1.Tables[0].Rows)
+                DataSet ds1 = model.GetMainBalance();
+                if (ds1 != null && ds1.Tables.Count > 0 && ds1.Tables[0].Rows.Count > 0)
                 {
-                    if (count == 0)
+                    model.BalanceAmount = ds1.Tables[0].Rows[0]["amount"].ToString();
+                }
+                if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                {
+                    model.Message = "1";
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
+                    model.EndTime = ds.Tables[0].Rows[0]["TimeValidity"].ToString();
+                    if (ColorId == model.FK_ColorId)
                     {
-                        ddlPaymentMode.Add(new SelectListItem { Text = "Select Payment Mode", Value = "" });
+                        model.Result = "Yes";
                     }
-                    ddlPaymentMode.Add(new SelectListItem { Text = r["PaymentMode"].ToString(), Value = r["PK_paymentID"].ToString() });
-                    count = count + 1;
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+                    model.Message = "0";
+                    model.Result = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
                 }
             }
-
-            ViewBag.ddlPaymentMode = ddlPaymentMode;
-
-            #endregion
-            return View(obj);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-
-        [HttpPost]
-        [ActionName("EwalletRequest")]
-        public ActionResult SaveEwalletRequest(User model, HttpPostedFileBase postedFile)
+        public ActionResult UpdateAccountDetails()
         {
+            User Obj = new User();
+            Obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = Obj.UserProfile();
+            if(ds!=null && ds.Tables[0].Rows.Count>0 && ds.Tables.Count>0)
+            {
+                Obj.AccountNo = ds.Tables[0].Rows[0]["MemberAccNo"].ToString();
+                Obj.IFSC = ds.Tables[0].Rows[0]["IFSCCode"].ToString();
+                Obj.BankName = ds.Tables[0].Rows[0]["MemberBankName"].ToString();
+                Obj.BankBranch = ds.Tables[0].Rows[0]["MemberBranch"].ToString();
+                Obj.HolderName = ds.Tables[0].Rows[0]["BankHolderName"].ToString();
+            }
+            return View(Obj);
+        }
+        [HttpPost]
+        public ActionResult UpdateAccountDetails(User Obj)
+        {
+            Obj.PK_UserId = Session["PK_UserId"].ToString();
+            DataSet ds = Obj.UpdateAccountDetails();
             try
             {
-                if (postedFile != null)
-                {
-                    model.Image = "../UploadDocument/" + Guid.NewGuid() + Path.GetExtension(postedFile.FileName);
-                    postedFile.SaveAs(Path.Combine(Server.MapPath(model.Image)));
-                }
-                model.DDChequeDate = string.IsNullOrEmpty(model.DDChequeDate) ? null : Comman.ConvertToSystemDate(model.DDChequeDate, "dd/MM/yyyy");
-                model.AddedBy = Session["PK_UserId"].ToString();
-                DataSet ds = model.SaveEwalletRequest();
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
                     {
-                        TempData["Ewallet"] = "Ewallet Request save successfully";
+                        @TempData["Account"] = "AcountNo Added Successfully";
                     }
                     else
                     {
-                        TempData["Ewallet"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                        @TempData["Account"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
-                TempData["Ewallet"] = ex.Message;
-            }
-            return RedirectToAction("EwalletRequest", "User");
-        }
-        public ActionResult E_WalletReport()
-        {
-            List<Admin> lst = new List<Admin>();
-            User model = new User();
-            model.PK_UserId = Session["PK_UserId"].ToString();
-            DataSet ds11 = model.GetEwalletDetails();
-            if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow r in ds11.Tables[0].Rows)
-                {
-                    Admin Obj = new Admin();
-                    Obj.LoginID = r["LoginId"].ToString();
-                    Obj.Name = r["name"].ToString();
-                    Obj.RequestId = r["PK_RequestID"].ToString();
-                    Obj.Amount = r["Amount"].ToString();
-                    Obj.PaymentMode = r["PaymentMode"].ToString();
-                    Obj.Status = r["Status"].ToString();
-                    Obj.Image = r["ImageURL"].ToString();
-                    Obj.BankName = r["BankName"].ToString();
-                    Obj.BankBranch = r["BankBranch"].ToString();
-                    Obj.DDChequeNo = r["ChequeDDNo"].ToString();
-                    Obj.DDChequeDate = r["ChequeDDDate"].ToString();
-                    lst.Add(Obj);
-                }
-                model.lstReports = lst;
-            }
-            return View(model);
-        }
-        public ActionResult GameStart(string ColorId,string GameId)
-        {
-            Game model = new Game();
-            model.FK_ColorId = ColorId;
-            model.FK_GameId = GameId;
-            model.FK_UserId = Session["PK_UserId"].ToString();
-            model.GameStartDateTime = DateTime.Now.ToString();
-            DataSet ds = model.GameStart();
-            if(ds!=null && ds.Tables.Count>0 && ds.Tables[0].Rows.Count>0)
-            {
-                if(ds.Tables[0].Rows[0]["Msg"].ToString()=="1")
-                {
 
-                }
+                @TempData["Account"] = ex.Message;
             }
-            return RedirectToAction("GameStart", "User");
+            return RedirectToAction("UpdateAccountDetails", "User");
         }
 
-        public ActionResult Withdraw()
+        //public ActionResult TXNLadget()
+        //{
+        //    List<User> Lst = new List<User>();
+        //    User model = new User();
+        //    model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+        //    model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+        //    model.PK_UserId = Session["PK_UserId"].ToString();
+
+        //    DataSet ds11 = model.GetEwalletLedger();
+        //    if (ds11 != null && ds11.Tables.Count > 0 && ds11.Tables[0].Rows.Count > 0)
+        //    {
+        //        foreach (DataRow r in ds11.Tables[0].Rows)
+        //        {
+        //            User Obj = new User();
+        //            Obj.CreditAmount = r["CreditAmount"].ToString();
+        //            Obj.DebitAmount = r["DebitAmount"].ToString();
+        //            Obj.Narration = r["Narration"].ToString();
+        //            Obj.Date = r["date"].ToString();
+        //            Lst.Add(Obj);
+        //        }
+        //        model.lstLedget = Lst;
+        //    }
+        //    return View(model);
+        //}
+
+        public ActionResult ChangePassword()
         {
             return View();
         }
+        [HttpPost]
+        [ActionName("ChangePassword")]
+        public ActionResult ChangePassword(User model)
+        {
+            model.PK_UserId = Session["PK_UserId"].ToString();
+            if (model.NewPassword == model.CfPassword)
+            {
+                model.oldPassword = Crypto.Encrypt(model.oldPassword);
+                model.NewPassword = Crypto.Encrypt(model.NewPassword);
+                DataSet ds = model.ChangePsssword();
+                try
+                {
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows[0]["Msg"].ToString() == "1")
+                        {
+                            @TempData["Msg"] = "Password Change  Successfully";
+                        }
+                        else
+                        {
+                            @TempData["Msg"] = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
 
+                    @TempData["Msg"] = ex.Message;
+                }
+            }
+            else
+            {
+                @TempData["Msg"] = "Your Password is Not Match";
+            }
+            return RedirectToAction("ChangePassword", "User");
+        }
 
+        public ActionResult GameReport()
+        {
+            User model = new User();
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+
+            List<User> lstGameReport = new List<User>();
+            //User model = new User();
+            model.LoginId = Session["LoginId"].ToString();
+            model.FromDate = string.IsNullOrEmpty(model.FromDate) ? null : Comman.ConvertToSystemDate(model.FromDate, "dd/MM/yyyy");
+            model.ToDate = string.IsNullOrEmpty(model.ToDate) ? null : Comman.ConvertToSystemDate(model.ToDate, "dd/MM/yyyy");
+
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        User obj = new User();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginId = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GameReport(User model)
+        {
+            int count = 0;
+            List<SelectListItem> ddlGameType = new List<SelectListItem>();
+            DataSet dsgame = model.GameTypeDataList();
+            if (dsgame != null && dsgame.Tables.Count > 0 && dsgame.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow r in dsgame.Tables[0].Rows)
+                {
+                    if (count == 0)
+                    {
+                        ddlGameType.Add(new SelectListItem { Text = "Select GameType", Value = "0" });
+                    }
+                    ddlGameType.Add(new SelectListItem { Text = r["GameName"].ToString(), Value = r["PK_GameId"].ToString() });
+                    count = count + 1;
+                }
+            }
+
+            ViewBag.ddlGameType = ddlGameType;
+
+            List<User> lstGameReport = new List<User>();
+            model.LoginId = Session["LoginId"].ToString();
+            DataSet ds = model.GetGameReport();
+            try
+            {
+                if (ds != null && ds.Tables[0].Rows.Count > 0 && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow r in ds.Tables[0].Rows)
+                    {
+                        User obj = new User();
+                        obj.Name = r["FirstName"].ToString();
+                        obj.LastName = r["LastName"].ToString();
+                        obj.LoginId = r["LoginId"].ToString();
+                        obj.PK_PeriodId = r["PK_PeriodId"].ToString();
+                        obj.Fk_ChosenColorId = r["Fk_ChosenColorId"].ToString();
+                        obj.FK_ResultId = r["FK_ResultId"].ToString();
+                        obj.color = r["color"].ToString();
+                        obj.PeriodNo = r["PeriodNo"].ToString();
+                        obj.GameName = r["GameName"].ToString();
+                        obj.Amount = r["Amount"].ToString();
+                        obj.windate = r["windate"].ToString();
+                        obj.GameTime = r["Time"].ToString();
+                        lstGameReport.Add(obj);
+                    }
+                    model.lstGameReport = lstGameReport;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Game"] = ex.Message;
+            }
+            return View(model);
+        }
+
+        public ActionResult GetGameResponse(string PeriodId,string ColorId)
+        {
+            User model = new User();
+            List<Game> lstColor = new List<Game>();
+            model.FK_UserId = Session["PK_UserId"].ToString();
+            model.FK_ColorId = ColorId;
+            model.FK_PeriodId = PeriodId;
+            try
+            {
+                DataSet ds = model.GetGameResponse();
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    //model.PeriodNo = ds.Tables[0].Rows[0]["PeriodNo"].ToString();
+                    //model.StartTime = ds.Tables[0].Rows[0]["StartTime"].ToString();
+                    //model.EndTime = ds.Tables[0].Rows[0]["EndTime"].ToString();
+                    model.FK_ResultId = ds.Tables[0].Rows[0]["FK_ResultId"].ToString();
+                    model.FK_ColorId = ds.Tables[0].Rows[0]["FK_ColorId"].ToString();
+                    model.Message = "1";
+                    if (model.FK_ResultId == model.FK_ColorId)
+                    {
+                        model.Result = "Yes";
+                    }
+                    else
+                    {
+                        model.Result = "No";
+                    }
+                }
+                else
+                {
+                    model.Message = "0";
+                    model.Result = ds.Tables[0].Rows[0]["ErrorMessage"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                model.Result = ex.Message;
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
     }
 }

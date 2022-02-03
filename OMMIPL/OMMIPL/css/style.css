@@ -139,7 +139,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 }
 
 .navbar-nav > li:nth-child(3) a {
-    margin-right: 34em !important;
+    margin-right: 26em !important;
 }
 
 .navbar-nav > li:nth-child(6) a {
@@ -148,7 +148,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 
 .w3_navigation_pos {
     position: absolute;
-    top: 24%;
+    top: 10%;
     left: 35%;
     z-index: 999;
 }
@@ -496,7 +496,7 @@ input[type="submit"], input[type="reset"], .w3ls_footer_grid_leftl, .w3ls_footer
 /*-- //banner --*/
 /*-- about --*/
 .about, .services, .team-bottom, .mail {
-    padding: 5em 0;
+    padding: 3em 0;
 }
 
 .w3l_head {
@@ -1572,11 +1572,19 @@ ul#lightGallery {
     }
 }
 
+  img.logo {
+      width: 180px;
+  }
+
 @media (max-width: 768px) {
+
     .w3_navigation_pos h1 a {
         font-size: .75em;
+        padding: 10px;
     }
-
+    img.logo {
+        width: 100px;
+    }
     .w3_navigation_pos {
         left: 34%;
     }
@@ -1633,7 +1641,7 @@ ul#lightGallery {
     .navbar-toggle {
         margin: 1em 0;
     }
-
+    
     .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
         background-color: transparent;
     }
@@ -1693,10 +1701,11 @@ ul#lightGallery {
         float: right;
         position: relative;
         width: 37%;
+        text-align: center;
     }
 
     .about, .services, .team-bottom, .mail {
-        padding: 2em 0;
+        padding: 0 0; /*2em 0*/
     }
 
     .projects {
@@ -2115,6 +2124,19 @@ span.digit {
     font-size: 22px;
     font-weight: 600;
 }
+
+span.digit1 {
+    background-color: #ffffffa3;
+    padding: 8px;
+    font-size: 22px;
+    font-weight: 600;
+}
+span.digit2 {
+    background-color: #ffffffa3;
+    padding: 8px;
+    font-size: 22px;
+    font-weight: 600;
+}
 .body-layout {
     display: flex;
     justify-content: space-between;
@@ -2140,4 +2162,14 @@ span.card-detail {
     .card h2{
         font-size: 20px;
     }
+}
+/*============Pagination=================*/
+div#nav {
+    float: right;
+}
+div#nav a {
+    background-color: #111111;
+    color: #fff;
+    font-weight: 600;
+    padding: 1px 10px;
 }

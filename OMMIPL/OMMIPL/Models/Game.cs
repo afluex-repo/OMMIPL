@@ -21,6 +21,8 @@ namespace OMMIPL.Models
         public string Document { get; set; }
         public string Image { get; set; }
         public string GameStartDateTime { get; set; }
+        public string PeriodNo { get; set; }
+        public string ResultantColor { get; set; }
         public DataSet GetAllGames()
         {
             DataSet ds = DBHelper.ExecuteQuery("GetGameDetails");
@@ -28,19 +30,10 @@ namespace OMMIPL.Models
         }
         public DataSet GetGameDetailsById()
         {
-            SqlParameter[] para = { new SqlParameter ("@GameId", FK_GameId )};
-            DataSet ds = DBHelper.ExecuteQuery("GetGameById",para);
+            SqlParameter[] para = { new SqlParameter("@GameId", FK_GameId) };
+            DataSet ds = DBHelper.ExecuteQuery("GetGameById", para);
             return ds;
         }
-        public DataSet GameStart()
-        {
-            SqlParameter[] para = { new SqlParameter("@GameId", FK_GameId),
-                new SqlParameter("@FK_ColorId", FK_ColorId),
-                new SqlParameter("@GameStartDateTime", GameStartDateTime),
-                new SqlParameter("@FK_UserId", FK_UserId),
-            };
-            DataSet ds = DBHelper.ExecuteQuery("GameStart", para);
-            return ds;
-        }
+
     }
 }

@@ -1,0 +1,66 @@
+﻿@model OMMIPL.Models.User
+@{
+    ViewBag.Title = "UpdateAccountDetails";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="mail" id="mail">
+    <div class="container">
+        <div class="w3_mail_grids">
+            @using (Html.BeginForm("UpdateAccountDetails", "User", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "form1" }))
+            {
+                <div class="row">
+                    <p style="color:red;">
+                        @TempData["Account"]
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                        <div class="col-sm-2">
+                            @*<a href="/Admin/GameMaster" class="btn btn-info" style="border-radius:100px;background-color:#fa3d03;"> Add New</a>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Account No </label>
+                            @Html.TextBoxFor(m => m.AccountNo, new { @class = "input__field", @placeholder = "Account No" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>IFSC <span style="color: red">*</span></label>
+                            @Html.TextBoxFor(m => m.IFSC, new { @class = "input__field", @placeholder = "IFSC" })
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <label>Bank Name <span style="color: red">*</span></label>
+                            @Html.TextBoxFor(m => m.BankName, new { @class = "input__field ", @placeholder = "Bank Name" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid" >
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Branch Name <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.BankBranch, new { @class = "input__field", @placeholder = "Branch Name" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <div class="mb-3">
+                                <label class="mb-1 text-white fs-14">Account Holder Name <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(m => m.HolderName, new { @class = "input__field", @placeholder = "Account Holder Name" })
+                            </div>
+                        </div>
+                       
+                    </div>
+                  <br />
+                    <div class="row">
+                        <div class="col-md-4 w3_agile_mail_grid">
+                            <input type="submit" id="btnsave" value="Save" onclick="return validateform();">
+                            <p><a href="/Wallet/Withdraw" class="btn btn-info" style="padding: 0.9em;background-color:#fa3d03;">Back To WithDrawal</a></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
