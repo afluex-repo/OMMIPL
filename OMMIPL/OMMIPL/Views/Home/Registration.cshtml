@@ -73,7 +73,7 @@
 
                                     <div class="col-lg-6">
                                         <div class="form_input">
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "input__field", @placeholder = "Email", @onchange = "return ValidateEmail(event);" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -108,9 +108,9 @@
                                     </div>
                                 </div>
                                 <div class="form_input_btn text-center">
-                                    <button type="submit" class="btn btn-link">SUBMIT <img width="20" height="20" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
+                                    <button type="submit" class="btn btn-link" onclick="return ValidateForm();">SUBMIT <img width="20" height="20" src="~/assets/img/icon/arrrow-icon.jpg" alt=""></button>
                                 </div>
-                                <p class="form-message" style="color:red">@TempData["Msg"]</p>
+                                @*<p class="form-message" style="color:red">@TempData["Msg"]</p>*@
 
                             </form>
                         </div>
@@ -123,6 +123,9 @@
 
 </div>
 <!-- page wrapper end -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     function getsponsordetails(obj) {
         $(".errortext").removeClass("errortext");
@@ -197,6 +200,11 @@
             $('#MobileNo').focus();
             return false;
         }
+        if ($('#Email').val() == '') {
+            $("#Email").addClass('errortext');
+            $('#Email').focus();
+            return false;
+        }
         if ($('#Password').val() == '') {
             $("#Password").addClass('errortext');
             $('#Password').focus();
@@ -221,4 +229,22 @@
             return false;
         return true;
     }
+
+    function ValidateEmail(event) {
+        var panVal = $('#Email').val();
+        var regpan = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        if (regpan.test(panVal)) {
+            $("#Email").removeClass('errortext');
+        } else {
+            alert("Invalid Email ID");
+            $("#Email").val('');
+            $("#Email").addClass('errortext');
+        }
+    }
+
+
+
+
+
 </script>
